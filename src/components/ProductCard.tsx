@@ -97,7 +97,7 @@ export default function ProductCard({ product, className = '', priority = false 
     });
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => { // Fixed: SyntheticEvent cho img onError
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     setImageError(true);
     if (e.target instanceof HTMLImageElement) {
       e.target.src = placeholderSrc;
@@ -107,8 +107,8 @@ export default function ProductCard({ product, className = '', priority = false 
   // New: Handle size/color change - update image dynamically
   const handleSizeChange = (value: string) => {
     setSelectedSize(value);
-    setImageError(false); // Reset error để load variant mới
-    setImageLoaded(false); // Reset loading để show spinner
+    setImageError(false);
+    setImageLoaded(false);
   };
 
   const handleColorChange = (value: string) => {
@@ -120,10 +120,6 @@ export default function ProductCard({ product, className = '', priority = false 
   const discountPercentage = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
-
-  // Nếu dùng Next.js, thay <img> bằng next/image (hỗ trợ dynamic src tốt)
-  // Import: import Image from 'next/image';
-  // <Image src={imageError ? placeholderSrc : currentImage} ... />
 
   return (
     <Card className={`group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-0 bg-white dark:bg-gray-800 ${className}`}>
@@ -157,7 +153,7 @@ export default function ProductCard({ product, className = '', priority = false 
           )}
         </div>
 
-        {/* Badges - Giữ nguyên */}
+        {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {product.isNew && (
             <Badge className="bg-green-500 hover:bg-green-600 text-white text-xs px-2 py-1">
@@ -181,7 +177,7 @@ export default function ProductCard({ product, className = '', priority = false 
           )}
         </div>
 
-        {/* Wishlist Button - Giữ nguyên, nhưng dùng currentImage */}
+        {/* Wishlist Button */}
         <Button
           variant="ghost"
           size="icon"
@@ -195,7 +191,7 @@ export default function ProductCard({ product, className = '', priority = false 
           <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
         </Button>
 
-        {/* Quick Actions - Giữ nguyên */}
+        {/* Quick Actions */}
         <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
           <Button
             onClick={handleAddToCart}
@@ -261,7 +257,7 @@ export default function ProductCard({ product, className = '', priority = false 
           )}
         </div>
 
-        {/* New: Variant Selection - Size & Color Dropdowns */}
+        {/* Variant Selection - Size & Color Dropdowns */}
         {product.sizes && product.colors && product.inStock && (
           <div className="flex flex-col sm:flex-row gap-2 mb-3">
             {/* Size Select */}
@@ -290,4 +286,27 @@ export default function ProductCard({ product, className = '', priority = false 
                 </SelectTrigger>
                 <SelectContent>
                   {product.colors.map((color) => (
-                    <SelectItem key={color
+                    <SelectItem key={color} value={color}>
+                      {color}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        )}
+
+        {/* Stock Status */}
+        {product.inStock ? (
+          <p className="text-sm text-green-600 dark:text-green-400 mt-2">
+            ✓ In Stock
+          </p>
+        ) : (
+          <p className="text-sm text-red-600 dark:text-red-400 mt-2">
+            ✗ Out of Stock
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
