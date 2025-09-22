@@ -1,4 +1,6 @@
-import { Product } from '@/components/ProductCard'; 
+// src/data/products.ts
+// Import interface (nếu chưa có variants trong Product interface ở ProductCard.tsx, thêm: variants?: Record<string, string>;)
+import { Product } from '@/components/ProductCard';
 
 export const DEMO_PRODUCTS: Product[] = [
   {
@@ -75,10 +77,15 @@ export const DEMO_PRODUCTS: Product[] = [
       "M-Pink": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=center&hue=330",
       "L-Green": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=bottom&hue=120",
       "XL-Gray": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=top&contrast=15",
-      "XS-Navy": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=face&hue=220",
+            "XS-Navy": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=face&hue=220",
       "S-Pink": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=entropy&hue=340",
       "M-Green": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=center&saturation=20",
-      "L-Pink": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=bottom&brightness=5"
+      "L-Pink": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=bottom&brightness=5",
+      "XL-Navy": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=top&hue=210",
+      "XS-Pink": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=face&hue=330",
+      "S-Green": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=entropy&hue=130",
+      "XL-Pink": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=bottom&contrast=10",
+      "M-Navy": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=400&fit=crop&crop=center&brightness=-5"
     }
   },
   {
@@ -97,4 +104,197 @@ export const DEMO_PRODUCTS: Product[] = [
     isNew: true,
     isBestseller: false,
     variants: {
-      "XS-Black": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400
+      "XS-Black": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=face&brightness=-30",
+      "S-Navy": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=entropy&hue=220",
+      "M-Burgundy": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=center&hue=340",
+      "L-Black": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=bottom",
+      "XS-Navy": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=face&hue=210",
+      "S-Burgundy": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=entropy&hue=350",
+      "M-Black": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=center&brightness=-20",
+      "L-Navy": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=bottom&contrast=15",
+      "XS-Burgundy": "https://images.unsplash.com/photo-1605568427561-40dd23c2acea?w=400&h=400&fit=crop&crop=top&hue=330"
+    }
+  },
+  {
+    id: 5,
+    name: "Rainbow Tutu Dress",
+    price: 32.99,
+    image: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=center",
+    rating: 4.9,
+    reviewCount: 203,
+    category: "Premium Theme Collections",
+    description: "Adorable rainbow tutu that makes every day a celebration",
+    sizes: ["XS", "S", "M"],
+    colors: ["Rainbow", "Pink", "Purple"],
+    inStock: true,
+    isNew: false,
+    isBestseller: true,
+    variants: {
+      "XS-Rainbow": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=face&saturation=50",
+      "S-Pink": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=entropy&hue=330",
+      "M-Purple": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=center&hue=270",
+      "XS-Pink": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=face&hue=340",
+      "S-Rainbow": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=entropy&saturation=40",
+      "M-Rainbow": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=center&brightness=10",
+      "XS-Purple": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=top&hue=280",
+      "S-Purple": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=bottom&contrast=20",
+      "M-Pink": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&h=400&fit=crop&crop=entropy&hue=320"
+    }
+  },
+  {
+    id: 6,
+    name: "Denim Jacket",
+    price: 27.99,
+    originalPrice: 35.99,
+    image: "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=center",
+    rating: 4.5,
+    reviewCount: 92,
+    category: "Casual Wear",
+    description: "Classic denim jacket for the coolest pets in town",
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Blue", "Black", "White"],
+    inStock: false,
+    isNew: false,
+    isBestseller: false,
+    variants: {
+      "S-Blue": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=face",
+      "M-Black": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=entropy&brightness=-20",
+      "L-White": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=center&brightness=20",
+      "XL-Blue": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=bottom",
+      "S-Black": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=face&brightness=-15",
+      "M-Blue": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=entropy&hue=200",
+      "L-Blue": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=center&saturation=10",
+      "XL-White": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=top&brightness=15",
+      "S-White": "https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=400&h=400&fit=crop&crop=bottom&contrast=5"
+    }
+  },
+  {
+    id: 7,
+    name: "Meme Cat Shirt",
+    price: 18.99,
+    image: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=center",
+    rating: 4.8,
+    reviewCount: 167,
+    category: "Trending Meme Outfits",
+    description: "Internet famous meme design that will make everyone smile",
+    sizes: ["XS", "S", "M", "L"],
+    colors: ["White", "Gray", "Yellow"],
+    inStock: true,
+    isNew: true,
+    isBestseller: false,
+    variants: {
+      "XS-White": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=face&brightness=10",
+      "S-Gray": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=entropy",
+      "M-Yellow": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=center&hue=50",
+      "L-White": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=bottom",
+      "XS-Gray": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=face&brightness=-5",
+      "S-White": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=entropy&brightness=5",
+      "M-Gray": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=center&contrast=10",
+      "L-Yellow": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=top&hue=60",
+      "XS-Yellow": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop&crop=bottom&saturation=30"
+    }
+  },
+  {
+    id: 8,
+    name: "Handmade Knit Scarf",
+    price: 22.99,
+    image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop&crop=center",
+    rating: 4.7,
+    reviewCount: 134,
+    category: "Handmade & Custom Design",
+    description: "Lovingly handcrafted scarf with unique patterns",
+    sizes: ["One Size"],
+    colors: ["Red", "Blue", "Green", "Purple"],
+    inStock: true,
+    isNew: false,
+    isBestseller: true,
+    variants: {
+      "One Size-Red": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop&crop=face&hue=0",
+      "One Size-Blue": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop&crop=entropy&hue=200",
+      "One Size-Green": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop&crop=center&hue=120",
+      "One Size-Purple": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop&crop=bottom&hue=270",
+      "One Size-Green": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop&crop=top&saturation=20"  // Duplicate cho test, có thể thay
+    }
+  },
+  // Thêm 4 products mới để test grid (tổng 12, đa dạng category)
+  {
+    id: 9,
+    name: "Leather Harness",
+    price: 45.00,
+    originalPrice: 55.00,
+    image: "https://images.unsplash.com/photo-1581578731547-79b7e2f97a7e?w=400&h=400&fit=crop&crop=center",
+    rating: 4.6,
+    reviewCount: 67,
+    category: "Accessories",
+    description: "Durable leather harness for active pets",
+    sizes: ["S", "M", "L"],
+    colors: ["Brown", "Black", "Tan"],
+    inStock: true,
+    isNew: true,
+    isBestseller: false,
+    variants: {
+      "S-Brown": "https://images.unsplash.com/photo-1581578731547-79b7e2f97a7e?w=400&h=400&fit=crop&crop=face&hue=25",
+            "M-Black": "https://images.unsplash.com/photo-1581578731547-79b7e2f97a7e?w=400&h=400&fit=crop&crop=entropy&hue=0",
+      "L-Tan": "https://images.unsplash.com/photo-1581578731547-79b7e2f97a7e?w=400&h=400&fit=crop&crop=center&brightness=10"
+    }
+  },
+  {
+    id: 10,
+    name: "Pet Travel Carrier",
+    price: 60.00,
+    image: "https://images.unsplash.com/photo-1590080877777-0a1a3a1a1a1a?w=400&h=400&fit=crop&crop=center",
+    rating: 4.7,
+    reviewCount: 45,
+    category: "Travel",
+    description: "Comfortable and secure travel carrier for your pet",
+    sizes: ["Small", "Medium", "Large"],
+    colors: ["Black", "Gray"],
+    inStock: true,
+    isNew: false,
+    isBestseller: true,
+    variants: {
+      "Small-Black": "https://images.unsplash.com/photo-1590080877777-0a1a3a1a1a1a?w=400&h=400&fit=crop&crop=face&brightness=5",
+      "Medium-Gray": "https://images.unsplash.com/photo-1590080877777-0a1a3a1a1a1a?w=400&h=400&fit=crop&crop=entropy&hue=210",
+      "Large-Black": "https://images.unsplash.com/photo-1590080877777-0a1a3a1a1a1a?w=400&h=400&fit=crop&crop=center&contrast=15"
+    }
+  },
+  {
+    id: 11,
+    name: "Eco-friendly Pet Bowl",
+    price: 18.00,
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop&crop=center",
+    rating: 4.5,
+    reviewCount: 30,
+    category: "Feeding",
+    description: "Sustainable and safe pet bowl made from recycled materials",
+    sizes: ["One Size"],
+    colors: ["Green", "Blue"],
+    inStock: true,
+    isNew: true,
+    isBestseller: false,
+    variants: {
+      "One Size-Green": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop&crop=face&hue=120",
+      "One Size-Blue": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop&crop=entropy&hue=210"
+    }
+  },
+  {
+    id: 12,
+    name: "Pet Cooling Mat",
+    price: 25.00,
+    image: "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400&h=400&fit=crop&crop=center",
+    rating: 4.6,
+    reviewCount: 50,
+    category: "Health & Wellness",
+    description: "Keep your pet cool and comfortable during hot days",
+    sizes: ["Small", "Medium", "Large"],
+    colors: ["Blue", "Gray"],
+    inStock: true,
+    isNew: false,
+    isBestseller: true,
+    variants: {
+      "Small-Blue": "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400&h=400&fit=crop&crop=face&brightness=10",
+      "Medium-Gray": "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400&h=400&fit=crop&crop=entropy&hue=210",
+      "Large-Blue": "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400&h=400&fit=crop&crop=center&contrast=20"
+    }
+  }
+];
