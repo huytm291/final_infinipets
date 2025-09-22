@@ -70,7 +70,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             {/* Logo & Brand */}
             <div className="flex items-center space-x-3">
               <img 
-                src="/logo.png" 
+                src="public/images/logo.png" 
                 alt="INFINIPETS Logo" 
                 className="h-8 md:h-10 w-auto object-contain"
                 onError={(e) => {
