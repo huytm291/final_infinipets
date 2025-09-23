@@ -1,19 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { toast } from 'sonner';
-
-export interface WishlistItem {
-  id: number;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  category: string;
-  rating: number;
-  reviewCount: number;
-  inStock: boolean;
-  addedAt: Date;
-}
+import { WishlistItem } from '@/lib/types';
 
 interface WishlistStore {
   items: WishlistItem[];

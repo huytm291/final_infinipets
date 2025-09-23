@@ -1,59 +1,36 @@
-// Product Types
+// lib/types.ts - TypeScript interfaces for INFINIPETS API
+
 export interface Product {
   id: number;
   name: string;
   price: number;
   originalPrice?: number;
   image: string;
-  images?: string[];
+  category: string;
   rating: number;
   reviewCount: number;
-  category: string;
-  description: string;
-  sizes: string[];
-  colors: string[];
   inStock: boolean;
   isNew?: boolean;
   isBestseller?: boolean;
-  discount?: number;
-}
-
-// User Types
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-  phone?: string;
-  address?: Address;
-  rank: UserRank;
-  totalSpent: number;
-  joinDate: Date;
-  preferences: UserPreferences;
-}
-
-export interface Address {
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
-
-export interface UserPreferences {
-  language: string;
-  theme: 'light' | 'dark' | 'auto';
-  notifications: {
-    email: boolean;
-    push: boolean;
-    sms: boolean;
+  description?: string;
+  sizes?: string[];
+  colors?: string[];
+  variants?: Record<string, string>;
+  tags?: string[];
+  weight?: number;
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
   };
-  currency: string;
+  materials?: string[];
+  careInstructions?: string[];
+  sku?: string;
+  stockQuantity?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export type UserRank = 'bronze' | 'silver' | 'gold' | 'diamond';
-
-// Cart Types
 export interface CartItem {
   id: string;
   productId: number;
@@ -71,33 +48,113 @@ export interface Cart {
   shipping: number;
   tax: number;
   total: number;
-  couponCode?: string;
-  discount?: number;
 }
 
-// Order Types
+export interface WishlistItem {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  category: string;
+  rating: number;
+  reviewCount: number;
+  inStock: boolean;
+  addedAt: Date;
+  sizes?: string[];
+  colors?: string[];
+  variants?: Record<string, string>;
+  selectedSize?: string;
+  selectedColor?: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  preferences?: {
+    language: string;
+    currency: string;
+    notifications: boolean;
+  };
+  addresses?: Address[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Address {
+  id: string;
+  type: 'shipping' | 'billing';
+  firstName: string;
+  lastName: string;
+  company?: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  phone?: string;
+  isDefault: boolean;
+}
+
 export interface Order {
   id: string;
   userId: string;
-  items: CartItem[];
-  status: OrderStatus;
+  orderNumber: string;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  items: OrderItem[];
+  subtotal: number;
+  shipping: number;
+  tax: number;
   total: number;
   shippingAddress: Address;
-  paymentMethod: PaymentMethod;
-  createdAt: Date;
-  updatedAt: Date;
+  billingAddress: Address;
+  paymentMethod: string;
   trackingNumber?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-
-export interface PaymentMethod {
-  type: 'credit_card' | 'paypal' | 'apple_pay' | 'google_pay';
-  last4?: string;
-  brand?: string;
+export interface OrderItem {
+  id: string;
+  productId: number;
+  name: string;
+  price: number;
+  image: string;
+  size: string;
+  color: string;
+  quantity: number;
+  sku?: string;
 }
 
-// Review Types
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string;
+  author: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  category: string;
+  tags: string[];
+  published: boolean;
+  publishedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  readTime: number;
+  views: number;
+}
+
 export interface Review {
   id: string;
   productId: number;
@@ -106,55 +163,70 @@ export interface Review {
   userAvatar?: string;
   rating: number;
   title: string;
-  comment: string;
-  images?: string[];
-  helpful: number;
-  verified: boolean;
-  createdAt: Date;
-}
-
-// Notification Types
-export interface Notification {
-  id: string;
-  userId: string;
-  type: NotificationType;
-  title: string;
-  message: string;
-  read: boolean;
-  createdAt: Date;
-  actionUrl?: string;
-}
-
-export type NotificationType = 'order' | 'promotion' | 'wishlist' | 'review' | 'system';
-
-// Blog Types
-export interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
   content: string;
-  image: string;
-  author: string;
-  authorAvatar: string;
-  category: string;
-  tags: string[];
-  publishedAt: Date;
-  readTime: number;
+  images?: string[];
+  verified: boolean;
+  helpful: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-// API Response Types
+export interface Newsletter {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  preferences: {
+    newProducts: boolean;
+    promotions: boolean;
+    blog: boolean;
+  };
+  status: 'active' | 'unsubscribed';
+  createdAt: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  parentId?: string;
+  children?: Category[];
+  productCount: number;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
-  data: T;
+  data?: T;
   message?: string;
   error?: string;
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
+export interface SearchFilters {
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sizes?: string[];
+  colors?: string[];
+  inStock?: boolean;
+  isNew?: boolean;
+  isBestseller?: boolean;
+  rating?: number;
+  sortBy?: 'name' | 'price' | 'rating' | 'newest' | 'popular';
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface UploadResponse {
+  success: boolean;
+  url?: string;
+  filename?: string;
+  size?: number;
+  error?: string;
 }

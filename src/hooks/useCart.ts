@@ -22,10 +22,10 @@ export function useCart() {
 
     setCart({
       items: cartItems,
-      subtotal,
-      shipping,
-      tax,
-      total
+      subtotal: parseFloat(subtotal.toFixed(2)),
+      shipping: parseFloat(shipping.toFixed(2)),
+      tax: parseFloat(tax.toFixed(2)),
+      total: parseFloat(total.toFixed(2))
     });
   }, [cartItems]);
 
@@ -44,7 +44,9 @@ export function useCart() {
       const updatedItems = [...cartItems];
       updatedItems[existingItemIndex].quantity += quantity;
       setCartItems(updatedItems);
-      toast.success('Đã cập nhật số lượng trong giỏ hàng');
+      toast.success('Updated cart quantity', {
+        description: `${product.name} quantity updated in cart`
+      });
     } else {
       // Add new item
       const newItem: CartItem = {
@@ -58,13 +60,21 @@ export function useCart() {
         quantity
       };
       setCartItems([...cartItems, newItem]);
-      toast.success('Đã thêm vào giỏ hàng');
+      toast.success('Added to cart! 🛒', {
+        description: `${product.name} (${size}, ${color}) added to cart`
+      });
     }
   };
 
   const removeFromCart = (itemId: string) => {
+    const item = cartItems.find(item => item.id === itemId);
     setCartItems(cartItems.filter(item => item.id !== itemId));
-    toast.success('Đã xóa khỏi giỏ hàng');
+    
+    if (item) {
+      toast.success('Removed from cart', {
+        description: `${item.name} removed from cart`
+      });
+    }
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
@@ -81,7 +91,9 @@ export function useCart() {
 
   const clearCart = () => {
     setCartItems([]);
-    toast.success('Đã xóa toàn bộ giỏ hàng');
+    toast.success('Cart cleared', {
+      description: 'All items removed from cart'
+    });
   };
 
   const getItemCount = () => {

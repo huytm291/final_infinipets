@@ -9,10 +9,8 @@ import { ProductsSection } from '@/components/ProductsSection';
 import FeedbackSection from '@/components/FeedbackSection';
 import NewsletterSection from '@/components/NewsletterSection';
 import BlogSection from '@/components/BlogSection';
-import ProductGrid from '@/components/ProductGrid'; // New: Import ProductGrid (đặt ở thư mục components)
-import { DEMO_PRODUCTS } from '@/data/products'; // New: Import data static cho featured
+import { DEMO_PRODUCTS } from '@/data/products';
 
-// Interface cho props nếu cần pass theme
 interface SectionProps {
   isDark?: boolean;
 }
@@ -22,7 +20,7 @@ export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState('en');
 
-  // Theme management (giữ nguyên)
+  // Theme management
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -32,7 +30,7 @@ export default function Index() {
     document.documentElement.classList.toggle('dark', shouldUseDark);
   }, []);
 
-  // Language management (giữ nguyên)
+  // Language management
   useEffect(() => {
     const savedLanguage = localStorage.getItem('infinipets-language');
     if (savedLanguage) {
@@ -47,9 +45,8 @@ export default function Index() {
     document.documentElement.classList.toggle('dark', newTheme);
   };
 
-  // New: Featured products data (static, có thể hard-code hoặc từ DEMO_PRODUCTS)
-  // Lọc featured nếu DEMO_PRODUCTS có field 'isFeatured'
-  const featuredProducts = DEMO_PRODUCTS.filter(p => p.isBestseller || p.isNew).slice(0, 8); // Ví dụ: Lấy 8 sản phẩm nổi bật
+  // Featured products data - fallback to static data
+  const featuredProducts = DEMO_PRODUCTS.filter(p => p.isBestseller || p.isNew).slice(0, 8);
 
   if (isLoading) {
     return <LoadingScreen onComplete={() => setIsLoading(false)} />;
@@ -58,15 +55,15 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <Header isDark={isDark} toggleTheme={toggleTheme} />
-      <HeroSection isDark={isDark} /> {/* Pass isDark nếu Hero cần theme */}
-      <CategoriesSection isDark={isDark} /> {/* Pass nếu cần */}
+      <HeroSection isDark={isDark} />
+      <CategoriesSection isDark={isDark} />
       
-      {/* ProductsSection: Tích hợp ProductGrid static */}
       <ProductsSection 
         isDark={isDark} 
-        products={featuredProducts} // Pass static data cho grid
+        products={featuredProducts}
         title="Featured Products" 
         subtitle="Discover our bestsellers and new arrivals"
+        useAPI={false}
       />
       
       <FeedbackSection isDark={isDark} />
