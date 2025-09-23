@@ -3,7 +3,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HERO_PRODUCTS } from '@/lib/constants';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  isDark?: boolean;
+}
+
+export default function HeroSection({ isDark = false }: HeroSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Auto-advance hero slider
@@ -23,7 +27,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[70vh] md:h-[80vh] overflow-hidden mt-16 md:mt-20">
+    <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
       <div className="relative w-full h-full">
         {HERO_PRODUCTS.map((product, index) => (
           <div

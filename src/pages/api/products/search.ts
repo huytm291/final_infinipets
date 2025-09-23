@@ -44,7 +44,7 @@ export default async function handler(
     const searchQuery = (q as string).trim().toLowerCase();
     
     // Advanced search with relevance scoring
-    let products = MockDB.getProducts({}, 1, 1000).products; // Get all for search
+    const products = MockDB.getProducts({}, 1, 1000).products; // Get all for search
     
     // Calculate relevance scores
     const searchResults = products.map(product => {

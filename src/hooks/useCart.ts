@@ -1,80 +1,69 @@
 import { useState, useEffect } from 'react';
-import { useLocalStorage } from './useLocalStorage';
 import { CartItem, Cart } from '@/lib/types';
 import { toast } from 'sonner';
 
+const CART_STORAGE_KEY = 'infinipets-cart';
+
 export function useCart() {
-  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('infinipets-cart', []);
-  const [cart, setCart] = useState<Cart>({
-    items: [],
-    subtotal: 0,
-    shipping: 0,
-    tax: 0,
-    total: 0
-  });
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // Calculate cart totals
+  // Load cart from localStorage on mount
   useEffect(() => {
-    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const shipping = subtotal > 50 ? 0 : 9.99; // Free shipping over $50
-    const tax = subtotal * 0.08; // 8% tax
-    const total = subtotal + shipping + tax;
+    try {
+      const stored = localStorage.getItem(CART_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setCartItems(parsed);
+      }
+    } catch (error) {
+      console.error('Failed to load cart:', error);
+    }
+  }, []);
 
-    setCart({
-      items: cartItems,
-      subtotal: parseFloat(subtotal.toFixed(2)),
-      shipping: parseFloat(shipping.toFixed(2)),
-      tax: parseFloat(tax.toFixed(2)),
-      total: parseFloat(total.toFixed(2))
-    });
+  // Save to localStorage whenever cart changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Failed to save cart:', error);
+    }
   }, [cartItems]);
 
-  const addToCart = (product: {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-  }, size: string, color: string, quantity: number = 1) => {
-    const existingItemIndex = cartItems.findIndex(
-      item => item.productId === product.id && item.size === size && item.color === color
-    );
-
-    if (existingItemIndex > -1) {
-      // Update existing item
-      const updatedItems = [...cartItems];
-      updatedItems[existingItemIndex].quantity += quantity;
-      setCartItems(updatedItems);
-      toast.success('Updated cart quantity', {
-        description: `${product.name} quantity updated in cart`
-      });
-    } else {
-      // Add new item
-      const newItem: CartItem = {
-        id: `${product.id}-${size}-${color}-${Date.now()}`,
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        size,
-        color,
-        quantity
-      };
-      setCartItems([...cartItems, newItem]);
-      toast.success('Added to cart! 🛒', {
-        description: `${product.name} (${size}, ${color}) added to cart`
-      });
-    }
+  const addToCart = (productId: number, name: string, price: number, image: string, size: string, color: string, quantity: number = 1) => {
+    const itemId = `${productId}-${size}-${color}`;
+    
+    setCartItems(prev => {
+      const existingItem = prev.find(item => item.id === itemId);
+      
+      if (existingItem) {
+        toast.success('Updated cart quantity');
+        return prev.map(item =>
+          item.id === itemId
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      } else {
+        toast.success('Added to cart');
+        return [...prev, {
+          id: itemId,
+          productId,
+          name,
+          price,
+          image,
+          size,
+          color,
+          quantity
+        }];
+      }
+    });
   };
 
   const removeFromCart = (itemId: string) => {
-    const item = cartItems.find(item => item.id === itemId);
-    setCartItems(cartItems.filter(item => item.id !== itemId));
-    
-    if (item) {
-      toast.success('Removed from cart', {
-        description: `${item.name} removed from cart`
-      });
-    }
+    setCartItems(prev => {
+      const filtered = prev.filter(item => item.id !== itemId);
+      toast.success('Removed from cart');
+      return filtered;
+    });
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
@@ -83,29 +72,49 @@ export function useCart() {
       return;
     }
 
-    const updatedItems = cartItems.map(item =>
-      item.id === itemId ? { ...item, quantity } : item
+    setCartItems(prev =>
+      prev.map(item =>
+        item.id === itemId ? { ...item, quantity } : item
+      )
     );
-    setCartItems(updatedItems);
   };
 
   const clearCart = () => {
     setCartItems([]);
-    toast.success('Cart cleared', {
-      description: 'All items removed from cart'
-    });
+    toast.success('Cart cleared');
   };
 
-  const getItemCount = () => {
-    return cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const getItemCount = (): number => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const getSubtotal = (): number => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const getCart = (): Cart => {
+    const subtotal = getSubtotal();
+    const shipping = subtotal > 50 ? 0 : 9.99;
+    const tax = subtotal * 0.08;
+    const total = subtotal + shipping + tax;
+
+    return {
+      items: cartItems,
+      subtotal,
+      shipping,
+      tax,
+      total
+    };
   };
 
   return {
-    cart,
+    cartItems,
     addToCart,
     removeFromCart,
     updateQuantity,
     clearCart,
-    getItemCount
+    getItemCount,
+    getSubtotal,
+    getCart,
   };
 }

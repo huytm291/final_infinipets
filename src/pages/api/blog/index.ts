@@ -66,10 +66,11 @@ export default async function handler(
         case 'views':
           return (a.views - b.views) * order;
         case 'publishedAt':
-        default:
+        default: {
           const aDate = new Date(a.publishedAt || a.createdAt).getTime();
           const bDate = new Date(b.publishedAt || b.createdAt).getTime();
           return (aDate - bDate) * order;
+        }
       }
     });
 

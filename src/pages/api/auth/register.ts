@@ -91,8 +91,9 @@ export default async function handler(
         message: 'Registration successful'
       });
 
-    } catch (registrationError: any) {
-      if (registrationError.message === 'User already exists with this email') {
+    } catch (registrationError: unknown) {
+      const errorMessage = registrationError instanceof Error ? registrationError.message : 'Registration failed';
+      if (errorMessage === 'User already exists with this email') {
         return res.status(409).json({
           success: false,
           error: 'An account with this email already exists'

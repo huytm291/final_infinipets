@@ -1,90 +1,78 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { toast } from 'sonner';
+import { useState, useEffect } from 'react';
 import { WishlistItem } from '@/lib/types';
+import { toast } from 'sonner';
 
-interface WishlistStore {
-  items: WishlistItem[];
-  addToWishlist: (item: Omit<WishlistItem, 'addedAt'>) => void;
-  removeFromWishlist: (id: number) => void;
-  isInWishlist: (id: number) => boolean;
-  clearWishlist: () => void;
-  getWishlistCount: () => number;
-}
+const WISHLIST_STORAGE_KEY = 'infinipets-wishlist';
 
-export const useWishlistStore = create<WishlistStore>()(
-  persist(
-    (set, get) => ({
-      items: [],
-      
-      addToWishlist: (item) => {
-        const { items } = get();
-        const existingItem = items.find(i => i.id === item.id);
-        
-        if (existingItem) {
-          toast.info('Item is already in your wishlist');
-          return;
-        }
-        
-        const newItem: WishlistItem = {
-          ...item,
-          addedAt: new Date()
-        };
-        
-        set({ items: [...items, newItem] });
-        toast.success('Added to wishlist! ❤️', {
-          description: `${item.name} has been added to your wishlist`
-        });
-      },
-      
-      removeFromWishlist: (id) => {
-        const { items } = get();
-        const item = items.find(i => i.id === id);
-        
-        set({ items: items.filter(i => i.id !== id) });
-        
-        if (item) {
-          toast.success('Removed from wishlist', {
-            description: `${item.name} has been removed from your wishlist`
-          });
-        }
-      },
-      
-      isInWishlist: (id) => {
-        return get().items.some(item => item.id === id);
-      },
-      
-      clearWishlist: () => {
-        set({ items: [] });
-        toast.success('Wishlist cleared');
-      },
-      
-      getWishlistCount: () => {
-        return get().items.length;
+export function useWishlist() {
+  const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
+
+  // Load wishlist from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setWishlistItems(parsed);
       }
-    }),
-    {
-      name: 'infinipets-wishlist',
+    } catch (error) {
+      console.error('Failed to load wishlist:', error);
     }
-  )
-);
+  }, []);
 
-export const useWishlist = () => {
-  const { 
-    items, 
-    addToWishlist, 
-    removeFromWishlist, 
-    isInWishlist, 
-    clearWishlist, 
-    getWishlistCount 
-  } = useWishlistStore();
-  
+  // Save to localStorage whenever wishlist changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
+    } catch (error) {
+      console.error('Failed to save wishlist:', error);
+    }
+  }, [wishlistItems]);
+
+  const addToWishlist = (item: WishlistItem) => {
+    setWishlistItems(prev => {
+      const exists = prev.find(existing => existing.id === item.id);
+      if (exists) {
+        toast.info('Item already in wishlist');
+        return prev;
+      }
+      toast.success('Added to wishlist');
+      return [...prev, { ...item, addedAt: new Date() }];
+    });
+  };
+
+  const removeFromWishlist = (itemId: number) => {
+    setWishlistItems(prev => {
+      const filtered = prev.filter(item => item.id !== itemId);
+      toast.success('Removed from wishlist');
+      return filtered;
+    });
+  };
+
+  const isInWishlist = (itemId: number): boolean => {
+    return wishlistItems.some(item => item.id === itemId);
+  };
+
+  const clearWishlist = () => {
+    setWishlistItems([]);
+    toast.success('Wishlist cleared');
+  };
+
+  const getWishlistCount = (): number => {
+    return wishlistItems.length;
+  };
+
+  const getWishlistTotal = (): number => {
+    return wishlistItems.reduce((total, item) => total + item.price, 0);
+  };
+
   return {
-    wishlistItems: items,
+    wishlistItems,
     addToWishlist,
     removeFromWishlist,
     isInWishlist,
     clearWishlist,
-    wishlistCount: getWishlistCount()
+    getWishlistCount,
+    getWishlistTotal,
   };
-};
+}

@@ -1,6 +1,6 @@
 // lib/db.ts - Mock database utilities for INFINIPETS API
 
-import { Product, User, Order, BlogPost, Review, Newsletter, Category } from '../../../lib/types';
+import { Product, User, Order, BlogPost, Review, Newsletter, Category, SearchFilters } from '../../../lib/types';
 
 // Mock Products Database (extended from your existing data)
 export const MOCK_PRODUCTS: Product[] = [
@@ -231,7 +231,7 @@ export const MOCK_REVIEWS: Review[] = [
 // Utility functions for mock database operations
 export class MockDB {
   // Products
-  static getProducts(filters?: any, page = 1, limit = 12) {
+  static getProducts(filters?: SearchFilters, page = 1, limit = 12) {
     let products = [...MOCK_PRODUCTS];
     
     // Apply filters

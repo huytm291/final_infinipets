@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCartAPI } from '@/hooks/useCartAPI';
+import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import AuthModal from './auth/AuthModal';
 
@@ -38,7 +38,7 @@ export default function Header({ isDark = false, toggleTheme }: HeaderProps) {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   
   const { user, isAuthenticated, logout } = useAuth();
-  const { getItemCount } = useCartAPI();
+  const { getItemCount } = useCart();
   const { getWishlistCount } = useWishlist();
 
   const cartItemCount = getItemCount();
