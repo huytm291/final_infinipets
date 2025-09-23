@@ -11,11 +11,11 @@ export default function Footer() {
   ];
 
   const paymentMethods = [
-    { name: 'Visa', logo: '/api/placeholder/40/25' },
-    { name: 'Mastercard', logo: '/api/placeholder/40/25' },
-    { name: 'PayPal', logo: '/api/placeholder/40/25' },
-    { name: 'Apple Pay', logo: '/api/placeholder/40/25' },
-    { name: 'Google Pay', logo: '/api/placeholder/40/25' }
+    { name: 'Visa', logo: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg' },
+    { name: 'Mastercard', logo: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg' },
+    { name: 'PayPal', logo: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg' },
+    { name: 'Apple Pay', logo: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg' },
+    { name: 'Google Pay', logo: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg' }
   ];
 
   const socialLinks = [
@@ -53,11 +53,11 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <img 
-                src="/logo.png" 
+                src="https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg" 
                 alt="INFINIPETS Logo" 
                 className="h-8 w-auto object-contain brightness-0 invert"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/api/placeholder/120/40';
+                  (e.target as HTMLImageElement).src = 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg';
                 }}
               />
               <span className="font-coiny text-xl text-white">

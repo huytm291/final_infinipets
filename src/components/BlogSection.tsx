@@ -7,7 +7,7 @@ export default function BlogSection() {
       id: 1,
       title: 'Upcoming Offline Event for Diamond Rank Customers',
       excerpt: 'Join our exclusive event for VIP customers with amazing offers and special activities...',
-      image: '/api/placeholder/400/200',
+      image: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg',
       category: 'Events',
       readTime: '3 min read',
       publishDate: 'Dec 15, 2024'
@@ -16,7 +16,7 @@ export default function BlogSection() {
       id: 2,
       title: '5 Ways to Protect Your Pet During Summer',
       excerpt: 'Useful tips to keep your pets cool and comfortable during the hot summer months...',
-      image: '/api/placeholder/400/200',
+      image: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg',
       category: 'Pet Care',
       readTime: '5 min read',
       publishDate: 'Dec 12, 2024'
@@ -25,7 +25,7 @@ export default function BlogSection() {
       id: 3,
       title: 'Fall/Winter 2024 Collection Coming Soon',
       excerpt: 'Discover the latest designs with premium materials for the cold season...',
-      image: '/api/placeholder/400/200',
+      image: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg',
       category: 'Fashion',
       readTime: '4 min read',
       publishDate: 'Dec 10, 2024'
