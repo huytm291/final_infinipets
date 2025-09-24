@@ -42,10 +42,10 @@ export default function Index() {
           isDark={isDark}
           useAPI={false}
         />
-        <BlogSection />
+        <BlogSection isDark={isDark} />
         <FeedbackSection />
         <NewsletterSection />
-        <Footer />
+        <Footer isDark={isDark} />
         <ChatBot />
       </div>
     </div>
