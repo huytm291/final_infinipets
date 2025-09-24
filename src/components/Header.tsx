@@ -242,7 +242,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   <NavigationMenuTrigger className={`h-10 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 border ${
                     isDark 
                       ? 'text-white bg-gray-800 border-gray-600 hover:bg-gray-700' 
-                      : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
+                      : 'text-white bg-gray-800 border-gray-300 hover:bg-gray-50'
                   }`}>
                     <ShoppingBag className="w-4 h-4 mr-2" />
                     Categories
