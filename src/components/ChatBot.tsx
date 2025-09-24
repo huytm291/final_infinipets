@@ -99,8 +99,8 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
             : 'bg-white/95 backdrop-blur-xl'
         } rounded-3xl overflow-hidden`}>
           
-          {/* Minimalist Header */}
-          <CardHeader className="bg-gradient-to-r from-slate-900 to-gray-800 text-white p-4 relative">
+          {/* Header with Green Theme */}
+          <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 relative">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
@@ -138,7 +138,7 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                         ? isDark
                           ? 'bg-gray-800 text-gray-100'
                           : 'bg-gray-100 text-gray-900'
-                        : 'bg-slate-900 text-white'
+                        : 'bg-green-600 text-white'
                     }`}
                   >
                     <div>{msg.text}</div>
@@ -160,15 +160,15 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                     isDark ? 'bg-gray-800' : 'bg-gray-100'
                   }`}>
                     <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
               )}
               
-              {/* Quick Suggestions - Minimalist */}
+              {/* Quick Suggestions */}
               {messages.length === 1 && (
                 <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
                   <div className="grid grid-cols-2 gap-2">
@@ -179,7 +179,7 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                         className={`p-3 rounded-xl transition-all duration-200 hover:scale-105 text-left ${
                           isDark 
                             ? 'bg-gray-800/60 text-gray-300 hover:bg-gray-700' 
-                            : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                            : 'bg-white text-gray-700 hover:bg-green-50 border border-gray-200 hover:border-green-300'
                         }`}
                       >
                         <div className="flex items-center space-x-2">
@@ -194,7 +194,7 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Minimalist Input Area */}
+            {/* Input Area with Green Theme */}
             <div className={`p-4 border-t ${
               isDark ? 'border-gray-800 bg-gray-900/30' : 'border-gray-200 bg-white/50'
             }`}>
@@ -209,7 +209,7 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                       isDark 
                         ? 'bg-gray-800 text-white placeholder-gray-500' 
                         : 'bg-gray-100 text-gray-900 placeholder-gray-500'
-                    } focus:ring-2 focus:ring-slate-900/20`}
+                    } focus:ring-2 focus:ring-green-500/20`}
                   />
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                     <Sparkles className={`w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
@@ -219,7 +219,7 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                   onClick={handleSendMessage}
                   size="icon"
                   disabled={!message.trim() || isTyping}
-                  className="h-11 w-11 rounded-full bg-slate-900 hover:bg-slate-800 transition-all duration-200 hover:scale-105 disabled:opacity-50"
+                  className="h-11 w-11 rounded-full bg-green-600 hover:bg-green-700 transition-all duration-200 hover:scale-105 disabled:opacity-50"
                 >
                   <Send className="w-4 h-4 text-white" />
                 </Button>
@@ -229,12 +229,12 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
         </Card>
       )}
 
-      {/* Minimalist Chat Button */}
+      {/* Green Chat Button */}
       <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={() => setIsOpen(!isOpen)}
           size="lg"
-          className="bg-slate-900 hover:bg-slate-800 shadow-lg hover:shadow-xl rounded-full w-14 h-14 p-0 transition-all duration-300 hover:scale-110"
+          className="bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl rounded-full w-14 h-14 p-0 transition-all duration-300 hover:scale-110"
         >
           <MessageCircle className="w-6 h-6 text-white" />
         </Button>
