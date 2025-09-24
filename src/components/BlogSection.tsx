@@ -1,109 +1,200 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, Clock } from 'lucide-react';
+import { useState } from 'react';
+import { Calendar, User, ArrowRight, Clock, Heart, MessageCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
-export default function BlogSection() {
-  const blogPosts = [
-    {
-      id: 1,
-      title: 'Upcoming Offline Event for Diamond Rank Customers',
-      excerpt: 'Join our exclusive event for VIP customers with amazing offers and special activities...',
-      image: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg',
-      category: 'Events',
-      readTime: '3 min read',
-      publishDate: 'Dec 15, 2024'
-    },
-    {
-      id: 2,
-      title: '5 Ways to Protect Your Pet During Summer',
-      excerpt: 'Useful tips to keep your pets cool and comfortable during the hot summer months...',
-      image: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg',
-      category: 'Pet Care',
-      readTime: '5 min read',
-      publishDate: 'Dec 12, 2024'
-    },
-    {
-      id: 3,
-      title: 'Fall/Winter 2024 Collection Coming Soon',
-      excerpt: 'Discover the latest designs with premium materials for the cold season...',
-      image: 'https://i.pinimg.com/736x/ce/d9/08/ced908180fea56ccb7389639d26be25f.jpg',
-      category: 'Fashion',
-      readTime: '4 min read',
-      publishDate: 'Dec 10, 2024'
-    }
-  ];
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+  image: string;
+  likes: number;
+  comments: number;
+  isNew?: boolean;
+}
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Events': return 'bg-blue-500';
-      case 'Pet Care': return 'bg-green-500';
-      case 'Fashion': return 'bg-purple-500';
-      default: return 'bg-gray-500';
-    }
+interface BlogSectionProps {
+  isDark?: boolean;
+}
+
+const BLOG_POSTS: BlogPost[] = [
+  {
+    id: '1',
+    title: 'Top 10 Pet Fashion Trends for 2024',
+    excerpt: 'Discover the latest trends in pet fashion that will make your furry friend the most stylish on the block.',
+    author: 'Sarah Johnson',
+    date: '2024-01-15',
+    readTime: '5 min read',
+    category: 'Fashion Trends',
+    image: 'https://i.pinimg.com/736x/d1/21/62/d121622d88d03979598908071c7ec451.jpg',
+    likes: 124,
+    comments: 18,
+    isNew: true
+  },
+  {
+    id: '2',
+    title: 'How to Choose the Right Size for Your Pet',
+    excerpt: 'A comprehensive guide to measuring your pet and selecting the perfect fit for maximum comfort.',
+    author: 'Dr. Michael Chen',
+    date: '2024-01-10',
+    readTime: '7 min read',
+    category: 'Size Guide',
+    image: 'https://i.pinimg.com/736x/d1/21/62/d121622d88d03979598908071c7ec451.jpg',
+    likes: 89,
+    comments: 12
+  },
+  {
+    id: '3',
+    title: 'Seasonal Pet Care: Winter Fashion Tips',
+    excerpt: 'Keep your pets warm and stylish during the cold months with our expert winter fashion advice.',
+    author: 'Emma Rodriguez',
+    date: '2024-01-05',
+    readTime: '4 min read',
+    category: 'Seasonal Care',
+    image: 'https://i.pinimg.com/736x/d1/21/62/d121622d88d03979598908071c7ec451.jpg',
+    likes: 156,
+    comments: 23,
+    isNew: true
+  }
+];
+
+export default function BlogSection({ isDark = false }: BlogSectionProps) {
+  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
+
+  const handleLike = (postId: string) => {
+    setLikedPosts(prev => {
+      const newLiked = new Set(prev);
+      if (newLiked.has(postId)) {
+        newLiked.delete(postId);
+      } else {
+        newLiked.add(postId);
+      }
+      return newLiked;
+    });
   };
 
   return (
-    <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto">
+    <section className={`py-16 px-4 md:px-8 lg:px-16 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="font-coiny text-section-title gradient-text mb-4">
+          <h2 className={`text-3xl md:text-4xl font-coiny mb-4 gradient-text`}>
             Latest News & Events
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Stay updated with the latest pet fashion trends, care tips, and exclusive events
+          <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            Stay updated with the latest trends, tips, and news from the world of pet fashion
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map((post) => (
-            <Card key={post.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer border-0 bg-white dark:bg-gray-800">
-              <div className="relative overflow-hidden">
+
+        {/* Blog Posts Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {BLOG_POSTS.map((post) => (
+            <article 
+              key={post.id}
+              className={`group relative rounded-2xl overflow-hidden shadow-lg hover-lift transition-all duration-300 ${
+                isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+              }`}
+            >
+              {/* Image */}
+              <div className="relative aspect-video overflow-hidden">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute top-4 left-4">
-                  <span className={`${getCategoryColor(post.category)} text-white px-3 py-1 rounded-full text-xs font-medium`}>
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                
+                {/* Badges */}
+                <div className="absolute top-3 left-3 flex flex-col gap-2">
+                  {post.isNew && (
+                    <Badge className="bg-green-500 text-white font-semibold">NEW</Badge>
+                  )}
+                  <Badge className={`${isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
                     {post.category}
-                  </span>
+                  </Badge>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Like Button */}
+                <button
+                  onClick={() => handleLike(post.id)}
+                  className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
+                >
+                  <Heart className={`w-4 h-4 ${likedPosts.has(post.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
+                </button>
               </div>
-              
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>{post.publishDate}</span>
+
+              {/* Content */}
+              <div className="p-6 space-y-4">
+                {/* Meta Info */}
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center space-x-4">
+                    <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <User className="w-4 h-4" />
+                      <span>{post.author}</span>
+                    </div>
+                    <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(post.date).toLocaleDateString()}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1">
+                  <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                     <Clock className="w-4 h-4" />
                     <span>{post.readTime}</span>
                   </div>
                 </div>
-                
-                <h3 className="font-semibold text-lg mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
+
+                {/* Title */}
+                <h3 className={`text-xl font-semibold line-clamp-2 group-hover:text-green-500 transition-colors ${
+                  isDark ? 'text-white' : 'text-gray-900'
+                }`}>
                   {post.title}
                 </h3>
-                
-                <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-4">
+
+                {/* Excerpt */}
+                <p className={`text-sm line-clamp-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {post.excerpt}
                 </p>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-blue-600 hover:text-blue-700 font-medium text-sm group-hover:underline">
-                    Read More →
-                  </span>
+
+                {/* Stats */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center space-x-4">
+                    <div className={`flex items-center space-x-1 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <Heart className="w-4 h-4" />
+                      <span>{post.likes + (likedPosts.has(post.id) ? 1 : 0)}</span>
+                    </div>
+                    <div className={`flex items-center space-x-1 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <MessageCircle className="w-4 h-4" />
+                      <span>{post.comments}</span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 p-2"
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </article>
           ))}
         </div>
-        
-        <div className="text-center mt-12">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-medium transition-colors">
-            View All Articles
-          </button>
+
+        {/* Call to Action */}
+        <div className="text-center">
+          <Button 
+            size="lg" 
+            className="gradient-primary hover:opacity-90 hover:scale-105 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            onClick={() => {
+              window.location.href = '/blog';
+            }}
+          >
+            View All Articles <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </div>
       </div>
     </section>

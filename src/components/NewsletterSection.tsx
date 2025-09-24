@@ -17,30 +17,37 @@ export default function NewsletterSection({ isDark = false }: NewsletterSectionP
     setTimeout(() => {
       const emailIcon = document.createElement('div');
       emailIcon.innerHTML = '✉️';
-      emailIcon.className = 'fixed text-3xl pointer-events-none z-50 transition-all duration-1500 ease-out';
-      emailIcon.style.left = `${startX}px`;
-      emailIcon.style.top = `${startY}px`;
-      emailIcon.style.transform = 'scale(1) rotate(0deg)';
-      emailIcon.style.opacity = '1';
+      emailIcon.className = 'fixed pointer-events-none z-50';
+      emailIcon.style.cssText = `
+        left: ${startX}px;
+        top: ${startY}px;
+        font-size: 32px;
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+        transition: all 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      `;
       
       document.body.appendChild(emailIcon);
 
-      // Animate the email flying up
+      // Start animation immediately after adding to DOM
       requestAnimationFrame(() => {
-        const targetX = startX + (Math.random() - 0.5) * 200; // Random horizontal movement
-        const targetY = startY - 300 - Math.random() * 100; // Fly up with some randomness
-        const rotation = (Math.random() - 0.5) * 720; // Random rotation
-        
-        emailIcon.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px) scale(0.3) rotate(${rotation}deg)`;
-        emailIcon.style.opacity = '0';
+        requestAnimationFrame(() => {
+          const targetX = startX + (Math.random() - 0.5) * 300;
+          const targetY = startY - 400 - Math.random() * 150;
+          const rotation = (Math.random() - 0.5) * 1080;
+          
+          emailIcon.style.transform = `translate(${targetX - startX}px, ${targetY - startY}px) scale(0.2) rotate(${rotation}deg)`;
+          emailIcon.style.opacity = '0';
+        });
       });
 
-      // Remove the element after animation
+      // Remove element after animation completes
       setTimeout(() => {
         if (document.body.contains(emailIcon)) {
           emailIcon.remove();
         }
-      }, 1500);
+      }, 2500);
     }, delay);
   };
 
@@ -55,30 +62,39 @@ export default function NewsletterSection({ isDark = false }: NewsletterSectionP
     const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
     const rect = button.getBoundingClientRect();
     
-    // Create multiple flying emails with staggered timing
-    const emailCount = 8;
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    for (let i = 0; i < emailCount; i++) {
-      const angle = (i / emailCount) * 2 * Math.PI;
-      const radius = 30;
+    // First wave - circular pattern
+    const firstWaveCount = 8;
+    for (let i = 0; i < firstWaveCount; i++) {
+      const angle = (i / firstWaveCount) * 2 * Math.PI;
+      const radius = 40;
       const startX = centerX + Math.cos(angle) * radius;
       const startY = centerY + Math.sin(angle) * radius;
       
-      createFlyingEmail(startX, startY, i * 150);
+      createFlyingEmail(startX, startY, i * 200);
     }
 
-    // Add some extra emails for more dramatic effect
+    // Second wave - random burst
     setTimeout(() => {
-      for (let i = 0; i < 5; i++) {
-        const randomX = centerX + (Math.random() - 0.5) * 100;
-        const randomY = centerY + (Math.random() - 0.5) * 50;
+      for (let i = 0; i < 6; i++) {
+        const randomX = centerX + (Math.random() - 0.5) * 120;
+        const randomY = centerY + (Math.random() - 0.5) * 60;
+        createFlyingEmail(randomX, randomY, i * 150);
+      }
+    }, 800);
+
+    // Third wave - final burst
+    setTimeout(() => {
+      for (let i = 0; i < 4; i++) {
+        const randomX = centerX + (Math.random() - 0.5) * 80;
+        const randomY = centerY + (Math.random() - 0.5) * 40;
         createFlyingEmail(randomX, randomY, i * 100);
       }
-    }, 500);
+    }, 1400);
 
-    // Simulate API call
+    // Show success message
     setTimeout(() => {
       toast.success('Welcome to INFINIPETS family! 🐾', {
         description: 'Thank you for joining our premium pet fashion community!',
@@ -88,11 +104,11 @@ export default function NewsletterSection({ isDark = false }: NewsletterSectionP
       setIsSubmitting(false);
       setIsSubmitted(true);
       
-      // Reset submission state after 30 seconds to prevent spam
+      // Reset submission state after 30 seconds
       setTimeout(() => {
         setIsSubmitted(false);
       }, 30000);
-    }, 1200);
+    }, 2000);
   };
 
   const benefits = [
