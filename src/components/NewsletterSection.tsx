@@ -189,7 +189,7 @@ export default function NewsletterSection({ isDark = false }: NewsletterSectionP
           <div className="backdrop-blur-sm rounded-3xl p-6 md:p-8 border bg-white/10 border-white/20">
             {isSubmitted ? (
               <div className="text-center space-y-4">
-                <div className="text-6xl animate-bounce">✅</div>
+                <div className="text-6xl animate-bounce">🐕</div>
                 <h3 className="text-xl font-coiny text-white">Thank You!</h3>
                 <p className="text-white/80">You've successfully joined the INFINIPETS family!</p>
                 <p className="text-white/60 text-sm">You can subscribe again in 30 seconds.</p>
