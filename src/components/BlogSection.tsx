@@ -1,104 +1,202 @@
-import React from 'react';
-import { Calendar, User, ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { Calendar, User, ArrowRight, Clock, Heart, MessageCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
-const BlogSection = () => {
-  const blogPosts = [
-    {
-      id: 1,
-      title: "The Future of Digital Innovation",
-      excerpt: "Explore how emerging technologies are reshaping the business landscape and creating new opportunities for growth.",
-      author: "John Smith",
-      date: "March 15, 2024",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      category: "Technology"
-    },
-    {
-      id: 2,
-      title: "Building Sustainable Business Models",
-      excerpt: "Learn how companies are integrating sustainability into their core business strategies for long-term success.",
-      author: "Sarah Johnson",
-      date: "March 12, 2024",
-      image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      category: "Business"
-    },
-    {
-      id: 3,
-      title: "Customer Experience in the Digital Age",
-      excerpt: "Discover strategies for creating exceptional customer experiences that drive loyalty and business growth.",
-      author: "Mike Chen",
-      date: "March 10, 2024",
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      category: "Customer Success"
-    }
-  ];
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+  image: string;
+  likes: number;
+  comments: number;
+  isNew?: boolean;
+}
+
+interface BlogSectionProps {
+  isDark?: boolean;
+}
+
+const BLOG_POSTS: BlogPost[] = [
+  {
+    id: '1',
+    title: 'Top 10 Pet Fashion Trends for 2024',
+    excerpt: 'Discover the latest trends in pet fashion that will make your furry friend the most stylish on the block.',
+    author: 'Sarah Johnson',
+    date: '2024-01-15',
+    readTime: '5 min read',
+    category: 'Fashion Trends',
+    image: 'https://i.pinimg.com/736x/d1/21/62/d121622d88d03979598908071c7ec451.jpg',
+    likes: 124,
+    comments: 18,
+    isNew: true
+  },
+  {
+    id: '2',
+    title: 'How to Choose the Right Size for Your Pet',
+    excerpt: 'A comprehensive guide to measuring your pet and selecting the perfect fit for maximum comfort.',
+    author: 'Dr. Michael Chen',
+    date: '2024-01-10',
+    readTime: '7 min read',
+    category: 'Size Guide',
+    image: 'https://i.pinimg.com/736x/d1/21/62/d121622d88d03979598908071c7ec451.jpg',
+    likes: 89,
+    comments: 12
+  },
+  {
+    id: '3',
+    title: 'Seasonal Pet Care: Winter Fashion Tips',
+    excerpt: 'Keep your pets warm and stylish during the cold months with our expert winter fashion advice.',
+    author: 'Emma Rodriguez',
+    date: '2024-01-05',
+    readTime: '4 min read',
+    category: 'Seasonal Care',
+    image: 'https://i.pinimg.com/736x/d1/21/62/d121622d88d03979598908071c7ec451.jpg',
+    likes: 156,
+    comments: 23,
+    isNew: true
+  }
+];
+
+export default function BlogSection({ isDark = false }: BlogSectionProps) {
+  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
+
+  const handleLike = (postId: string) => {
+    setLikedPosts(prev => {
+      const newLiked = new Set(prev);
+      if (newLiked.has(postId)) {
+        newLiked.delete(postId);
+      } else {
+        newLiked.add(postId);
+      }
+      return newLiked;
+    });
+  };
 
   return (
-    <section className="bg-white dark:bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
+    <section className={`py-16 px-4 md:px-8 lg:px-16 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Latest Insights
+        <div className="text-center mb-12">
+          <h2 className={`text-3xl md:text-4xl font-coiny mb-4 gradient-text`}>
+            Latest News & Events
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Stay updated with our latest thoughts on industry trends, best practices, and innovative solutions.
+          <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            Stay updated with the latest trends, tips, and news from the world of pet fashion
           </p>
         </div>
 
         {/* Blog Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {blogPosts.map((post) => (
-            <article key={post.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <div className="relative">
+          {BLOG_POSTS.map((post) => (
+            <article 
+              key={post.id}
+              className={`group relative rounded-2xl overflow-hidden shadow-lg hover-lift transition-all duration-300 ${
+                isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+              }`}
+            >
+              {/* Image */}
+              <div className="relative aspect-video overflow-hidden">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute top-4 left-4">
-                  <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                
+                {/* Badges */}
+                <div className="absolute top-3 left-3 flex flex-col gap-2">
+                  {post.isNew && (
+                    <Badge className="bg-green-500 text-white font-semibold">NEW</Badge>
+                  )}
+                  <Badge className={`${isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
                     {post.category}
-                  </span>
+                  </Badge>
                 </div>
+
+                {/* Like Button */}
+                <button
+                  onClick={() => handleLike(post.id)}
+                  className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
+                >
+                  <Heart className={`w-4 h-4 ${likedPosts.has(post.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
+                </button>
               </div>
-              
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">
+
+              {/* Content */}
+              <div className="p-6 space-y-4">
+                {/* Meta Info */}
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center space-x-4">
+                    <div className={`flex items-center space-x-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <User className="w-4 h-4" />
+                      <span>{post.author}</span>
+                    </div>
+                    <div className={`flex items-center space-x-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(post.date).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <div className={`flex items-center space-x-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <Clock className="w-4 h-4" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+
+                {/* Title */}
+                <h3 className={`text-xl font-semibold line-clamp-2 group-hover:text-green-500 transition-colors ${
+                  isDark ? 'text-white' : 'text-gray-900'
+                }`}>
                   {post.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+
+                {/* Excerpt */}
+                <p className={`text-sm line-clamp-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {post.excerpt}
                 </p>
-                
-                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  <div className="flex items-center space-x-2">
-                    <User size={16} />
-                    <span>{post.author}</span>
+
+                {/* Stats */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center space-x-4">
+                    <div className={`flex items-center space-x-1 text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <Heart className="w-4 h-4" />
+                      <span>{post.likes + (likedPosts.has(post.id) ? 1 : 0)}</span>
+                    </div>
+                    <div className={`flex items-center space-x-1 text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <MessageCircle className="w-4 h-4" />
+                      <span>{post.comments}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Calendar size={16} />
-                    <span>{post.date}</span>
-                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 p-2"
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </div>
-                
-                <button className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors">
-                  <span>Read More</span>
-                  <ArrowRight size={16} />
-                </button>
               </div>
             </article>
           ))}
         </div>
 
-        {/* CTA Section */}
+        {/* Call to Action */}
         <div className="text-center">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200">
-            View All Posts
-          </button>
+          <Button 
+            size="lg" 
+            className="gradient-primary hover:opacity-90 hover:scale-105 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            onClick={() => {
+              window.location.href = '/blog';
+            }}
+          >
+            View All Articles <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </div>
       </div>
     </section>
   );
-};
-
-export default BlogSection;
+}
