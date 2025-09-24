@@ -1,76 +1,48 @@
-import { useState, useEffect } from 'react';
-import Header from '@/components/Header';
+import { useState } from 'react';
+import EnhancedHeader from '@/components/Header';
+import HeroSection from '@/components/HeroSection';
+import CategoriesSection from '@/components/CategoriesSection';
+import ProductsSection from '@/components/ProductsSection';
+import BlogSection from '@/components/BlogSection';
+import FeedbackSection from '@/components/FeedbackSection';
+import NewsletterSection from '@/components/NewsletterSection';
 import Footer from '@/components/Footer';
 import ChatBot from '@/components/ChatBot';
 import LoadingScreen from '@/components/LoadingScreen';
-import HeroSection from '@/components/HeroSection';
-import CategoriesSection from '@/components/CategoriesSection';
-import { ProductsSection } from '@/components/ProductsSection'; 
-import FeedbackSection from '@/components/FeedbackSection';
-import NewsletterSection from '@/components/NewsletterSection';
-import BlogSection from '@/components/BlogSection';
-import { DEMO_PRODUCTS } from '@/data/products';
-
-interface SectionProps {
-  isDark?: boolean;
-}
 
 export default function Index() {
   const [isDark, setIsDark] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentLanguage, setCurrentLanguage] = useState('en');
-
-  // Theme management
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const shouldUseDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-    
-    setIsDark(shouldUseDark);
-    document.documentElement.classList.toggle('dark', shouldUseDark);
-  }, []);
-
-  // Language management
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('infinipets-language');
-    if (savedLanguage) {
-      setCurrentLanguage(savedLanguage);
-    }
-  }, []);
 
   const toggleTheme = () => {
-    const newTheme = !isDark;
-    setIsDark(newTheme);
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', newTheme);
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle('dark');
   };
 
-  // Featured products data - fallback to static data
-  const featuredProducts = DEMO_PRODUCTS.filter(p => p.isBestseller || p.isNew).slice(0, 8);
+  // Simulate loading
+  setTimeout(() => {
+    if (isLoading) setIsLoading(false);
+  }, 2000);
 
   if (isLoading) {
-    return <LoadingScreen onComplete={() => setIsLoading(false)} />;
+    return <LoadingScreen />;
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <Header isDark={isDark} toggleTheme={toggleTheme} />
-      <HeroSection isDark={isDark} />
-      <CategoriesSection isDark={isDark} />
+    <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
+      <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
       
-      <ProductsSection 
-        isDark={isDark} 
-        products={featuredProducts}
-        title="Featured Products" 
-        subtitle="Discover our bestsellers and new arrivals"
-        useAPI={false}
-      />
-      
-      <FeedbackSection isDark={isDark} />
-      <NewsletterSection language={currentLanguage} isDark={isDark} />
-      <BlogSection isDark={isDark} />
-      <Footer isDark={isDark} />
-      <ChatBot />
+      {/* Add padding top to account for fixed header */}
+      <div className="pt-20 lg:pt-32">
+        <HeroSection />
+        <CategoriesSection />
+        <ProductsSection />
+        <BlogSection />
+        <FeedbackSection />
+        <NewsletterSection />
+        <Footer />
+        <ChatBot />
+      </div>
     </div>
   );
 }
