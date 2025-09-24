@@ -129,19 +129,27 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className={`h-6 px-2 text-xs border-green-200 ${
                     isDark 
-                      ? 'bg-green-900/20 text-green-300 hover:bg-green-800/30' 
-                      : 'bg-green-50 text-green-700 hover:bg-green-100'
+                      ? 'bg-gray-800 text-white hover:bg-gray-700 border-gray-600' 
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
                   }`}>
                     <Globe className="w-3 h-3 mr-1" />
                     {selectedLanguage.flag} {selectedLanguage.code.toUpperCase()}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className={`w-48 ${
+                  isDark 
+                    ? 'bg-gray-800 border-gray-700' 
+                    : 'bg-white border-gray-200'
+                }`}>
                   {LANGUAGES.map((lang) => (
                     <DropdownMenuItem
                       key={lang.code}
                       onClick={() => setSelectedLanguage(lang)}
-                      className="flex items-center justify-between"
+                      className={`flex items-center justify-between ${
+                        isDark 
+                          ? 'text-white hover:bg-gray-700' 
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
                     >
                       <span className="flex items-center">
                         <span className="mr-2">{lang.flag}</span>
@@ -207,14 +215,18 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={`h-10 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 border ${
                     isDark 
-                      ? 'text-gray-300 hover:text-white bg-green-900/20 border-green-700 hover:bg-green-800/30' 
-                      : 'text-gray-700 hover:text-gray-900 bg-green-50 border-green-200 hover:bg-green-100'
+                      ? 'text-white bg-gray-800 border-gray-600 hover:bg-gray-700' 
+                      : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50'
                   }`}>
                     <ShoppingBag className="w-4 h-4 mr-2" />
                     Categories
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[600px] gap-3 p-6">
+                    <div className={`grid w-[600px] gap-3 p-6 ${
+                      isDark 
+                        ? 'bg-gray-800 border-gray-700' 
+                        : 'bg-white border-gray-200'
+                    }`}>
                       <div className="row-span-3">
                         <h3 className="font-semibold text-lg mb-4 gradient-text">
                           Shop by Category
@@ -230,7 +242,9 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                                   : 'hover:bg-green-100 hover:text-gray-900'
                               }`}
                             >
-                              <div className="text-sm font-medium leading-none group-hover:text-green-600 transition-colors">
+                              <div className={`text-sm font-medium leading-none group-hover:text-green-600 transition-colors ${
+                                isDark ? 'text-white' : 'text-gray-900'
+                              }`}>
                                 {category.name}
                               </div>
                               <p className={`line-clamp-2 text-xs leading-snug ${
