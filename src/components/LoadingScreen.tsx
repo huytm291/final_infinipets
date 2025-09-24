@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
 interface LoadingScreenProps {
-  onComplete: () => void;
+  onComplete?: () => void;
 }
 
-export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
+export default function LoadingScreen({ onComplete }: LoadingScreenProps = {}) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -12,7 +12,9 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onComplete, 500); // Delay for smooth transition
+          if (onComplete) {
+            setTimeout(onComplete, 500); // Delay for smooth transition
+          }
           return 100;
         }
         return prev + 2;
@@ -23,14 +25,14 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center gradient-primary">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
       {/* Paw Print Animation */}
       <div className="text-center">
         <div className="flex justify-center items-center space-x-2 mb-8">
-          <span className="text-6xl paw-animate">🐾</span>
-          <span className="text-6xl paw-animate">🐾</span>
-          <span className="text-6xl paw-animate">🐾</span>
-          <span className="text-6xl paw-animate">🐾</span>
+          <span className="text-6xl animate-bounce">🐾</span>
+          <span className="text-6xl animate-bounce" style={{ animationDelay: '0.1s' }}>🐾</span>
+          <span className="text-6xl animate-bounce" style={{ animationDelay: '0.2s' }}>🐾</span>
+          <span className="text-6xl animate-bounce" style={{ animationDelay: '0.3s' }}>🐾</span>
         </div>
         
         {/* Brand Name */}
@@ -42,7 +44,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         <div className="w-80 max-w-sm mx-auto">
           <div className="h-2 bg-white/20 rounded-full overflow-hidden">
             <div 
-              className="h-full loading-bar rounded-full transition-all duration-300 ease-out"
+              className="h-full bg-gradient-to-r from-white to-yellow-300 rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>

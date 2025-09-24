@@ -25,7 +25,7 @@ export default function Index() {
   }, 2000);
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return <LoadingScreen onComplete={() => setIsLoading(false)} />;
   }
 
   return (
@@ -36,7 +36,12 @@ export default function Index() {
       <div className="pt-20 lg:pt-32">
         <HeroSection />
         <CategoriesSection />
-        <ProductsSection />
+        <ProductsSection 
+          title="Featured Products"
+          subtitle="Discover our most popular pet fashion items"
+          isDark={isDark}
+          useAPI={false}
+        />
         <BlogSection />
         <FeedbackSection />
         <NewsletterSection />

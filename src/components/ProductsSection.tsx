@@ -14,7 +14,7 @@ interface ProductsSectionProps {
   useAPI?: boolean; // Flag to use API or static data
 }
 
-export const ProductsSection: FC<ProductsSectionProps> = ({ 
+const ProductsSection: FC<ProductsSectionProps> = ({ 
   products: staticProducts,
   title, 
   subtitle, 
@@ -118,3 +118,5 @@ export const ProductsSection: FC<ProductsSectionProps> = ({
     </section>
   );
 };
+
+export default ProductsSection;
