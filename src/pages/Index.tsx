@@ -46,7 +46,7 @@ export default function Index() {
         <FeedbackSection />
         <NewsletterSection />
         <Footer isDark={isDark} />
-        <ChatBot />
+        <ChatBot isDark={isDark} />
       </div>
     </div>
   );

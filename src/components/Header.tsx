@@ -58,6 +58,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(LANGUAGES[0]);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   
   const { user, isAuthenticated, logout } = useAuth();
   const { getItemCount } = useCart();
@@ -65,6 +66,13 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
 
   const cartItemCount = getItemCount();
   const wishlistItemCount = getWishlistCount();
+
+  // Search suggestions
+  const searchSuggestions = [
+    'Dog sweaters', 'Cat accessories', 'Winter coats', 'Summer outfits',
+    'Pet shoes', 'Raincoats', 'Holiday costumes', 'Formal wear',
+    'Small dog clothes', 'Large dog outfits', 'Puppy wear', 'Senior pet comfort'
+  ];
 
   // Handle scroll effect
   useEffect(() => {
@@ -88,8 +96,27 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
     e.preventDefault();
     if (searchQuery.trim()) {
       console.log('Searching for:', searchQuery);
+      setShowSearchSuggestions(false);
       // Implement search functionality
     }
+  };
+
+  const handleSearchFocus = () => {
+    setIsSearchFocused(true);
+    setShowSearchSuggestions(true);
+  };
+
+  const handleSearchBlur = () => {
+    // Delay hiding suggestions to allow clicking
+    setTimeout(() => {
+      setIsSearchFocused(false);
+      setShowSearchSuggestions(false);
+    }, 200);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchQuery(suggestion);
+    setShowSearchSuggestions(false);
   };
 
   const navigationItems = [
@@ -262,7 +289,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
             </NavigationMenu>
 
             {/* Search Bar */}
-            <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
+            <div className="hidden md:flex items-center flex-1 max-w-md mx-8 relative">
               <form onSubmit={handleSearch} className="relative w-full">
                 <div className={`relative transition-all duration-300 ${
                   isSearchFocused ? 'scale-105' : ''
@@ -277,18 +304,44 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     placeholder="Search for pet fashion..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setIsSearchFocused(true)}
-                    onBlur={() => setIsSearchFocused(false)}
+                    onFocus={handleSearchFocus}
+                    onBlur={handleSearchBlur}
                     className={`pl-10 pr-4 py-2 w-full rounded-full border-2 transition-all duration-300 ${
                       isSearchFocused
                         ? 'border-green-500 shadow-lg ring-4 ring-green-500/20'
                         : isDark 
-                          ? 'border-gray-700 bg-gray-800 text-white' 
+                          ? 'border-gray-700 bg-gray-800 text-white placeholder:text-gray-400' 
                           : 'border-gray-300 bg-white'
                     }`}
                   />
                 </div>
               </form>
+              
+              {/* Search Suggestions */}
+              {showSearchSuggestions && (
+                <div className={`absolute top-full left-0 right-0 mt-2 p-4 rounded-lg shadow-xl border z-50 ${
+                  isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                }`}>
+                  <p className={`text-xs font-medium mb-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    Popular searches:
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {searchSuggestions.slice(0, 6).map((suggestion, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className={`text-left p-2 text-sm rounded-md transition-all duration-200 hover:scale-105 ${
+                          isDark 
+                            ? 'text-gray-300 hover:bg-gray-700 hover:text-white' 
+                            : 'text-gray-700 hover:bg-green-50 hover:text-green-700'
+                        }`}
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right Side Actions */}
@@ -383,21 +436,27 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     variant="ghost" 
                     size="sm"
                     onClick={() => handleAuthClick('login')}
-                    className={`hover:scale-105 transition-transform ${
-                      isDark ? 'text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100'
+                    className={`relative overflow-hidden group transition-all duration-300 hover:scale-105 ${
+                      isDark ? 'text-white hover:text-green-400' : 'text-gray-900 hover:text-green-600'
                     }`}
                   >
-                    Login
+                    <span className="relative z-10 transition-colors duration-300">Login</span>
+                    <div className={`absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ${
+                      isDark ? 'opacity-50' : ''
+                    }`}></div>
                   </Button>
                   <Button 
                     variant="ghost"
                     size="sm"
                     onClick={() => handleAuthClick('signup')}
-                    className={`hover:opacity-90 hover:scale-105 transition-all duration-300 ${
-                      isDark ? 'text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100'
+                    className={`relative overflow-hidden group transition-all duration-300 hover:scale-105 ${
+                      isDark ? 'text-white hover:text-green-400' : 'text-gray-900 hover:text-green-600'
                     }`}
                   >
-                    Sign Up
+                    <span className="relative z-10 transition-colors duration-300">Sign Up</span>
+                    <div className={`absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ${
+                      isDark ? 'opacity-50' : ''
+                    }`}></div>
                   </Button>
                 </div>
               )}
@@ -427,7 +486,9 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       placeholder="Search..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-4 py-2 w-full rounded-full"
+                      className={`pl-10 pr-4 py-2 w-full rounded-full ${
+                        isDark ? 'bg-gray-800 text-white placeholder:text-gray-400' : ''
+                      }`}
                     />
                   </form>
                 </div>
