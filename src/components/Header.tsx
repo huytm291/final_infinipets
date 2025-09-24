@@ -176,9 +176,8 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 <img 
                   src="/images/logo.png" 
                   alt="INFINIPETS Logo" 
-                  className="w-16 h-16 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                  className="w-20 h-20 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
                 />
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse" />
               </div>
               <div className="ml-4">
                 <h1 className={`text-2xl font-coiny gradient-text transition-all duration-300 group-hover:scale-105`}>
@@ -296,7 +295,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
             <div className="flex items-center space-x-3">
               {/* Mobile Search */}
               <Button variant="ghost" size="sm" className="md:hidden hover:scale-110 transition-transform">
-                <Search className="h-4 w-4" />
+                <Search className={`h-4 w-4 ${isDark ? 'text-white' : 'text-gray-900'}`} />
               </Button>
 
               {/* Theme Toggle */}
@@ -318,14 +317,10 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className={`relative hover:scale-110 transition-transform group ${
-                  isDark 
-                    ? 'bg-white text-black hover:bg-gray-100' 
-                    : 'bg-black text-white hover:bg-gray-800'
-                }`}
+                className="relative hover:scale-110 transition-transform group"
               >
                 <Heart className={`h-4 w-4 transition-colors group-hover:text-red-500 ${
-                  wishlistItemCount > 0 ? 'text-red-500 fill-current' : ''
+                  wishlistItemCount > 0 ? 'text-red-500 fill-current' : isDark ? 'text-white' : 'text-gray-900'
                 }`} />
                 {wishlistItemCount > 0 && (
                   <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-red-500 to-pink-500 animate-pulse">
@@ -338,14 +333,10 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className={`relative hover:scale-110 transition-transform group ${
-                  isDark 
-                    ? 'bg-white text-black hover:bg-gray-100' 
-                    : 'bg-black text-white hover:bg-gray-800'
-                }`}
+                className="relative hover:scale-110 transition-transform group"
               >
                 <ShoppingCart className={`h-4 w-4 transition-colors group-hover:text-green-500 ${
-                  cartItemCount > 0 ? 'text-green-500' : ''
+                  cartItemCount > 0 ? 'text-green-500' : isDark ? 'text-white' : 'text-gray-900'
                 }`} />
                 {cartItemCount > 0 && (
                   <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs gradient-primary animate-bounce">
@@ -393,20 +384,17 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     size="sm"
                     onClick={() => handleAuthClick('login')}
                     className={`hover:scale-105 transition-transform ${
-                      isDark 
-                        ? 'bg-white text-black hover:bg-gray-100' 
-                        : 'bg-black text-white hover:bg-gray-800'
+                      isDark ? 'text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100'
                     }`}
                   >
                     Login
                   </Button>
                   <Button 
+                    variant="ghost"
                     size="sm"
                     onClick={() => handleAuthClick('signup')}
-                    className={`hover:opacity-90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl ${
-                      isDark 
-                        ? 'bg-white text-black hover:bg-gray-100' 
-                        : 'bg-black text-white hover:bg-gray-800'
+                    className={`hover:opacity-90 hover:scale-105 transition-all duration-300 ${
+                      isDark ? 'text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100'
                     }`}
                   >
                     Sign Up
@@ -486,18 +474,19 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       variant="outline" 
                       className={`w-full hover:scale-105 transition-transform ${
                         isDark 
-                          ? 'bg-white text-black hover:bg-gray-100 border-white' 
-                          : 'bg-black text-white hover:bg-gray-800 border-black'
+                          ? 'text-white border-white hover:bg-gray-800' 
+                          : 'text-gray-900 border-gray-300 hover:bg-gray-100'
                       }`}
                       onClick={() => handleAuthClick('login')}
                     >
                       Login
                     </Button>
                     <Button 
+                      variant="outline"
                       className={`w-full hover:opacity-90 hover:scale-105 transition-all duration-300 ${
                         isDark 
-                          ? 'bg-white text-black hover:bg-gray-100' 
-                          : 'bg-black text-white hover:bg-gray-800'
+                          ? 'text-white border-white hover:bg-gray-800' 
+                          : 'text-gray-900 border-gray-300 hover:bg-gray-100'
                       }`}
                       onClick={() => handleAuthClick('signup')}
                     >
