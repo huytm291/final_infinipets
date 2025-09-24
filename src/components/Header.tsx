@@ -315,7 +315,15 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               )}
 
               {/* Wishlist */}
-              <Button variant="ghost" size="sm" className="relative hover:scale-110 transition-transform group">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className={`relative hover:scale-110 transition-transform group ${
+                  isDark 
+                    ? 'bg-white text-black hover:bg-gray-100' 
+                    : 'bg-black text-white hover:bg-gray-800'
+                }`}
+              >
                 <Heart className={`h-4 w-4 transition-colors group-hover:text-red-500 ${
                   wishlistItemCount > 0 ? 'text-red-500 fill-current' : ''
                 }`} />
@@ -327,7 +335,15 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               </Button>
 
               {/* Cart */}
-              <Button variant="ghost" size="sm" className="relative hover:scale-110 transition-transform group">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className={`relative hover:scale-110 transition-transform group ${
+                  isDark 
+                    ? 'bg-white text-black hover:bg-gray-100' 
+                    : 'bg-black text-white hover:bg-gray-800'
+                }`}
+              >
                 <ShoppingCart className={`h-4 w-4 transition-colors group-hover:text-green-500 ${
                   cartItemCount > 0 ? 'text-green-500' : ''
                 }`} />
@@ -376,14 +392,22 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     variant="ghost" 
                     size="sm"
                     onClick={() => handleAuthClick('login')}
-                    className="hover:scale-105 transition-transform"
+                    className={`hover:scale-105 transition-transform ${
+                      isDark 
+                        ? 'bg-white text-black hover:bg-gray-100' 
+                        : 'bg-black text-white hover:bg-gray-800'
+                    }`}
                   >
                     Login
                   </Button>
                   <Button 
                     size="sm"
                     onClick={() => handleAuthClick('signup')}
-                    className="gradient-primary hover:opacity-90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className={`hover:opacity-90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl ${
+                      isDark 
+                        ? 'bg-white text-black hover:bg-gray-100' 
+                        : 'bg-black text-white hover:bg-gray-800'
+                    }`}
                   >
                     Sign Up
                   </Button>
@@ -460,13 +484,21 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   <div className="px-3 pt-4 space-y-3 border-t border-gray-200/20">
                     <Button 
                       variant="outline" 
-                      className="w-full hover:scale-105 transition-transform"
+                      className={`w-full hover:scale-105 transition-transform ${
+                        isDark 
+                          ? 'bg-white text-black hover:bg-gray-100 border-white' 
+                          : 'bg-black text-white hover:bg-gray-800 border-black'
+                      }`}
                       onClick={() => handleAuthClick('login')}
                     >
                       Login
                     </Button>
                     <Button 
-                      className="w-full gradient-primary hover:opacity-90 hover:scale-105 transition-all duration-300"
+                      className={`w-full hover:opacity-90 hover:scale-105 transition-all duration-300 ${
+                        isDark 
+                          ? 'bg-white text-black hover:bg-gray-100' 
+                          : 'bg-black text-white hover:bg-gray-800'
+                      }`}
                       onClick={() => handleAuthClick('signup')}
                     >
                       Sign Up
