@@ -24,8 +24,8 @@ export default function Footer({ isDark = false }: FooterProps) {
   return (
     <footer className={`mt-20 ${
       isDark 
-        ? 'bg-gray-900 border-t border-gray-800' 
-        : 'bg-white border-t border-gray-200'
+        ? 'bg-gray-900 text-white border-t border-gray-800' 
+        : 'bg-gray-50 text-gray-900 border-t border-gray-200'
     }`}>
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -48,7 +48,7 @@ export default function Footer({ isDark = false }: FooterProps) {
                 </p>
               </div>
             </div>
-            <p className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               Your trusted partner for premium pet fashion and accessories. 
               Making your furry friends look stylish and feel comfortable.
             </p>
@@ -95,7 +95,7 @@ export default function Footer({ isDark = false }: FooterProps) {
                   <a 
                     href={`#${link.toLowerCase().replace(' ', '-')}`}
                     className={`text-sm transition-colors hover:text-green-600 ${
-                      isDark ? 'text-white' : 'text-gray-900'
+                      isDark ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
                     {link}
@@ -116,7 +116,7 @@ export default function Footer({ isDark = false }: FooterProps) {
                   <a 
                     href={`#${link.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                     className={`text-sm transition-colors hover:text-green-600 ${
-                      isDark ? 'text-white' : 'text-gray-900'
+                      isDark ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
                     {link}
@@ -134,19 +134,19 @@ export default function Footer({ isDark = false }: FooterProps) {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className={`w-4 h-4 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
-                <span className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   +1 (555) 123-4567
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className={`w-4 h-4 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
-                <span className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   support@infinipets.com
                 </span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className={`w-4 h-4 mt-0.5 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
-                <span className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   123 Pet Fashion Street<br />
                   New York, NY 10001
                 </span>
@@ -218,7 +218,7 @@ export default function Footer({ isDark = false }: FooterProps) {
       <div className={`border-t ${isDark ? 'border-gray-800 bg-gray-950' : 'border-gray-200 bg-gray-100'}`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className={`text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               © {currentYear} INFINIPETS. All rights reserved. Made with{' '}
               <Heart className="w-4 h-4 inline text-red-500" /> for pets everywhere.
             </div>
@@ -228,7 +228,7 @@ export default function Footer({ isDark = false }: FooterProps) {
               </span>
               <div className="flex items-center space-x-2">
                 <div className={`p-1 rounded ${isDark ? 'bg-gray-800' : 'bg-white'} shadow-sm`}>
-                  <CreditCard className={`w-6 h-6 ${isDark ? 'text-white' : 'text-gray-900'}`} />
+                  <CreditCard className={`w-6 h-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`} />
                 </div>
               </div>
             </div>
