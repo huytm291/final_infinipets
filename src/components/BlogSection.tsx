@@ -146,19 +146,16 @@ export default function BlogSection({ isDark = false }: BlogSectionProps) {
                     <span>{post.readTime}</span>
                   </div>
                 </div>
-
                 {/* Title */}
                 <h3 className={`text-xl font-semibold line-clamp-2 group-hover:text-green-500 transition-colors ${
                   isDark ? 'text-white' : 'text-gray-900'
                 }`}>
                   {post.title}
                 </h3>
-
                 {/* Excerpt */}
                 <p className={`text-sm line-clamp-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {post.excerpt}
                 </p>
-
                 {/* Stats */}
                 <div className={`flex items-center justify-between pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
                   <div className="flex items-center space-x-4">
@@ -183,7 +180,6 @@ export default function BlogSection({ isDark = false }: BlogSectionProps) {
             </article>
           ))}
         </div>
-
         {/* Call to Action */}
         <div className="text-center">
           <Button 

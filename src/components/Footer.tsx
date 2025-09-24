@@ -151,7 +151,6 @@ export default function Footer({ isDark = false }: FooterProps) {
             </div>
           </div>
         </div>
-
         {/* Features Section */}
         <div className={`mt-12 pt-8 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -210,7 +209,6 @@ export default function Footer({ isDark = false }: FooterProps) {
           </div>
         </div>
       </div>
-
       {/* Bottom Footer */}
       <div className={`border-t ${isDark ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-100'}`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
