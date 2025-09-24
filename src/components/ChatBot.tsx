@@ -21,7 +21,7 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Xin chào! Tôi là trợ lý AI của INFINIPETS 🐾 Tôi có thể giúp bạn tìm trang phục hoàn hảo cho thú cưng của bạn!",
+      text: "Hello! I'm INFINIPETS AI assistant 🐾 I can help you find the perfect outfit for your pet today!",
       isBot: true,
       timestamp: new Date()
     }
@@ -30,10 +30,10 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickSuggestions = [
-    { text: "Hướng dẫn size", icon: "📏" },
-    { text: "Sản phẩm mới", icon: "✨" },
-    { text: "Bán chạy nhất", icon: "🔥" },
-    { text: "Liên hệ hỗ trợ", icon: "💬" }
+    { text: "Size Guide", icon: "📏" },
+    { text: "New Arrivals", icon: "✨" },
+    { text: "Best Sellers", icon: "🔥" },
+    { text: "Contact Support", icon: "💬" }
   ];
 
   const scrollToBottom = () => {
@@ -60,10 +60,10 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
 
     setTimeout(() => {
       const responses = [
-        "Cảm ơn bạn đã đặt câu hỏi! Tôi sẽ giúp bạn giải đáp ngay. 🎉",
-        "Tôi rất vui được hỗ trợ bạn tìm sản phẩm phù hợp nhất! 🐕",
-        "Chuyên gia của chúng tôi sẽ hỗ trợ bạn trong giây lát! 🌟",
-        "Tôi sẽ kết nối bạn với chuyên gia ngay! 💫"
+        "Thank you for your question! I'll help you with that right away. Our customer service team will provide detailed assistance shortly! 🎉",
+        "Great question! I'm happy to help you find the perfect fit for your furry friend. Let me get you the information you need! 🐕",
+        "I understand you're looking for the best for your pet! Our team of pet fashion experts will assist you right away! 🌟",
+        "Perfect timing! We have amazing options that would be ideal for your pet. Let me connect you with our specialists! 💫"
       ];
       
       const botResponse: Message = {
@@ -99,23 +99,28 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
             : 'bg-white/95 backdrop-blur-xl'
         } rounded-3xl overflow-hidden`}>
           
-          {/* Header with Green Theme */}
-          <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 relative">
-            <div className="flex items-center justify-between">
+          {/* Premium Header with Enhanced Gradient */}
+          <CardHeader className="bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 text-white p-4 relative overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-green-400/20 via-emerald-400/20 to-teal-400/20 animate-pulse"></div>
+            <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-16 -translate-y-16 animate-spin" style={{ animationDuration: '20s' }}></div>
+            <div className="absolute bottom-0 right-0 w-24 h-24 bg-white/5 rounded-full translate-x-12 translate-y-12 animate-bounce" style={{ animationDuration: '3s' }}></div>
+            
+            <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Bot className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shadow-lg">
+                  <Bot className="w-4 h-4 text-white drop-shadow-sm" />
                 </div>
                 <div>
-                  <CardTitle className="text-base font-semibold">INFINIPETS</CardTitle>
-                  <p className="text-xs text-white/80">Trợ lý AI</p>
+                  <CardTitle className="text-base font-bold bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent drop-shadow-sm">INFINIPETS</CardTitle>
+                  <p className="text-xs text-white/90 font-medium">AI Assistant</p>
                 </div>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(false)}
-                className="text-white hover:bg-white/10 rounded-full w-8 h-8"
+                className="text-white hover:bg-white/20 rounded-full w-8 h-8 transition-all duration-200 hover:scale-110"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -138,14 +143,14 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                         ? isDark
                           ? 'bg-gray-800 text-gray-100'
                           : 'bg-gray-100 text-gray-900'
-                        : 'bg-green-600 text-white'
+                        : 'bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 text-white shadow-lg'
                     }`}
                   >
                     <div>{msg.text}</div>
                     <div className={`text-xs mt-1 ${
                       msg.isBot 
                         ? isDark ? 'text-gray-500' : 'text-gray-500'
-                        : 'text-white/60'
+                        : 'text-white/70'
                     }`}>
                       {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
@@ -160,15 +165,15 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                     isDark ? 'bg-gray-800' : 'bg-gray-100'
                   }`}>
                     <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-emerald-500 to-green-500 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-teal-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
               )}
               
-              {/* Quick Suggestions */}
+              {/* Quick Suggestions with Green Accent */}
               {messages.length === 1 && (
                 <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
                   <div className="grid grid-cols-2 gap-2">
@@ -176,10 +181,10 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                       <button
                         key={index}
                         onClick={() => handleQuestionClick(suggestion.text)}
-                        className={`p-3 rounded-xl transition-all duration-200 hover:scale-105 text-left ${
+                        className={`p-3 rounded-xl transition-all duration-200 hover:scale-105 text-left border-2 ${
                           isDark 
-                            ? 'bg-gray-800/60 text-gray-300 hover:bg-gray-700' 
-                            : 'bg-white text-gray-700 hover:bg-green-50 border border-gray-200 hover:border-green-300'
+                            ? 'bg-gray-800/60 text-gray-300 hover:bg-gray-700 border-gray-700 hover:border-emerald-500' 
+                            : 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-emerald-50 hover:to-green-50 border-gray-200 hover:border-emerald-400 hover:shadow-md'
                         }`}
                       >
                         <div className="flex items-center space-x-2">
@@ -204,12 +209,12 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Nhập tin nhắn..."
-                    className={`h-11 rounded-full border-0 pl-4 pr-10 text-sm ${
+                    placeholder="Type your message..."
+                    className={`h-11 rounded-full border-2 pl-4 pr-10 text-sm transition-all duration-200 ${
                       isDark 
-                        ? 'bg-gray-800 text-white placeholder-gray-500' 
-                        : 'bg-gray-100 text-gray-900 placeholder-gray-500'
-                    } focus:ring-2 focus:ring-green-500/20`}
+                        ? 'bg-gray-800 text-white placeholder-gray-500 border-gray-700 focus:border-emerald-500' 
+                        : 'bg-gray-100 text-gray-900 placeholder-gray-500 border-gray-300 focus:border-emerald-500'
+                    } focus:ring-2 focus:ring-emerald-500/20`}
                   />
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                     <Sparkles className={`w-4 h-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
@@ -219,7 +224,7 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
                   onClick={handleSendMessage}
                   size="icon"
                   disabled={!message.trim() || isTyping}
-                  className="h-11 w-11 rounded-full bg-green-600 hover:bg-green-700 transition-all duration-200 hover:scale-105 disabled:opacity-50"
+                  className="h-11 w-11 rounded-full bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 transition-all duration-200 hover:scale-105 disabled:opacity-50 shadow-lg hover:shadow-emerald-500/25"
                 >
                   <Send className="w-4 h-4 text-white" />
                 </Button>
@@ -229,15 +234,29 @@ export default function ChatBot({ isDark = false }: ChatBotProps) {
         </Card>
       )}
 
-      {/* Green Chat Button */}
+      {/* Premium Chat Button with Enhanced Effects */}
       <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          onClick={() => setIsOpen(!isOpen)}
-          size="lg"
-          className="bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl rounded-full w-14 h-14 p-0 transition-all duration-300 hover:scale-110"
-        >
-          <MessageCircle className="w-6 h-6 text-white" />
-        </Button>
+        <div className="relative">
+          {/* Multiple ripple waves */}
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full animate-ping opacity-20"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-teal-500 rounded-full animate-ping opacity-15" style={{ animationDelay: '0.5s' }}></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-emerald-500 rounded-full animate-ping opacity-10" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Rotating glow ring */}
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-transparent via-transparent to-green-500 rounded-full animate-spin opacity-30" style={{ animationDuration: '3s' }}></div>
+          
+          {/* Main Button with Premium Gradient */}
+          <Button
+            onClick={() => setIsOpen(!isOpen)}
+            size="lg"
+            className="relative bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 hover:from-emerald-600 hover:via-green-600 hover:to-teal-700 shadow-2xl hover:shadow-emerald-500/30 rounded-full w-14 h-14 p-0 transition-all duration-300 hover:scale-110 border-2 border-white/20 backdrop-blur-sm"
+          >
+            <MessageCircle className="w-6 h-6 text-white drop-shadow-lg transition-transform group-hover:scale-110" />
+            
+            {/* Inner glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full"></div>
+          </Button>
+        </div>
       </div>
     </>
   );
