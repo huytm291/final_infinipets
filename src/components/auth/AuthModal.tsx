@@ -7,11 +7,11 @@ import { toast } from 'sonner';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialMode: 'login' | 'register';
+  mode: 'login' | 'signup';
+  onModeChange: (mode: 'login' | 'signup') => void;
 }
 
-export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalProps) {
-  const [mode, setMode] = useState<'login' | 'register'>(initialMode);
+export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -61,14 +61,14 @@ export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalPro
         </Button>
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-8 text-center">
+        <div className="gradient-primary p-8 text-center">
           <div className="w-16 h-16 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
             <User className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">
+          <h2 className="text-2xl font-coiny text-white mb-2">
             {mode === 'login' ? 'Welcome Back!' : 'Join INFINIPETS'}
           </h2>
-          <p className="text-blue-100">
+          <p className="text-white/90">
             {mode === 'login' 
               ? 'Sign in to your account to continue shopping' 
               : 'Create an account to start your pet fashion journey'
@@ -91,7 +91,7 @@ export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalPro
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="pl-10 h-12"
+                  className="pl-10 h-12 border-green-200 focus:border-green-500"
                   required
                 />
               </div>
@@ -109,7 +109,7 @@ export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalPro
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="pl-10 pr-10 h-12"
+                  className="pl-10 pr-10 h-12 border-green-200 focus:border-green-500"
                   required
                 />
                 <Button
@@ -125,7 +125,7 @@ export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalPro
             </div>
 
             {/* Confirm Password Field (Register only) */}
-            {mode === 'register' && (
+            {mode === 'signup' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Confirm Password
@@ -137,7 +137,7 @@ export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalPro
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm your password"
-                    className="pl-10 h-12"
+                    className="pl-10 h-12 border-green-200 focus:border-green-500"
                     required
                   />
                 </div>
@@ -148,7 +148,7 @@ export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalPro
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold"
+              className="w-full h-12 gradient-primary hover:opacity-90 text-white font-semibold"
             >
               {isLoading ? (
                 <div className="flex items-center space-x-2">
@@ -166,8 +166,8 @@ export default function AuthModal({ isOpen, onClose, initialMode }: AuthModalPro
             <p className="text-gray-600 dark:text-gray-400">
               {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}
               <button
-                onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
-                className="ml-2 text-blue-600 hover:text-blue-700 font-medium"
+                onClick={() => onModeChange(mode === 'login' ? 'signup' : 'login')}
+                className="ml-2 text-green-600 hover:text-green-700 font-medium"
               >
                 {mode === 'login' ? 'Sign Up' : 'Sign In'}
               </button>

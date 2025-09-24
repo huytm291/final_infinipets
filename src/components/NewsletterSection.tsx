@@ -5,7 +5,11 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useTranslation } from '@/hooks/useTranslation';
 
-export default function NewsletterSection() {
+interface NewsletterSectionProps {
+  isDark?: boolean;
+}
+
+export default function NewsletterSection({ isDark = false }: NewsletterSectionProps) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
@@ -65,8 +69,12 @@ export default function NewsletterSection() {
 
   return (
     <section className="py-12 md:py-20 px-4 relative overflow-hidden">
-      {/* Background with gradient */}
-      <div className="absolute inset-0 gradient-primary opacity-95"></div>
+      {/* Background with gradient - different for light/dark mode */}
+      <div className={`absolute inset-0 ${
+        isDark 
+          ? 'bg-gradient-to-br from-green-900 via-emerald-800 to-teal-900' 
+          : 'gradient-primary'
+      } opacity-95`}></div>
       
       {/* Decorative Pattern Overlay */}
       <div 
@@ -88,10 +96,14 @@ export default function NewsletterSection() {
           <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full mb-4 md:mb-6 backdrop-blur-sm border border-white/30">
             <Mail className="w-8 h-8 md:w-10 md:h-10 text-white" />
           </div>
-          <h2 className="font-coiny text-3xl md:text-4xl lg:text-5xl text-white mb-4 md:mb-6 leading-tight px-4">
+          <h2 className={`font-coiny text-3xl md:text-4xl lg:text-5xl mb-4 md:mb-6 leading-tight px-4 ${
+            isDark ? 'text-white' : 'text-white'
+          }`}>
             Join the INFINIPETS Family! 🐾
           </h2>
-          <p className="text-white/90 text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed px-4">
+          <p className={`text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed px-4 ${
+            isDark ? 'text-white/90' : 'text-white/90'
+          }`}>
             Become part of our exclusive community and discover the finest in pet fashion.
           </p>
         </div>
@@ -101,7 +113,11 @@ export default function NewsletterSection() {
           {benefits.map((benefit, index) => (
             <div 
               key={index} 
-              className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:scale-105"
+              className={`backdrop-blur-sm rounded-2xl p-6 md:p-8 border transition-all duration-300 transform hover:scale-105 ${
+                isDark 
+                  ? 'bg-white/5 border-white/10 hover:bg-white/10' 
+                  : 'bg-white/10 border-white/20 hover:bg-white/15'
+              }`}
             >
               <div className="text-white mb-4 md:mb-6 flex justify-center">
                 <div className="p-3 bg-white/20 rounded-full">
@@ -120,7 +136,11 @@ export default function NewsletterSection() {
 
         {/* Email Form */}
         <div className="max-w-lg mx-auto mb-8 md:mb-12 px-4">
-          <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-8 border border-white/20">
+          <div className={`backdrop-blur-sm rounded-3xl p-6 md:p-8 border ${
+            isDark 
+              ? 'bg-white/5 border-white/10' 
+              : 'bg-white/10 border-white/20'
+          }`}>
             <form onSubmit={handleEmailSubmit} className="space-y-4 md:space-y-6">
               <div className="relative">
                 <Input
@@ -128,7 +148,11 @@ export default function NewsletterSection() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="w-full h-12 md:h-16 px-4 md:px-6 bg-white/20 backdrop-blur-sm border border-white/30 rounded-2xl text-white placeholder:text-white/70 focus:bg-white/30 focus:border-white/50 text-base md:text-lg"
+                  className={`w-full h-12 md:h-16 px-4 md:px-6 backdrop-blur-sm border rounded-2xl text-white placeholder:text-white/70 text-base md:text-lg ${
+                    isDark 
+                      ? 'bg-white/10 border-white/20 focus:bg-white/20 focus:border-white/40' 
+                      : 'bg-white/20 border-white/30 focus:bg-white/30 focus:border-white/50'
+                  }`}
                   required
                 />
                 <Mail className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
@@ -137,11 +161,15 @@ export default function NewsletterSection() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-12 md:h-16 bg-white text-blue-600 hover:bg-white/90 rounded-2xl font-semibold text-base md:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className={`w-full h-12 md:h-16 rounded-2xl font-semibold text-base md:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl ${
+                  isDark 
+                    ? 'bg-white text-green-700 hover:bg-white/90' 
+                    : 'bg-white text-green-600 hover:bg-white/90'
+                }`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center space-x-3">
-                    <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-green-600 border-t-transparent rounded-full animate-spin" />
                     <span>Joining the Family...</span>
                   </div>
                 ) : (

@@ -161,17 +161,15 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
             {/* Logo */}
             <div className="flex items-center group">
               <div className="relative">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-0.5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
-                  <div className={`w-full h-full rounded-xl flex items-center justify-center ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-                    <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                      IP
-                    </span>
-                  </div>
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse" />
+                <img 
+                  src="/images/logo.png" 
+                  alt="INFINIPETS Logo" 
+                  className="w-12 h-12 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                />
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse" />
               </div>
               <div className="ml-3">
-                <h1 className={`text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105`}>
+                <h1 className={`text-2xl font-coiny gradient-text transition-all duration-300 group-hover:scale-105`}>
                   INFINIPETS
                 </h1>
                 <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} font-medium`}>
@@ -190,8 +188,8 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                         href={item.href}
                         className={`group inline-flex h-10 w-max items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 ${
                           isDark 
-                            ? 'text-gray-300 hover:text-white hover:bg-gray-800' 
-                            : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                            ? 'text-gray-300 hover:text-white hover:bg-green-800/20' 
+                            : 'text-gray-700 hover:text-gray-900 hover:bg-green-100'
                         }`}
                       >
                         <item.icon className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
@@ -205,8 +203,8 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={`h-10 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 ${
                     isDark 
-                      ? 'text-gray-300 hover:text-white hover:bg-gray-800' 
-                      : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                      ? 'text-gray-300 hover:text-white hover:bg-green-800/20' 
+                      : 'text-gray-700 hover:text-gray-900 hover:bg-green-100'
                   }`}>
                     <ShoppingBag className="w-4 h-4 mr-2" />
                     Categories
@@ -214,7 +212,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   <NavigationMenuContent>
                     <div className="grid w-[600px] gap-3 p-6">
                       <div className="row-span-3">
-                        <h3 className="font-semibold text-lg mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        <h3 className="font-semibold text-lg mb-4 gradient-text">
                           Shop by Category
                         </h3>
                         <div className="grid gap-3">
@@ -224,11 +222,11 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                               href={`#category-${category.slug}`}
                               className={`group block select-none space-y-1 rounded-lg p-3 leading-none no-underline outline-none transition-all duration-200 hover:scale-105 ${
                                 isDark 
-                                  ? 'hover:bg-gray-800 hover:text-white' 
-                                  : 'hover:bg-gray-100 hover:text-gray-900'
+                                  ? 'hover:bg-green-800/20 hover:text-white' 
+                                  : 'hover:bg-green-100 hover:text-gray-900'
                               }`}
                             >
-                              <div className="text-sm font-medium leading-none group-hover:text-blue-600 transition-colors">
+                              <div className="text-sm font-medium leading-none group-hover:text-green-600 transition-colors">
                                 {category.name}
                               </div>
                               <p className={`line-clamp-2 text-xs leading-snug ${
@@ -254,7 +252,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 }`}>
                   <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 transition-colors ${
                     isSearchFocused 
-                      ? 'text-blue-500' 
+                      ? 'text-green-500' 
                       : isDark ? 'text-gray-400' : 'text-gray-500'
                   }`} />
                   <Input
@@ -266,7 +264,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     onBlur={() => setIsSearchFocused(false)}
                     className={`pl-10 pr-4 py-2 w-full rounded-full border-2 transition-all duration-300 ${
                       isSearchFocused
-                        ? 'border-blue-500 shadow-lg ring-4 ring-blue-500/20'
+                        ? 'border-green-500 shadow-lg ring-4 ring-green-500/20'
                         : isDark 
                           ? 'border-gray-700 bg-gray-800 text-white' 
                           : 'border-gray-300 bg-white'
@@ -293,7 +291,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 >
                   {isDark ? 
                     <Sun className="h-4 w-4 text-yellow-500" /> : 
-                    <Moon className="h-4 w-4 text-blue-600" />
+                    <Moon className="h-4 w-4 text-green-600" />
                   }
                 </Button>
               )}
@@ -312,11 +310,11 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
 
               {/* Cart */}
               <Button variant="ghost" size="sm" className="relative hover:scale-110 transition-transform group">
-                <ShoppingCart className={`h-4 w-4 transition-colors group-hover:text-blue-500 ${
-                  cartItemCount > 0 ? 'text-blue-500' : ''
+                <ShoppingCart className={`h-4 w-4 transition-colors group-hover:text-green-500 ${
+                  cartItemCount > 0 ? 'text-green-500' : ''
                 }`} />
                 {cartItemCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-blue-500 to-purple-500 animate-bounce">
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs gradient-primary animate-bounce">
                     {cartItemCount}
                   </Badge>
                 )}
@@ -327,7 +325,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="relative hover:scale-110 transition-transform">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-0.5">
+                      <div className="w-8 h-8 rounded-full gradient-primary p-0.5">
                         <div className={`w-full h-full rounded-full flex items-center justify-center ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
                           <User className="h-4 w-4" />
                         </div>
@@ -339,11 +337,11 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       {user.firstName} {user.lastName}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                    <DropdownMenuItem className="hover:bg-green-50 dark:hover:bg-green-900/20">
                       <Package className="mr-2 h-4 w-4" />
                       My Orders
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                    <DropdownMenuItem className="hover:bg-green-50 dark:hover:bg-green-900/20">
                       <Settings className="mr-2 h-4 w-4" />
                       Settings
                     </DropdownMenuItem>
@@ -367,7 +365,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   <Button 
                     size="sm"
                     onClick={() => handleAuthClick('signup')}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="gradient-primary hover:opacity-90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
                     Sign Up
                   </Button>
@@ -411,8 +409,8 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     href={item.href}
                     className={`flex items-center px-3 py-3 text-base font-medium rounded-lg transition-all duration-200 hover:scale-105 ${
                       isDark 
-                        ? 'text-gray-300 hover:text-white hover:bg-gray-800' 
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                        ? 'text-gray-300 hover:text-white hover:bg-green-800/20' 
+                        : 'text-gray-700 hover:text-gray-900 hover:bg-green-100'
                     }`}
                   >
                     <item.icon className="w-5 h-5 mr-3" />
@@ -431,8 +429,8 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       href={`#category-${category.slug}`}
                       className={`block px-6 py-2 text-sm transition-colors hover:scale-105 ${
                         isDark 
-                          ? 'text-gray-300 hover:text-white hover:bg-gray-800' 
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                          ? 'text-gray-300 hover:text-white hover:bg-green-800/20' 
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-green-100'
                       }`}
                     >
                       {category.name}
@@ -450,7 +448,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       Login
                     </Button>
                     <Button 
-                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105 transition-all duration-300"
+                      className="w-full gradient-primary hover:opacity-90 hover:scale-105 transition-all duration-300"
                       onClick={() => handleAuthClick('signup')}
                     >
                       Sign Up

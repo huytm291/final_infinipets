@@ -16,6 +16,14 @@ export default function ChatBot() {
     }
   ]);
 
+  const commonQuestions = [
+    "What sizes do you have?",
+    "How do I measure my pet?",
+    "What's your return policy?",
+    "Do you ship internationally?",
+    "What materials do you use?"
+  ];
+
   const handleSendMessage = () => {
     if (!message.trim()) return;
 
@@ -41,6 +49,10 @@ export default function ChatBot() {
     }, 1000);
   };
 
+  const handleQuestionClick = (question: string) => {
+    setMessage(question);
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSendMessage();
@@ -51,7 +63,7 @@ export default function ChatBot() {
     <>
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-20 right-4 w-80 h-96 shadow-2xl z-50 flex flex-col border-blue-200">
+        <Card className="fixed bottom-20 right-4 w-80 h-96 shadow-2xl z-50 flex flex-col border-green-200">
           <CardHeader className="gradient-primary text-white p-4 rounded-t-lg">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-coiny">INFINIPETS Support</CardTitle>
@@ -77,14 +89,30 @@ export default function ChatBot() {
                   <div
                     className={`max-w-[80%] p-3 rounded-lg text-sm ${
                       msg.isBot
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 border border-blue-200'
-                        : 'bg-blue-500 text-white'
+                        ? 'bg-green-50 dark:bg-green-900/20 text-gray-900 dark:text-gray-100 border border-green-200'
+                        : 'gradient-primary text-white'
                     }`}
                   >
                     {msg.text}
                   </div>
                 </div>
               ))}
+              
+              {/* Common Questions */}
+              {messages.length === 1 && (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-500 text-center">Common questions:</p>
+                  {commonQuestions.map((question, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleQuestionClick(question)}
+                      className="w-full text-left p-2 text-xs bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded border border-green-200 transition-colors"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Input */}
@@ -95,12 +123,12 @@ export default function ChatBot() {
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className="flex-1 border-blue-200 focus:border-blue-500"
+                  className="flex-1 border-green-200 focus:border-green-500"
                 />
                 <Button
                   onClick={handleSendMessage}
                   size="icon"
-                  className="bg-blue-500 hover:bg-blue-600"
+                  className="gradient-primary hover:opacity-90"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -114,8 +142,8 @@ export default function ChatBot() {
       <div className="fixed bottom-4 right-4 z-50">
         <div className="relative">
           {/* Animated Waves */}
-          <div className="absolute inset-0 chatbot-wave bg-blue-400 rounded-full opacity-20"></div>
-          <div className="absolute inset-0 chatbot-wave bg-blue-500 rounded-full opacity-15" style={{ animationDelay: '0.5s' }}></div>
+          <div className="absolute inset-0 chatbot-wave bg-green-400 rounded-full opacity-20"></div>
+          <div className="absolute inset-0 chatbot-wave bg-green-500 rounded-full opacity-15" style={{ animationDelay: '0.5s' }}></div>
           
           {/* Main Button */}
           <Button

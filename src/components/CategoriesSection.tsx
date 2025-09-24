@@ -14,7 +14,7 @@ export default function CategoriesSection() {
               <CardContent className="p-0">
                 <div className="relative">
                   <img
-                    src={category.image}
+                    src="https://i.pinimg.com/1200x/71/48/ba/7148ba467a53bb6d3fa6aafc8bec2ba4.jpg"
                     alt={category.name}
                     className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
                   />

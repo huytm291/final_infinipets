@@ -41,7 +41,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
             }`}
           >
             <img
-              src={product.image}
+              src="https://i.pinimg.com/1200x/b8/51/cd/b851cdec16c09d58fde8508437763581.jpg"
               alt={product.name}
               className="w-full h-full object-cover"
             />
@@ -52,7 +52,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                   {product.name}
                 </h1>
                 <p className="text-xl md:text-2xl">Starting from ${product.price}</p>
-                <Button size="lg" className="bg-white text-black hover:bg-gray-100 text-lg px-8">
+                <Button size="lg" className="gradient-primary text-white hover:opacity-90 text-lg px-8">
                   Shop Now
                 </Button>
               </div>
