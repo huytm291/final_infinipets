@@ -25,14 +25,14 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps = {}) {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+    <div className="fixed inset-0 z-50 flex items-center justify-center gradient-primary">
       {/* Paw Print Animation */}
       <div className="text-center">
         <div className="flex justify-center items-center space-x-2 mb-8">
-          <span className="text-6xl animate-bounce">🐾</span>
-          <span className="text-6xl animate-bounce" style={{ animationDelay: '0.1s' }}>🐾</span>
-          <span className="text-6xl animate-bounce" style={{ animationDelay: '0.2s' }}>🐾</span>
-          <span className="text-6xl animate-bounce" style={{ animationDelay: '0.3s' }}>🐾</span>
+          <span className="text-6xl loading-paw">🐾</span>
+          <span className="text-6xl loading-paw">🐾</span>
+          <span className="text-6xl loading-paw">🐾</span>
+          <span className="text-6xl loading-paw">🐾</span>
         </div>
         
         {/* Brand Name */}

@@ -59,11 +59,15 @@ export default function ChatBot() {
     }
   };
 
+  const handleChatToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <>
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-20 right-4 w-80 h-96 shadow-2xl z-50 flex flex-col border-green-200">
+        <Card className="fixed bottom-20 right-4 w-80 h-96 shadow-2xl z-40 flex flex-col border-green-200">
           <CardHeader className="gradient-primary text-white p-4 rounded-t-lg">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-coiny">INFINIPETS Support</CardTitle>
@@ -138,20 +142,20 @@ export default function ChatBot() {
         </Card>
       )}
 
-      {/* Floating Chat Button */}
+      {/* Floating Chat Button - Fixed positioning and made more prominent */}
       <div className="fixed bottom-4 right-4 z-50">
         <div className="relative">
           {/* Animated Waves */}
-          <div className="absolute inset-0 chatbot-wave bg-green-400 rounded-full opacity-20"></div>
-          <div className="absolute inset-0 chatbot-wave bg-green-500 rounded-full opacity-15" style={{ animationDelay: '0.5s' }}></div>
+          <div className="absolute inset-0 animate-ping bg-gradient-to-r from-green-400 to-emerald-500 rounded-full opacity-20"></div>
+          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full opacity-15"></div>
           
-          {/* Main Button */}
+          {/* Main Button with enhanced gradient and shadow */}
           <Button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleChatToggle}
             size="lg"
-            className="chatbot-pulse gradient-primary hover:opacity-90 shadow-lg rounded-full w-14 h-14 p-0 border-2 border-white/20"
+            className="relative bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 shadow-2xl hover:shadow-green-500/25 rounded-full w-16 h-16 p-0 border-2 border-white/30 transition-all duration-300 hover:scale-110"
           >
-            <MessageCircle className="w-6 h-6 text-white" />
+            <MessageCircle className="w-7 h-7 text-white drop-shadow-lg" />
           </Button>
         </div>
       </div>

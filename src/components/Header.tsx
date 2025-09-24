@@ -127,7 +127,11 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               {/* Language Selector */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
+                  <Button variant="outline" size="sm" className={`h-6 px-2 text-xs border-green-200 ${
+                    isDark 
+                      ? 'bg-green-900/20 text-green-300 hover:bg-green-800/30' 
+                      : 'bg-green-50 text-green-700 hover:bg-green-100'
+                  }`}>
                     <Globe className="w-3 h-3 mr-1" />
                     {selectedLanguage.flag} {selectedLanguage.code.toUpperCase()}
                   </Button>
@@ -158,17 +162,17 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
 
           {/* Main Header */}
           <div className="flex items-center justify-between py-4">
-            {/* Logo */}
+            {/* Logo - Made larger */}
             <div className="flex items-center group">
               <div className="relative">
                 <img 
                   src="/images/logo.png" 
                   alt="INFINIPETS Logo" 
-                  className="w-12 h-12 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                  className="w-16 h-16 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
                 />
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse" />
               </div>
-              <div className="ml-3">
+              <div className="ml-4">
                 <h1 className={`text-2xl font-coiny gradient-text transition-all duration-300 group-hover:scale-105`}>
                   INFINIPETS
                 </h1>
@@ -201,10 +205,10 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 
                 {/* Categories Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className={`h-10 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 ${
+                  <NavigationMenuTrigger className={`h-10 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 border ${
                     isDark 
-                      ? 'text-gray-300 hover:text-white hover:bg-green-800/20' 
-                      : 'text-gray-700 hover:text-gray-900 hover:bg-green-100'
+                      ? 'text-gray-300 hover:text-white bg-green-900/20 border-green-700 hover:bg-green-800/30' 
+                      : 'text-gray-700 hover:text-gray-900 bg-green-50 border-green-200 hover:bg-green-100'
                   }`}>
                     <ShoppingBag className="w-4 h-4 mr-2" />
                     Categories
