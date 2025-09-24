@@ -85,7 +85,7 @@ export default function BlogSection({ isDark = false }: BlogSectionProps) {
           <h2 className={`text-3xl md:text-4xl font-coiny mb-4 gradient-text`}>
             Latest News & Events
           </h2>
-          <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-900'}`}>
             Stay updated with the latest trends, tips, and news from the world of pet fashion
           </p>
         </div>
@@ -132,16 +132,16 @@ export default function BlogSection({ isDark = false }: BlogSectionProps) {
                 {/* Meta Info */}
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center space-x-4">
-                    <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-900'}`}>
                       <User className="w-4 h-4" />
                       <span>{post.author}</span>
                     </div>
-                    <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-900'}`}>
                       <Calendar className="w-4 h-4" />
                       <span>{new Date(post.date).toLocaleDateString()}</span>
                     </div>
                   </div>
-                  <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-900'}`}>
                     <Clock className="w-4 h-4" />
                     <span>{post.readTime}</span>
                   </div>
@@ -155,12 +155,12 @@ export default function BlogSection({ isDark = false }: BlogSectionProps) {
                 </h3>
 
                 {/* Excerpt */}
-                <p className={`text-sm line-clamp-3 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-sm line-clamp-3 ${isDark ? 'text-gray-300' : 'text-gray-900'}`}>
                   {post.excerpt}
                 </p>
 
                 {/* Stats */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className={`flex items-center justify-between pt-4 border-t border-gray-200 ${isDark ? 'dark:border-gray-700' : ''}`}>
                   <div className="flex items-center space-x-4">
                     <div className={`flex items-center space-x-1 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                       <Heart className="w-4 h-4" />
