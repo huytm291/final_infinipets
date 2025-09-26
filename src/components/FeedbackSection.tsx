@@ -1,13 +1,40 @@
-import { Star } from 'lucide-react';
+import { Star, Heart, MessageCircle, Send } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { CUSTOMER_FEEDBACK } from '@/lib/constants';
 import { useState, useEffect } from 'react';
 
+interface FeedbackItem {
+  id: number;
+  name: string;
+  avatar: string;
+  rating: number;
+  comment: string;
+  product: string;
+  likes: number;
+  comments: string[];
+  isLiked: boolean;
+}
+
 export default function FeedbackSection() {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [feedbackData, setFeedbackData] = useState<FeedbackItem[]>([]);
+  const [showComments, setShowComments] = useState<number | null>(null);
+  const [newComment, setNewComment] = useState<string>('');
 
   useEffect(() => {
+    // Initialize feedback data with like and comment features
+    const initialData = CUSTOMER_FEEDBACK.map(feedback => ({
+      ...feedback,
+      likes: Math.floor(Math.random() * 50) + 5,
+      comments: [
+        "Great product! I agree with this review.",
+        "Thanks for sharing your experience!"
+      ],
+      isLiked: false
+    }));
+    setFeedbackData(initialData);
+
     // Staggered animation for cards appearing
     CUSTOMER_FEEDBACK.forEach((_, index) => {
       setTimeout(() => {
@@ -15,6 +42,38 @@ export default function FeedbackSection() {
       }, index * 200);
     });
   }, []);
+
+  const handleLike = (feedbackId: number) => {
+    setFeedbackData(prev => prev.map(item => {
+      if (item.id === feedbackId) {
+        return {
+          ...item,
+          likes: item.isLiked ? item.likes - 1 : item.likes + 1,
+          isLiked: !item.isLiked
+        };
+      }
+      return item;
+    }));
+  };
+
+  const handleAddComment = (feedbackId: number) => {
+    if (newComment.trim()) {
+      setFeedbackData(prev => prev.map(item => {
+        if (item.id === feedbackId) {
+          return {
+            ...item,
+            comments: [...item.comments, newComment.trim()]
+          };
+        }
+        return item;
+      }));
+      setNewComment('');
+    }
+  };
+
+  const toggleComments = (feedbackId: number) => {
+    setShowComments(showComments === feedbackId ? null : feedbackId);
+  };
 
   return (
     <section className="py-16 px-4 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
@@ -37,7 +96,7 @@ export default function FeedbackSection() {
 
         {/* Enhanced feedback cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {CUSTOMER_FEEDBACK.map((feedback, index) => (
+          {feedbackData.map((feedback, index) => (
             <div
               key={feedback.id}
               className={`transform transition-all duration-700 ${
@@ -73,7 +132,7 @@ export default function FeedbackSection() {
                             : ''
                         }`}
                       />
-                      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></div>
+                      {/* Removed the problematic element here */}
                     </div>
                     <div className="flex-1">
                       <h4 className="font-semibold transition-colors duration-300 group-hover:text-green-600 dark:group-hover:text-green-400">
@@ -105,11 +164,73 @@ export default function FeedbackSection() {
                     )}
                   </div>
 
-                  {/* Enhanced product info - removed the green dot */}
-                  <div className="flex items-center justify-between">
+                  {/* Enhanced product info */}
+                  <div className="flex items-center justify-between mb-4">
                     <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-200">
                       Product: <span className="font-medium text-green-600 dark:text-green-400">{feedback.product}</span>
                     </p>
+                  </div>
+
+                  {/* Like and Comment Features */}
+                  <div className="border-t pt-4 space-y-3">
+                    {/* Like and Comment buttons */}
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={() => handleLike(feedback.id)}
+                        className={`flex items-center space-x-2 px-3 py-1 rounded-full transition-all duration-300 ${
+                          feedback.isLiked 
+                            ? 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400' 
+                            : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400 hover:bg-red-50 hover:text-red-500'
+                        }`}
+                      >
+                        <Heart className={`w-4 h-4 ${feedback.isLiked ? 'fill-current' : ''}`} />
+                        <span className="text-sm font-medium">{feedback.likes}</span>
+                      </button>
+
+                      <button
+                        onClick={() => toggleComments(feedback.id)}
+                        className="flex items-center space-x-2 px-3 py-1 rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400 hover:bg-green-50 hover:text-green-600 transition-all duration-300"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span className="text-sm font-medium">{feedback.comments.length}</span>
+                      </button>
+                    </div>
+
+                    {/* Comments section */}
+                    {showComments === feedback.id && (
+                      <div className="space-y-3 animate-fade-in-up">
+                        {/* Existing comments */}
+                        <div className="max-h-32 overflow-y-auto space-y-2">
+                          {feedback.comments.map((comment, commentIndex) => (
+                            <div key={commentIndex} className="bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">
+                              <p className="text-sm text-gray-700 dark:text-gray-300">{comment}</p>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Add new comment */}
+                        <div className="flex space-x-2">
+                          <input
+                            type="text"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Add a comment..."
+                            className="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                handleAddComment(feedback.id);
+                              }
+                            }}
+                          />
+                          <button
+                            onClick={() => handleAddComment(feedback.id)}
+                            className="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-300"
+                          >
+                            <Send className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
