@@ -92,7 +92,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                 }}
               >
                 <img
-                  src={product.image}
+                  src="https://i.pinimg.com/736x/e8/5b/fb/e85bfbb938c68e4e036aa51f08fca49b.jpg"
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -172,7 +172,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                     }`}
                   >
                     <p className="text-white/80 text-lg leading-relaxed">
-                      Khám phá sản phẩm thời trang cao cấp dành cho thú cưng của bạn
+                      Discover premium high-quality fashion products for your beloved pets
                     </p>
                   </div>
 
@@ -194,7 +194,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                         animation: isActive ? 'buttonGradientShift 4s ease-in-out infinite, buttonGlow 3s ease-in-out infinite' : 'none',
                       }}
                     >
-                      <span className="relative z-10 font-semibold tracking-wide">Khám Phá Ngay</span>
+                      <span className="relative z-10 font-semibold tracking-wide">Explore Now</span>
                     </Button>
                     
                     <Button 
@@ -203,7 +203,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                       className="group bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white text-lg px-10 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105"
                     >
                       <Eye className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-                      <span>Xem Chi Tiết</span>
+                      <span>View Details</span>
                     </Button>
                   </div>
                 </div>
