@@ -50,40 +50,72 @@ export const CATEGORIES = [
   }
 ]
 
-// Featured Products for Hero Slider
+// Enhanced Featured Products for Hero Slider - 5 Products representing 5 categories
 export const HERO_PRODUCTS = [
   {
     id: 1,
     name: 'Premium Golden Retriever Tuxedo',
     price: 299,
     originalPrice: 399,
-    image: '/api/placeholder/600/400',
+    image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800&h=600&fit=crop&crop=center',
     category: 'premium',
-    description: 'Premium tuxedo for large dogs',
+    description: 'Luxurious handcrafted tuxedo for special occasions',
     isNew: false,
-    isBestseller: true
+    isBestseller: true,
+    features: ['Premium Fabric', 'Handcrafted', 'Adjustable Fit'],
+    gradient: 'from-amber-600 via-yellow-500 to-orange-600'
   },
   {
     id: 2,
     name: 'Superhero Cape Collection',
     price: 89,
     originalPrice: 120,
-    image: '/api/placeholder/600/400', 
+    image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800&h=600&fit=crop&crop=center',
     category: 'cosplay',
-    description: 'Superhero cape collection',
+    description: 'Transform your pet into their favorite superhero',
     isNew: true,
-    isBestseller: false
+    isBestseller: false,
+    features: ['Multiple Heroes', 'Detachable Cape', 'LED Lights'],
+    gradient: 'from-red-600 via-blue-600 to-purple-600'
   },
   {
     id: 3,
     name: 'Viral TikTok Banana Costume',
     price: 45,
     originalPrice: 60,
-    image: '/api/placeholder/600/400',
+    image: 'https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?w=800&h=600&fit=crop&crop=center',
     category: 'meme',
-    description: 'Viral banana costume from TikTok',
+    description: 'The most viral pet costume trending on social media',
     isNew: true,
-    isBestseller: true
+    isBestseller: true,
+    features: ['Viral Design', 'Soft Material', 'Photo Ready'],
+    gradient: 'from-yellow-400 via-orange-400 to-red-500'
+  },
+  {
+    id: 4,
+    name: 'Custom Embroidered Casual Wear',
+    price: 120,
+    originalPrice: 150,
+    image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=600&fit=crop&crop=center',
+    category: 'handmade',
+    description: 'Personalized handmade outfits with custom embroidery',
+    isNew: true,
+    isBestseller: true,
+    features: ['Custom Name', 'Hand Embroidered', 'Unique Design'],
+    gradient: 'from-emerald-600 via-teal-500 to-cyan-600'
+  },
+  {
+    id: 5,
+    name: 'Cozy Winter Casual Collection',
+    price: 65,
+    originalPrice: 85,
+    image: 'https://images.unsplash.com/photo-1601758003122-53c40e686a19?w=800&h=600&fit=crop&crop=center',
+    category: 'casual',
+    description: 'Comfortable everyday wear for all seasons',
+    isNew: false,
+    isBestseller: true,
+    features: ['All Weather', 'Breathable', 'Easy Care'],
+    gradient: 'from-indigo-600 via-purple-500 to-pink-600'
   }
 ]
 
