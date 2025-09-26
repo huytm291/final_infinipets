@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Star, ShoppingCart, Heart, Eye } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HERO_PRODUCTS } from '@/lib/constants';
 
@@ -53,9 +53,9 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-pink-400/20 to-red-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-indigo-400/10 to-cyan-600/10 rounded-full blur-3xl animate-spin-slow"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-brand-blue/20 to-brand-cyan/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-brand-cyan/20 to-brand-green/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-brand-blue/10 to-brand-cyan/10 rounded-full blur-3xl animate-spin-slow"></div>
       </div>
 
       <div className="relative w-full h-full">
@@ -122,7 +122,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                         : 'opacity-0 translate-y-8 scale-95'
                     }`}
                   >
-                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    <span className="w-2 h-2 bg-brand-cyan rounded-full animate-pulse"></span>
                     <span className="text-white/90 text-sm font-medium capitalize">
                       {HERO_PRODUCTS.find(p => p.category === product.category)?.category.replace('-', ' ')}
                     </span>
@@ -136,7 +136,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                         : 'opacity-0 translate-y-12 scale-95 rotate-1'
                     }`}
                     style={{
-                      background: 'linear-gradient(45deg, #ffffff, #60a5fa, #ffffff)',
+                      background: 'linear-gradient(45deg, #ffffff, #00B8D9, #ffffff)',
                       backgroundSize: '300% 300%',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -163,42 +163,17 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                     ))}
                   </div>
 
-                  {/* Rating & Reviews */}
+                  {/* Product Description */}
                   <div 
-                    className={`flex items-center justify-center space-x-6 transition-all duration-1200 delay-500 ${
+                    className={`max-w-2xl mx-auto transition-all duration-1200 delay-500 ${
                       isActive 
                         ? 'opacity-100 translate-y-0 scale-100' 
                         : 'opacity-0 translate-y-8 scale-95'
                     }`}
                   >
-                    <div className="flex items-center space-x-2">
-                      <div className="flex space-x-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className={`w-5 h-5 ${i < 4 ? 'text-yellow-400 fill-current' : 'text-white/30'} transition-all duration-300`} />
-                        ))}
-                      </div>
-                      <span className="text-white font-semibold">4.8</span>
-                    </div>
-                    <div className="text-white/70">
-                      (1,250+ reviews)
-                    </div>
-                  </div>
-                  
-                  {/* Enhanced Price Display */}
-                  <div 
-                    className={`space-y-2 transition-all duration-1200 delay-600 ${
-                      isActive 
-                        ? 'opacity-100 translate-y-0 scale-100' 
-                        : 'opacity-0 translate-y-8 scale-95'
-                    }`}
-                  >
-                    <div className="flex items-center justify-center space-x-4">
-                      <span className="text-4xl md:text-5xl font-bold text-white">${product.price}</span>
-                      <span className="text-xl text-white/50 line-through">${product.originalPrice}</span>
-                      <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
-                        -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
-                      </div>
-                    </div>
+                    <p className="text-white/80 text-lg leading-relaxed">
+                      Khám phá sản phẩm thời trang cao cấp dành cho thú cưng của bạn
+                    </p>
                   </div>
 
                   {/* Enhanced Action Buttons */}
@@ -211,16 +186,15 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                   >
                     <Button 
                       size="lg" 
-                      className="group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-lg px-10 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-110 active:scale-95 focus-ring shadow-xl hover:shadow-2xl hover:shadow-green-500/25"
+                      className="group gradient-primary hover:opacity-90 text-white text-lg px-10 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-110 active:scale-95 focus-ring shadow-xl hover:shadow-2xl"
                       style={{
-                        background: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
+                        background: 'linear-gradient(135deg, #0077C2 0%, #00B8D9 50%, #00C853 100%)',
                         backgroundSize: '200% 200%',
-                        boxShadow: '0 10px 40px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(16, 185, 129, 0.2)',
+                        boxShadow: '0 10px 40px rgba(0, 119, 194, 0.4), 0 0 0 1px rgba(0, 119, 194, 0.2)',
                         animation: isActive ? 'buttonGradientShift 4s ease-in-out infinite, buttonGlow 3s ease-in-out infinite' : 'none',
                       }}
                     >
-                      <ShoppingCart className="w-5 h-5 mr-2 group-hover:animate-bounce" />
-                      <span className="relative z-10 font-semibold tracking-wide">Shop Now</span>
+                      <span className="relative z-10 font-semibold tracking-wide">Khám Phá Ngay</span>
                     </Button>
                     
                     <Button 
@@ -229,15 +203,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
                       className="group bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white text-lg px-10 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105"
                     >
                       <Eye className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-                      <span>View Details</span>
-                    </Button>
-
-                    <Button 
-                      variant="ghost"
-                      size="lg"
-                      className="group bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-red-500/20 text-white rounded-full p-4 transition-all duration-500 hover:scale-110"
-                    >
-                      <Heart className="w-6 h-6 group-hover:fill-red-500 group-hover:text-red-500 transition-all duration-300" />
+                      <span>Xem Chi Tiết</span>
                     </Button>
                   </div>
                 </div>
@@ -251,7 +217,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-green-500/20 text-white border border-white/20 hover:border-green-400/40 rounded-full w-16 h-16 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:shadow-green-400/25 active:scale-95 z-30"
+        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-brand-cyan/20 text-white border border-white/20 hover:border-brand-cyan/40 rounded-full w-16 h-16 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:shadow-brand-cyan/25 active:scale-95 z-30"
         onClick={prevSlide}
         disabled={isTransitioning}
         style={{
@@ -264,7 +230,7 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-green-500/20 text-white border border-white/20 hover:border-green-400/40 rounded-full w-16 h-16 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:shadow-green-400/25 active:scale-95 z-30"
+        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-brand-cyan/20 text-white border border-white/20 hover:border-brand-cyan/40 rounded-full w-16 h-16 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:shadow-brand-cyan/25 active:scale-95 z-30"
         onClick={nextSlide}
         disabled={isTransitioning}
         style={{
@@ -288,13 +254,13 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
             disabled={isTransitioning}
             style={{
               boxShadow: index === currentSlide 
-                ? '0 0 20px rgba(16, 185, 129, 0.6), 0 4px 15px rgba(0,0,0,0.2)' 
+                ? '0 0 20px rgba(0, 184, 217, 0.6), 0 4px 15px rgba(0,0,0,0.2)' 
                 : '0 2px 8px rgba(0,0,0,0.1)',
             }}
           >
             {index === currentSlide && (
               <div 
-                className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-500 to-green-400 rounded-full opacity-90"
+                className="absolute inset-0 bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-green rounded-full opacity-90"
                 style={{
                   backgroundSize: '200% 200%',
                   animation: 'indicatorPulse 3s ease-in-out infinite, gradientShift 4s ease-in-out infinite',
@@ -308,12 +274,12 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
       {/* Enhanced Progress Bar */}
       <div className="absolute bottom-0 left-0 w-full h-1.5 bg-white/20 backdrop-blur-sm z-30">
         <div 
-          className="h-full bg-gradient-to-r from-green-400 via-emerald-500 to-green-400 transition-all duration-700 ease-out"
+          className="h-full bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-green transition-all duration-700 ease-out"
           style={{
             width: `${((currentSlide + 1) / HERO_PRODUCTS.length) * 100}%`,
             backgroundSize: '200% 200%',
             animation: 'gradientShift 3s ease-in-out infinite',
-            boxShadow: '0 0 15px rgba(16, 185, 129, 0.6)',
+            boxShadow: '0 0 15px rgba(0, 184, 217, 0.6)',
           }}
         />
       </div>
@@ -325,6 +291,68 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
       <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-white/50 rounded-full animate-pulse delay-1000 pointer-events-none"></div>
 
       <style jsx>{`
+        :root {
+          --brand-blue: #0077C2;
+          --brand-cyan: #00B8D9;
+          --brand-green: #00C853;
+        }
+        
+        .bg-brand-blue\\/20 {
+          background-color: rgb(0 119 194 / 0.2);
+        }
+        
+        .bg-brand-cyan\\/20 {
+          background-color: rgb(0 184 217 / 0.2);
+        }
+        
+        .bg-brand-green\\/20 {
+          background-color: rgb(0 200 83 / 0.2);
+        }
+        
+        .bg-brand-blue\\/10 {
+          background-color: rgb(0 119 194 / 0.1);
+        }
+        
+        .bg-brand-cyan\\/10 {
+          background-color: rgb(0 184 217 / 0.1);
+        }
+        
+        .bg-brand-cyan {
+          background-color: var(--brand-cyan);
+        }
+        
+        .hover\\:bg-brand-cyan\\/20:hover {
+          background-color: rgb(0 184 217 / 0.2);
+        }
+        
+        .hover\\:border-brand-cyan\\/40:hover {
+          border-color: rgb(0 184 217 / 0.4);
+        }
+        
+        .hover\\:shadow-brand-cyan\\/25:hover {
+          --tw-shadow-color: rgb(0 184 217 / 0.25);
+          --tw-shadow: var(--tw-shadow-colored);
+        }
+        
+        .from-brand-blue {
+          --tw-gradient-from: var(--brand-blue);
+          --tw-gradient-to: rgb(0 119 194 / 0);
+          --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+        }
+        
+        .via-brand-cyan {
+          --tw-gradient-to: rgb(0 184 217 / 0);
+          --tw-gradient-stops: var(--tw-gradient-from), var(--brand-cyan), var(--tw-gradient-to);
+        }
+        
+        .to-brand-green {
+          --tw-gradient-to: var(--brand-green);
+        }
+        
+        .gradient-primary {
+          background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 50%, var(--brand-green) 100%);
+        }
+        
         @keyframes gradientShift {
           0%, 100% {
             background-position: 0% 50%;
@@ -345,10 +373,10 @@ export default function HeroSection({ isDark = false }: HeroSectionProps) {
         
         @keyframes buttonGlow {
           0%, 100% {
-            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 119, 194, 0.4), 0 0 0 1px rgba(0, 119, 194, 0.2);
           }
           50% {
-            box-shadow: 0 15px 50px rgba(16, 185, 129, 0.6), 0 0 0 1px rgba(16, 185, 129, 0.4), 0 0 30px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 119, 194, 0.6), 0 0 0 1px rgba(0, 119, 194, 0.4), 0 0 30px rgba(0, 119, 194, 0.3);
           }
         }
         
