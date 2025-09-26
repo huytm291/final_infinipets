@@ -18,12 +18,12 @@ export default function FeedbackSection() {
 
   return (
     <section className="py-16 px-4 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
-      {/* Animated background elements with green theme */}
+      {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-green-200/20 to-emerald-200/20 rounded-full animate-float-slow"></div>
-        <div className="absolute top-32 right-20 w-16 h-16 bg-gradient-to-br from-lime-200/20 to-green-200/20 rounded-full animate-float-delayed"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-br from-emerald-200/20 to-teal-200/20 rounded-full animate-float-reverse"></div>
-        <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-gradient-to-br from-green-200/20 to-lime-200/20 rounded-full animate-float-slow"></div>
+        <div className="absolute top-32 right-20 w-16 h-16 bg-gradient-to-br from-teal-200/20 to-cyan-200/20 rounded-full animate-float-delayed"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-br from-lime-200/20 to-green-200/20 rounded-full animate-float-reverse"></div>
+        <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-gradient-to-br from-emerald-200/20 to-teal-200/20 rounded-full animate-float-slow"></div>
       </div>
 
       <div className="container mx-auto relative z-10">
@@ -31,11 +31,8 @@ export default function FeedbackSection() {
         <div className="text-center mb-12 animate-fade-in-up">
           <h2 className="font-coiny text-section-title gradient-text animate-text-glow relative">
             Customer Feedback ⭐
-            <div className="absolute inset-0 font-coiny text-section-title gradient-text opacity-30 animate-text-shadow blur-sm">
-              Customer Feedback ⭐
-            </div>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-green-400 via-emerald-400 to-lime-400 mx-auto mt-4 rounded-full animate-expand"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 mx-auto mt-4 rounded-full animate-expand"></div>
         </div>
 
         {/* Enhanced feedback cards grid */}
@@ -57,10 +54,10 @@ export default function FeedbackSection() {
                   : 'hover:scale-102 hover:shadow-xl'
               }`}>
                 {/* Card glow effect with green theme */}
-                <div className={`absolute inset-0 bg-gradient-to-br from-green-400/10 via-emerald-400/10 to-lime-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                <div className={`absolute inset-0 bg-gradient-to-br from-green-400/10 via-emerald-400/10 to-teal-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
                 
                 {/* Animated border with green theme */}
-                <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-lime-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow"></div>
                 <div className="absolute inset-[1px] bg-white dark:bg-gray-900 rounded-lg"></div>
 
                 <CardContent className="p-6 relative z-10">
@@ -96,7 +93,7 @@ export default function FeedbackSection() {
                     </div>
                   </div>
 
-                  {/* Enhanced comment with green accent */}
+                  {/* Enhanced comment */}
                   <div className="relative mb-4">
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                       <span className="text-green-400 text-lg">"</span>
@@ -108,14 +105,11 @@ export default function FeedbackSection() {
                     )}
                   </div>
 
-                  {/* Enhanced product info */}
+                  {/* Enhanced product info - removed the green dot */}
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-200">
                       Product: <span className="font-medium text-green-600 dark:text-green-400">{feedback.product}</span>
                     </p>
-                    <div className={`w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 transition-all duration-300 ${
-                      hoveredCard === index ? 'animate-ping' : ''
-                    }`}></div>
                   </div>
                 </CardContent>
               </Card>
@@ -123,7 +117,7 @@ export default function FeedbackSection() {
           ))}
         </div>
 
-        {/* Enhanced bottom decoration with original yellow stars */}
+        {/* Enhanced bottom decoration */}
         <div className="text-center mt-12 animate-fade-in-up-delayed">
           <div className="flex justify-center space-x-2 mb-4">
             {[...Array(5)].map((_, i) => (
@@ -165,11 +159,6 @@ export default function FeedbackSection() {
             text-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 0 40px rgba(16, 185, 129, 0.4);
             transform: scale(1.02);
           }
-        }
-        
-        @keyframes text-shadow {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.02); }
         }
         
         @keyframes expand {
@@ -221,10 +210,6 @@ export default function FeedbackSection() {
         
         .animate-text-glow {
           animation: text-glow 3s ease-in-out infinite;
-        }
-        
-        .animate-text-shadow {
-          animation: text-shadow 3s ease-in-out infinite;
         }
         
         .animate-expand {
