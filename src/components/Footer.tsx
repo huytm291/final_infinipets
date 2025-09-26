@@ -34,12 +34,11 @@ export default function Footer({ isDark = false }: FooterProps) {
                 <img 
                   src="/images/logo.png" 
                   alt="INFINIPETS Logo" 
-                  className="w-12 h-12 object-contain transition-all duration-300 group-hover:scale-110"
+                  className="w-16 h-16 object-contain transition-all duration-300 group-hover:scale-110"
                 />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse" />
               </div>
               <div className="ml-3">
-                <h3 className="text-xl font-bold gradient-text">INFINIPETS</h3>
+                <h3 className="text-xl font-bold gradient-text coiny-font">INFINIPETS</h3>
                 <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   Premium Pet Fashion
                 </p>
@@ -215,7 +214,7 @@ export default function Footer({ isDark = false }: FooterProps) {
       <div className={`border-t ${isDark ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-100'}`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <div className={`text-sm coiny-font ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               © {currentYear} INFINIPETS. All rights reserved. Made with{' '}
               <Heart className="w-4 h-4 inline text-red-500" /> for pets everywhere.
             </div>
