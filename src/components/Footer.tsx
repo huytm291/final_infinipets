@@ -38,13 +38,13 @@ export default function Footer({ isDark = false }: FooterProps) {
                 />
               </div>
               <div className="ml-3">
-                <h3 className="text-xl font-bold gradient-text coiny-font">INFINIPETS</h3>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <h3 className="text-xl font-bold gradient-text font-coiny">INFINIPETS</h3>
+                <p className={`text-xs font-coiny ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   Premium Pet Fashion
                 </p>
               </div>
             </div>
-            <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className={`text-sm font-coiny ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               Your trusted partner for premium pet fashion and accessories. 
               Making your furry friends look stylish and feel comfortable.
             </p>
@@ -82,7 +82,7 @@ export default function Footer({ isDark = false }: FooterProps) {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h4 className={`text-lg font-semibold font-coiny ${isDark ? 'text-white' : 'text-gray-900'}`}>
               Quick Links
             </h4>
             <ul className="space-y-2">
@@ -90,7 +90,7 @@ export default function Footer({ isDark = false }: FooterProps) {
                 <li key={link}>
                   <a 
                     href={`#${link.toLowerCase().replace(' ', '-')}`}
-                    className={`text-sm transition-colors hover:text-green-600 ${
+                    className={`text-sm font-coiny transition-colors hover:text-green-600 ${
                       isDark ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
@@ -103,7 +103,7 @@ export default function Footer({ isDark = false }: FooterProps) {
 
           {/* Customer Service */}
           <div className="space-y-4">
-            <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h4 className={`text-lg font-semibold font-coiny ${isDark ? 'text-white' : 'text-gray-900'}`}>
               Customer Service
             </h4>
             <ul className="space-y-2">
@@ -111,7 +111,7 @@ export default function Footer({ isDark = false }: FooterProps) {
                 <li key={link}>
                   <a 
                     href={`#${link.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-                    className={`text-sm transition-colors hover:text-green-600 ${
+                    className={`text-sm font-coiny transition-colors hover:text-green-600 ${
                       isDark ? 'text-gray-300' : 'text-gray-600'
                     }`}
                   >
@@ -124,25 +124,25 @@ export default function Footer({ isDark = false }: FooterProps) {
 
           {/* Contact Info */}
           <div className="space-y-4">
-            <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <h4 className={`text-lg font-semibold font-coiny ${isDark ? 'text-white' : 'text-gray-900'}`}>
               Contact Us
             </h4>
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className={`w-4 h-4 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
-                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <span className={`text-sm font-coiny ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   +1 (555) 123-4567
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className={`w-4 h-4 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
-                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <span className={`text-sm font-coiny ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   support@infinipets.com
                 </span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className={`w-4 h-4 mt-0.5 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
-                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <span className={`text-sm font-coiny ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   123 Pet Fashion Street<br />
                   New York, NY 10001
                 </span>
@@ -159,10 +159,10 @@ export default function Footer({ isDark = false }: FooterProps) {
                 <Truck className={`w-5 h-5 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
               </div>
               <div>
-                <h5 className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h5 className={`font-medium font-coiny ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   Free Shipping
                 </h5>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-xs font-coiny ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   On orders over $50
                 </p>
               </div>
@@ -172,10 +172,10 @@ export default function Footer({ isDark = false }: FooterProps) {
                 <Shield className={`w-5 h-5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
               </div>
               <div>
-                <h5 className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h5 className={`font-medium font-coiny ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   Secure Payment
                 </h5>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-xs font-coiny ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   100% protected
                 </p>
               </div>
@@ -185,10 +185,10 @@ export default function Footer({ isDark = false }: FooterProps) {
                 <Clock className={`w-5 h-5 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
               </div>
               <div>
-                <h5 className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h5 className={`font-medium font-coiny ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   24/7 Support
                 </h5>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-xs font-coiny ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   Always here to help
                 </p>
               </div>
@@ -198,10 +198,10 @@ export default function Footer({ isDark = false }: FooterProps) {
                 <Heart className={`w-5 h-5 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
               </div>
               <div>
-                <h5 className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <h5 className={`font-medium font-coiny ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   Pet Approved
                 </h5>
-                <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-xs font-coiny ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                   Quality guaranteed
                 </p>
               </div>
@@ -214,12 +214,12 @@ export default function Footer({ isDark = false }: FooterProps) {
       <div className={`border-t ${isDark ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-100'}`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className={`text-sm coiny-font ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <div className={`text-sm font-coiny ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               © {currentYear} INFINIPETS. All rights reserved. Made with{' '}
               <Heart className="w-4 h-4 inline text-red-500" /> for pets everywhere.
             </div>
             <div className="flex items-center space-x-4">
-              <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+              <span className={`text-xs font-coiny ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
                 We accept:
               </span>
               <div className="flex items-center space-x-2">
