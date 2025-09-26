@@ -233,11 +233,11 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
       onMouseEnter={() => onHover(index)}
       onMouseLeave={() => onHover(null)}
     >
-      {/* Card glow effect - green theme */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-400/10 via-emerald-400/10 to-teal-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      {/* Card glow effect - brand colors */}
+      <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/10 via-brand-cyan/10 to-brand-green/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       
-      {/* Animated border - green theme */}
-      <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow"></div>
+      {/* Animated border - brand colors */}
+      <div className="absolute inset-0 bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-green opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow"></div>
       <div className={`absolute inset-[1px] rounded-2xl ${isDark ? 'bg-gray-800' : 'bg-white'}`}></div>
 
       {/* Content wrapper */}
@@ -245,7 +245,7 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
         {/* Enhanced Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
           {product.isNew && (
-            <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold shadow-lg animate-pulse">
+            <Badge className="bg-gradient-to-r from-brand-green to-brand-cyan text-white font-semibold shadow-lg animate-pulse">
               ✨ NEW
             </Badge>
           )}
@@ -325,9 +325,9 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
             </div>
           </div>
 
-          {/* Enhanced Product Name - green theme */}
+          {/* Enhanced Product Name - brand colors */}
           <h3 className={`font-semibold text-lg transition-all duration-300 ${
-            isDark ? 'text-white group-hover:text-green-400' : 'text-gray-900 group-hover:text-green-600'
+            isDark ? 'text-white group-hover:text-brand-cyan' : 'text-gray-900 group-hover:text-brand-blue'
           }`}>
             {product.name}
           </h3>
@@ -365,7 +365,7 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
                   onClick={() => setSelectedColor(color)}
                   className={`w-6 h-6 rounded-full border-2 transition-all duration-300 hover:scale-110 ${
                     selectedColor.name === color.name 
-                      ? 'border-green-500 shadow-lg shadow-green-500/25' 
+                      ? 'border-brand-blue shadow-lg shadow-brand-blue/25' 
                       : 'border-gray-300 hover:border-gray-400'
                   }`}
                   style={{ backgroundColor: color.value }}
@@ -389,7 +389,7 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
                   onClick={() => setSelectedSize(size)}
                   className={`px-3 py-1 text-xs font-medium rounded-md border transition-all duration-300 hover:scale-105 ${
                     selectedSize === size
-                      ? 'bg-green-500 text-white border-green-500 shadow-lg shadow-green-500/25'
+                      ? 'bg-brand-blue text-white border-brand-blue shadow-lg shadow-brand-blue/25'
                       : isDark 
                         ? 'border-gray-600 text-gray-300 hover:border-gray-500 hover:bg-gray-700' 
                         : 'border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50'
@@ -410,7 +410,7 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
               <ShoppingCart className="w-4 h-4 mr-2 transition-transform duration-300 group-hover/btn:scale-110" />
               Add to Cart
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-blue to-brand-cyan opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
           </Button>
         </div>
       </div>
@@ -435,12 +435,12 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
     <section className={`py-16 px-4 md:px-8 lg:px-16 relative overflow-hidden ${
       isDark ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'
     }`}>
-      {/* Animated background elements - green theme */}
+      {/* Animated background elements - brand colors */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-green-200/10 to-emerald-200/10 rounded-full animate-float-slow"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-teal-200/10 to-cyan-200/10 rounded-full animate-float-delayed"></div>
-        <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-br from-lime-200/10 to-green-200/10 rounded-full animate-float-reverse"></div>
-        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-gradient-to-br from-emerald-200/10 to-teal-200/10 rounded-full animate-float-slow"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-brand-blue/10 to-brand-cyan/10 rounded-full animate-float-slow"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-brand-cyan/10 to-brand-green/10 rounded-full animate-float-delayed"></div>
+        <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-br from-brand-green/10 to-brand-cyan/10 rounded-full animate-float-reverse"></div>
+        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-gradient-to-br from-brand-blue/10 to-brand-green/10 rounded-full animate-float-slow"></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -449,7 +449,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
           <h2 className="font-coiny text-4xl md:text-5xl mb-6 gradient-text animate-text-glow relative">
             {title} 🛍️
           </h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 mx-auto mb-6 rounded-full animate-expand"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-green mx-auto mb-6 rounded-full animate-expand"></div>
           <p className={`text-lg max-w-3xl mx-auto leading-relaxed ${
             isDark ? 'text-gray-300' : 'text-gray-600'
           }`}>
@@ -478,7 +478,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
             {[...Array(3)].map((_, i) => (
               <div 
                 key={i}
-                className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-bounce"
+                className="w-3 h-3 bg-gradient-to-r from-brand-blue to-brand-cyan rounded-full animate-bounce"
                 style={{ animationDelay: `${i * 0.2}s` }}
               ></div>
             ))}
@@ -494,7 +494,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
               View All Products 
               <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-blue to-brand-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Button>
           <p className={`mt-4 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Discover more amazing products for your beloved pets! 🐾
@@ -503,6 +503,99 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
       </div>
 
       <style jsx>{`
+        :root {
+          --brand-blue: #0077C2;
+          --brand-cyan: #00B8D9;
+          --brand-green: #00C853;
+        }
+        
+        .brand-blue {
+          color: var(--brand-blue);
+        }
+        
+        .brand-cyan {
+          color: var(--brand-cyan);
+        }
+        
+        .brand-green {
+          color: var(--brand-green);
+        }
+        
+        .bg-brand-blue {
+          background-color: var(--brand-blue);
+        }
+        
+        .bg-brand-cyan {
+          background-color: var(--brand-cyan);
+        }
+        
+        .bg-brand-green {
+          background-color: var(--brand-green);
+        }
+        
+        .border-brand-blue {
+          border-color: var(--brand-blue);
+        }
+        
+        .border-brand-cyan {
+          border-color: var(--brand-cyan);
+        }
+        
+        .border-brand-green {
+          border-color: var(--brand-green);
+        }
+        
+        .text-brand-blue {
+          color: var(--brand-blue);
+        }
+        
+        .text-brand-cyan {
+          color: var(--brand-cyan);
+        }
+        
+        .text-brand-green {
+          color: var(--brand-green);
+        }
+        
+        .from-brand-blue\\/10 {
+          --tw-gradient-from: rgb(0 119 194 / 0.1);
+          --tw-gradient-to: rgb(0 119 194 / 0);
+          --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+        }
+        
+        .via-brand-cyan\\/10 {
+          --tw-gradient-to: rgb(0 184 217 / 0);
+          --tw-gradient-stops: var(--tw-gradient-from), rgb(0 184 217 / 0.1), var(--tw-gradient-to);
+        }
+        
+        .to-brand-green\\/10 {
+          --tw-gradient-to: rgb(0 200 83 / 0.1);
+        }
+        
+        .from-brand-blue {
+          --tw-gradient-from: var(--brand-blue);
+          --tw-gradient-to: rgb(0 119 194 / 0);
+          --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+        }
+        
+        .via-brand-cyan {
+          --tw-gradient-to: rgb(0 184 217 / 0);
+          --tw-gradient-stops: var(--tw-gradient-from), var(--brand-cyan), var(--tw-gradient-to);
+        }
+        
+        .to-brand-green {
+          --tw-gradient-to: var(--brand-green);
+        }
+        
+        .to-brand-cyan {
+          --tw-gradient-to: var(--brand-cyan);
+        }
+        
+        .shadow-brand-blue\\/25 {
+          --tw-shadow-color: rgb(0 119 194 / 0.25);
+          --tw-shadow: var(--tw-shadow-colored);
+        }
+        
         @keyframes float-slow {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-20px) rotate(180deg); }
@@ -520,11 +613,11 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
         
         @keyframes text-glow {
           0%, 100% { 
-            text-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+            text-shadow: 0 0 20px rgba(0, 119, 194, 0.4);
             transform: scale(1);
           }
           50% { 
-            text-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 0 40px rgba(16, 185, 129, 0.4);
+            text-shadow: 0 0 30px rgba(0, 119, 194, 0.6), 0 0 40px rgba(0, 184, 217, 0.4);
             transform: scale(1.02);
           }
         }
@@ -593,11 +686,11 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
         }
         
         .gradient-primary {
-          background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+          background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 50%, var(--brand-green) 100%);
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+          background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 50%, var(--brand-green) 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
