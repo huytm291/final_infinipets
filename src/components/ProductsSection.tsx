@@ -219,7 +219,7 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
 
   return (
     <div 
-      className={`product-card group relative rounded-2xl overflow-hidden shadow-lg transform transition-all duration-700 ${
+      className={`product-card group relative rounded-2xl overflow-hidden shadow-lg transition-all duration-700 ${
         isVisible
           ? 'translate-y-0 opacity-100'
           : 'translate-y-10 opacity-0'
@@ -233,16 +233,16 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
       onMouseEnter={() => onHover(index)}
       onMouseLeave={() => onHover(null)}
     >
-      {/* Card glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 via-purple-400/10 to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      {/* Card glow effect - green theme */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-400/10 via-emerald-400/10 to-teal-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       
-      {/* Animated border */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow"></div>
+      {/* Animated border - green theme */}
+      <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow"></div>
       <div className={`absolute inset-[1px] rounded-2xl ${isDark ? 'bg-gray-800' : 'bg-white'}`}></div>
 
       {/* Content wrapper */}
       <div className="relative z-10">
-        {/* Badges */}
+        {/* Enhanced Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
           {product.isNew && (
             <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold shadow-lg animate-pulse">
@@ -261,17 +261,19 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
           )}
         </div>
 
-        {/* Wishlist Button */}
+        {/* Enhanced Wishlist Button */}
         <Button
           variant="ghost"
           size="sm"
-          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white backdrop-blur-sm transition-all duration-300 hover:scale-110"
+          className="absolute top-3 right-3 z-10 p-2 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0"
           onClick={handleWishlist}
         >
-          <Heart className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
+          <Heart className={`w-4 h-4 transition-colors duration-300 ${
+            isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600 hover:text-red-500'
+          }`} />
         </Button>
 
-        {/* Product Image */}
+        {/* Enhanced Product Image */}
         <div className="relative aspect-square overflow-hidden">
           <img
             src={product.image}
@@ -285,11 +287,22 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
           
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          {/* Quick view overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-white/90 backdrop-blur-sm hover:bg-white text-gray-900 font-semibold shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+            >
+              Quick View
+            </Button>
+          </div>
         </div>
 
-        {/* Product Info */}
+        {/* Enhanced Product Info */}
         <div className="p-4 space-y-3">
-          {/* Rating */}
+          {/* Enhanced Rating */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1">
               <div className="flex">
@@ -297,42 +310,52 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
                   <Star
                     key={i}
                     className={`w-3 h-3 transition-colors duration-300 ${
-                      i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+                      i < Math.floor(product.rating) 
+                        ? 'fill-yellow-400 text-yellow-400' 
+                        : isDark ? 'text-gray-600' : 'text-gray-300'
                     }`}
                   />
                 ))}
               </div>
-              <span className={`text-xs transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              <span className={`text-xs transition-colors duration-300 ${
+                isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-700'
+              }`}>
                 ({product.reviews})
               </span>
             </div>
           </div>
 
-          {/* Product Name */}
+          {/* Enhanced Product Name - green theme */}
           <h3 className={`font-semibold text-lg transition-all duration-300 ${
-            isDark ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-blue-600'
+            isDark ? 'text-white group-hover:text-green-400' : 'text-gray-900 group-hover:text-green-600'
           }`}>
             {product.name}
           </h3>
 
-          {/* Description */}
-          <p className={`text-sm line-clamp-2 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          {/* Enhanced Description */}
+          <p className={`text-sm line-clamp-2 transition-colors duration-300 ${
+            isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-700'
+          }`}>
             {product.description}
           </p>
 
-          {/* Price */}
+          {/* Enhanced Price */}
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold gradient-text">${product.price}</span>
+            <span className="text-xl font-bold gradient-text animate-text-glow">${product.price}</span>
             {product.originalPrice && (
-              <span className={`text-sm line-through transition-colors duration-300 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+              <span className={`text-sm line-through transition-colors duration-300 ${
+                isDark ? 'text-gray-500' : 'text-gray-400'
+              }`}>
                 ${product.originalPrice}
               </span>
             )}
           </div>
 
-          {/* Color Selection */}
+          {/* Enhanced Color Selection */}
           <div className="space-y-2">
-            <p className={`text-sm font-medium transition-colors duration-300 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <p className={`text-sm font-medium transition-colors duration-300 ${
+              isDark ? 'text-gray-300 group-hover:text-gray-200' : 'text-gray-700 group-hover:text-gray-800'
+            }`}>
               Color: {selectedColor.name}
             </p>
             <div className="flex space-x-2">
@@ -340,7 +363,11 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
                 <button
                   key={color.name}
                   onClick={() => setSelectedColor(color)}
-                  className={`color-swatch transition-all duration-300 hover:scale-110 ${selectedColor.name === color.name ? 'selected' : ''}`}
+                  className={`w-6 h-6 rounded-full border-2 transition-all duration-300 hover:scale-110 ${
+                    selectedColor.name === color.name 
+                      ? 'border-green-500 shadow-lg shadow-green-500/25' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
                   style={{ backgroundColor: color.value }}
                   title={color.name}
                 />
@@ -348,9 +375,11 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
             </div>
           </div>
 
-          {/* Size Selection */}
+          {/* Enhanced Size Selection */}
           <div className="space-y-2">
-            <p className={`text-sm font-medium transition-colors duration-300 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <p className={`text-sm font-medium transition-colors duration-300 ${
+              isDark ? 'text-gray-300 group-hover:text-gray-200' : 'text-gray-700 group-hover:text-gray-800'
+            }`}>
               Size: {selectedSize}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -358,8 +387,12 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`size-option transition-all duration-300 hover:scale-105 ${selectedSize === size ? 'selected' : ''} ${
-                    isDark ? 'border-gray-600 text-gray-300' : ''
+                  className={`px-3 py-1 text-xs font-medium rounded-md border transition-all duration-300 hover:scale-105 ${
+                    selectedSize === size
+                      ? 'bg-green-500 text-white border-green-500 shadow-lg shadow-green-500/25'
+                      : isDark 
+                        ? 'border-gray-600 text-gray-300 hover:border-gray-500 hover:bg-gray-700' 
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50'
                   }`}
                 >
                   {size}
@@ -368,13 +401,16 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
             </div>
           </div>
 
-          {/* Add to Cart Button */}
+          {/* Enhanced Add to Cart Button */}
           <Button
             onClick={handleAddToCart}
-            className="w-full btn-primary transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            className="w-full gradient-primary hover:opacity-90 hover:scale-105 text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group/btn"
           >
-            <ShoppingCart className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:rotate-12" />
-            Add to Cart
+            <span className="relative z-10 flex items-center justify-center">
+              <ShoppingCart className="w-4 h-4 mr-2 transition-transform duration-300 group-hover/btn:scale-110" />
+              Add to Cart
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
           </Button>
         </div>
       </div>
@@ -387,22 +423,24 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
-    // Staggered animation for cards appearing - similar to BlogSection
+    // Staggered animation for cards appearing
     FEATURED_PRODUCTS.forEach((_, index) => {
       setTimeout(() => {
         setVisibleCards(prev => [...prev, index]);
-      }, index * 150); // Slightly faster than BlogSection for more products
+      }, index * 150);
     });
   }, []);
 
   return (
-    <section className={`py-16 px-4 md:px-8 lg:px-16 relative overflow-hidden ${isDark ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      {/* Animated background elements - similar to BlogSection but with different colors */}
+    <section className={`py-16 px-4 md:px-8 lg:px-16 relative overflow-hidden ${
+      isDark ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'
+    }`}>
+      {/* Animated background elements - green theme */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-200/10 to-purple-200/10 rounded-full animate-float-slow"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-purple-200/10 to-pink-200/10 rounded-full animate-float-delayed"></div>
-        <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-br from-pink-200/10 to-blue-200/10 rounded-full animate-float-reverse"></div>
-        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-gradient-to-br from-indigo-200/10 to-purple-200/10 rounded-full animate-float-slow"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-green-200/10 to-emerald-200/10 rounded-full animate-float-slow"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-teal-200/10 to-cyan-200/10 rounded-full animate-float-delayed"></div>
+        <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-br from-lime-200/10 to-green-200/10 rounded-full animate-float-reverse"></div>
+        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-gradient-to-br from-emerald-200/10 to-teal-200/10 rounded-full animate-float-slow"></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -411,8 +449,10 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
           <h2 className="font-coiny text-4xl md:text-5xl mb-6 gradient-text animate-text-glow relative">
             {title} 🛍️
           </h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mx-auto mb-6 rounded-full animate-expand"></div>
-          <p className={`text-lg max-w-3xl mx-auto leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+          <div className="w-32 h-1 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 mx-auto mb-6 rounded-full animate-expand"></div>
+          <p className={`text-lg max-w-3xl mx-auto leading-relaxed ${
+            isDark ? 'text-gray-300' : 'text-gray-600'
+          }`}>
             {subtitle}
           </p>
         </div>
@@ -423,7 +463,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
             <ProductCard 
               key={product.id} 
               product={product} 
-              isDark={isDark} 
+              isDark={isDark}
               index={index}
               isVisible={visibleCards.includes(index)}
               isHovered={hoveredCard === index}
@@ -438,7 +478,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
             {[...Array(3)].map((_, i) => (
               <div 
                 key={i}
-                className="w-3 h-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-bounce"
+                className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-bounce"
                 style={{ animationDelay: `${i * 0.2}s` }}
               ></div>
             ))}
@@ -454,10 +494,10 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
               View All Products 
               <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Button>
           <p className={`mt-4 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Discover amazing products for your beloved pets! 🐾
+            Discover more amazing products for your beloved pets! 🐾
           </p>
         </div>
       </div>
@@ -480,11 +520,11 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
         
         @keyframes text-glow {
           0%, 100% { 
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            text-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
             transform: scale(1);
           }
           50% { 
-            text-shadow: 0 0 30px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4);
+            text-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 0 40px rgba(16, 185, 129, 0.4);
             transform: scale(1.02);
           }
         }
@@ -552,51 +592,12 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
           overflow: hidden;
         }
         
-        .color-swatch {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          border: 2px solid transparent;
-          cursor: pointer;
-          position: relative;
-        }
-        
-        .color-swatch.selected {
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-        }
-        
-        .size-option {
-          padding: 6px 12px;
-          border: 1px solid #d1d5db;
-          border-radius: 6px;
-          font-size: 12px;
-          font-weight: 500;
-          cursor: pointer;
-          background: white;
-        }
-        
-        .size-option.selected {
-          background: #3b82f6;
-          color: white;
-          border-color: #3b82f6;
-        }
-        
-        .btn-primary {
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
-          border: none;
-        }
-        
-        .btn-primary:hover {
-          background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%);
-        }
-        
         .gradient-primary {
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+          background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
         }
         
         .gradient-text {
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+          background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
