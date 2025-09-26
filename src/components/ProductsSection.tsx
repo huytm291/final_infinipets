@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Heart, ShoppingCart, Star } from 'lucide-react';
@@ -191,7 +191,14 @@ const FEATURED_PRODUCTS: Product[] = [
   }
 ];
 
-const ProductCard: FC<{ product: Product; isDark?: boolean }> = ({ product, isDark }) => {
+const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVisible: boolean; isHovered: boolean; onHover: (index: number | null) => void }> = ({ 
+  product, 
+  isDark, 
+  index, 
+  isVisible, 
+  isHovered, 
+  onHover 
+}) => {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -211,170 +218,390 @@ const ProductCard: FC<{ product: Product; isDark?: boolean }> = ({ product, isDa
   };
 
   return (
-    <div className={`product-card group relative rounded-2xl overflow-hidden shadow-lg hover-lift ${
-      isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
-    }`}>
-      {/* Badges */}
-      <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
-        {product.isNew && (
-          <Badge className="bg-green-500 text-white font-semibold">NEW</Badge>
-        )}
-        {product.isBestseller && (
-          <Badge className="bg-orange-500 text-white font-semibold">BESTSELLER</Badge>
-        )}
-        {product.originalPrice && (
-          <Badge className="bg-red-500 text-white font-semibold">
-            -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
-          </Badge>
-        )}
-      </div>
+    <div 
+      className={`product-card group relative rounded-2xl overflow-hidden shadow-lg transform transition-all duration-700 ${
+        isVisible
+          ? 'translate-y-0 opacity-100'
+          : 'translate-y-10 opacity-0'
+      } ${
+        isHovered 
+          ? 'scale-105 shadow-2xl' 
+          : 'hover:scale-102 hover:shadow-xl'
+      } ${
+        isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+      }`}
+      onMouseEnter={() => onHover(index)}
+      onMouseLeave={() => onHover(null)}
+    >
+      {/* Card glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 via-purple-400/10 to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
+      {/* Animated border */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow"></div>
+      <div className={`absolute inset-[1px] rounded-2xl ${isDark ? 'bg-gray-800' : 'bg-white'}`}></div>
 
-      {/* Wishlist Button */}
-      <Button
-        variant="ghost"
-        size="sm"
-        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white"
-        onClick={handleWishlist}
-      >
-        <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
-      </Button>
-
-      {/* Product Image */}
-      <div className="relative aspect-square overflow-hidden">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-      </div>
-
-      {/* Product Info */}
-      <div className="p-4 space-y-3">
-        {/* Rating */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3 h-3 ${
-                    i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-            <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              ({product.reviews})
-            </span>
-          </div>
-        </div>
-
-        {/* Product Name */}
-        <h3 className={`font-semibold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
-          {product.name}
-        </h3>
-
-        {/* Description */}
-        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'} line-clamp-2`}>
-          {product.description}
-        </p>
-
-        {/* Price */}
-        <div className="flex items-center space-x-2">
-          <span className="text-xl font-bold gradient-text">${product.price}</span>
+      {/* Content wrapper */}
+      <div className="relative z-10">
+        {/* Badges */}
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+          {product.isNew && (
+            <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold shadow-lg animate-pulse">
+              ✨ NEW
+            </Badge>
+          )}
+          {product.isBestseller && (
+            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold shadow-lg">
+              🔥 BESTSELLER
+            </Badge>
+          )}
           {product.originalPrice && (
-            <span className={`text-sm line-through ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-              ${product.originalPrice}
-            </span>
+            <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold shadow-lg">
+              -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
+            </Badge>
           )}
         </div>
 
-        {/* Color Selection */}
-        <div className="space-y-2">
-          <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-            Color: {selectedColor.name}
-          </p>
-          <div className="flex space-x-2">
-            {product.colors.map((color) => (
-              <button
-                key={color.name}
-                onClick={() => setSelectedColor(color)}
-                className={`color-swatch ${selectedColor.name === color.name ? 'selected' : ''}`}
-                style={{ backgroundColor: color.value }}
-                title={color.name}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Size Selection */}
-        <div className="space-y-2">
-          <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-            Size: {selectedSize}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {product.sizes.map((size) => (
-              <button
-                key={size}
-                onClick={() => setSelectedSize(size)}
-                className={`size-option ${selectedSize === size ? 'selected' : ''} ${
-                  isDark ? 'border-gray-600 text-gray-300' : ''
-                }`}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Add to Cart Button */}
+        {/* Wishlist Button */}
         <Button
-          onClick={handleAddToCart}
-          className="w-full btn-primary"
+          variant="ghost"
+          size="sm"
+          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 hover:bg-white backdrop-blur-sm transition-all duration-300 hover:scale-110"
+          onClick={handleWishlist}
         >
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          Add to Cart
+          <Heart className={`w-4 h-4 transition-colors duration-300 ${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
         </Button>
+
+        {/* Product Image */}
+        <div className="relative aspect-square overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.name}
+            className={`w-full h-full object-cover transition-all duration-500 ${
+              isHovered 
+                ? 'scale-110 brightness-110' 
+                : 'scale-100'
+            }`}
+          />
+          
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+
+        {/* Product Info */}
+        <div className="p-4 space-y-3">
+          {/* Rating */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-1">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-3 h-3 transition-colors duration-300 ${
+                      i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className={`text-xs transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                ({product.reviews})
+              </span>
+            </div>
+          </div>
+
+          {/* Product Name */}
+          <h3 className={`font-semibold text-lg transition-all duration-300 ${
+            isDark ? 'text-white group-hover:text-blue-400' : 'text-gray-900 group-hover:text-blue-600'
+          }`}>
+            {product.name}
+          </h3>
+
+          {/* Description */}
+          <p className={`text-sm line-clamp-2 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            {product.description}
+          </p>
+
+          {/* Price */}
+          <div className="flex items-center space-x-2">
+            <span className="text-xl font-bold gradient-text">${product.price}</span>
+            {product.originalPrice && (
+              <span className={`text-sm line-through transition-colors duration-300 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                ${product.originalPrice}
+              </span>
+            )}
+          </div>
+
+          {/* Color Selection */}
+          <div className="space-y-2">
+            <p className={`text-sm font-medium transition-colors duration-300 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              Color: {selectedColor.name}
+            </p>
+            <div className="flex space-x-2">
+              {product.colors.map((color) => (
+                <button
+                  key={color.name}
+                  onClick={() => setSelectedColor(color)}
+                  className={`color-swatch transition-all duration-300 hover:scale-110 ${selectedColor.name === color.name ? 'selected' : ''}`}
+                  style={{ backgroundColor: color.value }}
+                  title={color.name}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Size Selection */}
+          <div className="space-y-2">
+            <p className={`text-sm font-medium transition-colors duration-300 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              Size: {selectedSize}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {product.sizes.map((size) => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`size-option transition-all duration-300 hover:scale-105 ${selectedSize === size ? 'selected' : ''} ${
+                    isDark ? 'border-gray-600 text-gray-300' : ''
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Add to Cart Button */}
+          <Button
+            onClick={handleAddToCart}
+            className="w-full btn-primary transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          >
+            <ShoppingCart className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:rotate-12" />
+            Add to Cart
+          </Button>
+        </div>
       </div>
     </div>
   );
 };
 
 const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = false }) => {
+  const [visibleCards, setVisibleCards] = useState<number[]>([]);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Staggered animation for cards appearing - similar to BlogSection
+    FEATURED_PRODUCTS.forEach((_, index) => {
+      setTimeout(() => {
+        setVisibleCards(prev => [...prev, index]);
+      }, index * 150); // Slightly faster than BlogSection for more products
+    });
+  }, []);
+
   return (
-    <section className={`py-16 px-4 md:px-8 lg:px-16 ${isDark ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h2 className={`text-3xl md:text-4xl font-coiny mb-4 ${isDark ? 'gradient-text' : 'gradient-text'}`}>
-            {title}
+    <section className={`py-16 px-4 md:px-8 lg:px-16 relative overflow-hidden ${isDark ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      {/* Animated background elements - similar to BlogSection but with different colors */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-200/10 to-purple-200/10 rounded-full animate-float-slow"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-purple-200/10 to-pink-200/10 rounded-full animate-float-delayed"></div>
+        <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-br from-pink-200/10 to-blue-200/10 rounded-full animate-float-reverse"></div>
+        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-gradient-to-br from-indigo-200/10 to-purple-200/10 rounded-full animate-float-slow"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Enhanced Header Section */}
+        <div className="text-center mb-16 animate-fade-in-up">
+          <h2 className="font-coiny text-4xl md:text-5xl mb-6 gradient-text animate-text-glow relative">
+            {title} 🛍️
           </h2>
-          <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+          <div className="w-32 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mx-auto mb-6 rounded-full animate-expand"></div>
+          <p className={`text-lg max-w-3xl mx-auto leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
             {subtitle}
           </p>
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 mb-12">
-          {FEATURED_PRODUCTS.map((product) => (
-            <ProductCard key={product.id} product={product} isDark={isDark} />
+        {/* Enhanced Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 mb-16">
+          {FEATURED_PRODUCTS.map((product, index) => (
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              isDark={isDark} 
+              index={index}
+              isVisible={visibleCards.includes(index)}
+              isHovered={hoveredCard === index}
+              onHover={setHoveredCard}
+            />
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center">
+        {/* Enhanced Call to Action */}
+        <div className="text-center animate-fade-in-up-delayed">
+          <div className="flex justify-center space-x-2 mb-6">
+            {[...Array(3)].map((_, i) => (
+              <div 
+                key={i}
+                className="w-3 h-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-bounce"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              ></div>
+            ))}
+          </div>
           <Button 
             size="lg" 
-            className="gradient-primary hover:opacity-90 hover:scale-105 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="gradient-primary hover:opacity-90 hover:scale-105 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
             onClick={() => {
               window.location.href = '/products';
             }}
           >
-            View All Products <ArrowRight className="w-5 h-5 ml-2" />
+            <span className="relative z-10 flex items-center">
+              View All Products 
+              <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Button>
+          <p className={`mt-4 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            Discover amazing products for your beloved pets! 🐾
+          </p>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        @keyframes float-delayed {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(-180deg); }
+        }
+        
+        @keyframes float-reverse {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(15px) rotate(90deg); }
+        }
+        
+        @keyframes text-glow {
+          0%, 100% { 
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            transform: scale(1);
+          }
+          50% { 
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.6), 0 0 40px rgba(147, 51, 234, 0.4);
+            transform: scale(1.02);
+          }
+        }
+        
+        @keyframes expand {
+          0% { width: 0; }
+          100% { width: 8rem; }
+        }
+        
+        @keyframes fade-in-up {
+          0% { opacity: 0; transform: translateY(30px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fade-in-up-delayed {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes border-glow {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 1; }
+        }
+        
+        .animate-float-slow {
+          animation: float-slow 6s ease-in-out infinite;
+        }
+        
+        .animate-float-delayed {
+          animation: float-delayed 8s ease-in-out infinite 2s;
+        }
+        
+        .animate-float-reverse {
+          animation: float-reverse 7s ease-in-out infinite 1s;
+        }
+        
+        .animate-text-glow {
+          animation: text-glow 3s ease-in-out infinite;
+        }
+        
+        .animate-expand {
+          animation: expand 1s ease-out 0.5s both;
+        }
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out;
+        }
+        
+        .animate-fade-in-up-delayed {
+          animation: fade-in-up-delayed 1s ease-out 1.5s both;
+        }
+        
+        .animate-border-glow {
+          animation: border-glow 2s ease-in-out infinite;
+        }
+        
+        .hover\\:scale-102:hover {
+          transform: scale(1.02);
+        }
+        
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        .color-swatch {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          border: 2px solid transparent;
+          cursor: pointer;
+          position: relative;
+        }
+        
+        .color-swatch.selected {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        
+        .size-option {
+          padding: 6px 12px;
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 500;
+          cursor: pointer;
+          background: white;
+        }
+        
+        .size-option.selected {
+          background: #3b82f6;
+          color: white;
+          border-color: #3b82f6;
+        }
+        
+        .btn-primary {
+          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+          border: none;
+        }
+        
+        .btn-primary:hover {
+          background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%);
+        }
+        
+        .gradient-primary {
+          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+        }
+        
+        .gradient-text {
+          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      `}</style>
     </section>
   );
 };
