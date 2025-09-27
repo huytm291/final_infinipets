@@ -1,7 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CATEGORIES } from '@/lib/constants';
 import { useState, useEffect } from 'react';
-import { ShoppingBag, Heart, Eye } from 'lucide-react';
 
 export default function CategoriesSection() {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
@@ -82,21 +81,6 @@ export default function CategoriesSection() {
                         ? 'from-black/70 via-black/20 to-transparent'
                         : 'from-black/60 to-transparent'
                     }`} />
-                    
-                    {/* Floating action buttons on hover */}
-                    {hoveredCard === index && (
-                      <div className="absolute top-4 right-4 flex flex-col space-y-2 animate-fade-in-up">
-                        <button className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-lg hover:bg-green-50 hover:text-green-600 transition-all duration-300 animate-bounce-in">
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-lg hover:bg-red-50 hover:text-red-500 transition-all duration-300 animate-bounce-in-delayed">
-                          <Heart className="w-4 h-4" />
-                        </button>
-                        <button className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-lg hover:bg-green-50 hover:text-green-600 transition-all duration-300 animate-bounce-in-delayed-2">
-                          <ShoppingBag className="w-4 h-4" />
-                        </button>
-                      </div>
-                    )}
                     
                     {/* Enhanced category name with animation */}
                     <div className="absolute bottom-4 left-4 right-4">
@@ -198,12 +182,6 @@ export default function CategoriesSection() {
           100% { width: 100%; opacity: 1; }
         }
         
-        @keyframes bounce-in {
-          0% { opacity: 0; transform: scale(0.3) translateY(10px); }
-          50% { transform: scale(1.1) translateY(-5px); }
-          100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
         @keyframes sparkle-1 {
           0%, 100% { opacity: 0; transform: scale(0); }
           50% { opacity: 1; transform: scale(1); }
@@ -258,18 +236,6 @@ export default function CategoriesSection() {
         
         .animate-slide-in {
           animation: slide-in 0.3s ease-out;
-        }
-        
-        .animate-bounce-in {
-          animation: bounce-in 0.4s ease-out;
-        }
-        
-        .animate-bounce-in-delayed {
-          animation: bounce-in 0.4s ease-out 0.1s both;
-        }
-        
-        .animate-bounce-in-delayed-2 {
-          animation: bounce-in 0.4s ease-out 0.2s both;
         }
         
         .animate-sparkle-1 {
