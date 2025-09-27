@@ -217,11 +217,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                         isLanguageOpen ? 'rotate-180 text-green-400' : ''
                       } group-hover:text-green-400`} />
                     </div>
-                    
-                    {/* Premium border glow */}
-                    <div className={`absolute inset-0 rounded-md border-2 border-transparent bg-gradient-to-r from-green-400/50 to-emerald-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                      isLanguageOpen ? 'opacity-100' : ''
-                    }`} style={{ mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', maskComposite: 'exclude' }}></div>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
@@ -231,11 +226,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       ? 'bg-gray-800/95 border-gray-700 shadow-2xl' 
                       : 'bg-white/95 border-gray-200 shadow-2xl'
                   }`}
-                  style={{
-                    boxShadow: isDark 
-                      ? '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(34, 197, 94, 0.2)' 
-                      : '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(34, 197, 94, 0.2)'
-                  }}
                 >
                   <div className={`text-xs font-medium mb-2 px-2 py-1 rounded-md ${
                     isDark ? 'text-gray-300 bg-gray-700/50' : 'text-gray-600 bg-gray-100/50'
@@ -256,10 +246,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                           : 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700'
                         : ''
                       }`}
-                      style={{
-                        animationDelay: `${index * 50}ms`,
-                        animation: isLanguageOpen ? 'fadeInUp 0.3s ease-out forwards' : ''
-                      }}
                     >
                       {/* Hover glow effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 to-emerald-400/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -363,7 +349,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   </NavigationMenuItem>
                 ))}
                 
-                {/* Categories Dropdown - FIXED WITH !important */}
+                {/* Categories Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger 
                     className={`h-10 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 border ${
@@ -371,16 +357,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                         ? 'text-white bg-gray-800 border-gray-600 hover:bg-gray-700' 
                         : 'text-gray-900 bg-gray-100 border-gray-300 hover:bg-gray-200'
                     }`}
-                    style={{
-                      color: isDark ? '#ffffff !important' : '#111827 !important'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (isDark) {
-                        e.currentTarget.style.color = '#ffffff !important';
-                      } else {
-                        e.currentTarget.style.color = '#111827 !important';
-                      }
-                    }}
                   >
                     <ShoppingBag className="w-4 h-4 mr-2" />
                     Categories
@@ -426,7 +402,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* Enhanced Search Bar - REMOVED SEARCH BUTTON */}
+            {/* Enhanced Search Bar */}
             <div className={`hidden md:flex items-center mx-8 relative transition-all duration-500 ease-in-out ${
               isSearchFocused 
                 ? 'flex-1 max-w-2xl z-50' 
@@ -452,10 +428,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={handleSearchFocus}
                     onBlur={handleSearchBlur}
-                    style={{
-                      color: isDark ? '#ffffff' : '#1f2937',
-                      backgroundColor: isDark ? '#374151' : '#ffffff'
-                    }}
                     className={`w-full rounded-full border-2 transition-all duration-500 ease-in-out ${
                       isSearchFocused
                         ? 'pl-12 pr-6 py-3 text-base border-green-500 shadow-xl ring-2 ring-green-500/20'
@@ -463,17 +435,17 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     } ${
                       isSearchFocused
                         ? isDark 
-                          ? 'border-green-500 placeholder:text-gray-300' 
-                          : 'border-green-500 placeholder:text-gray-500'
+                          ? 'border-green-500 placeholder:text-gray-300 bg-gray-700 text-white' 
+                          : 'border-green-500 placeholder:text-gray-500 bg-white text-gray-900'
                         : isDark 
-                          ? 'border-gray-600 placeholder:text-gray-400' 
-                          : 'border-gray-300 placeholder:text-gray-500'
+                          ? 'border-gray-600 placeholder:text-gray-400 bg-gray-700 text-white' 
+                          : 'border-gray-300 placeholder:text-gray-500 bg-white text-gray-900'
                     }`}
                   />
                 </div>
               </form>
               
-              {/* Compact Search Suggestions - Căn giữa và làm nhỏ lại */}
+              {/* Search Suggestions */}
               {showSearchSuggestions && (
                 <div className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 p-4 rounded-xl shadow-lg border z-50 backdrop-blur-md w-96 ${
                   isDark ? 'bg-gray-800/95 border-gray-700' : 'bg-white/95 border-gray-200'
@@ -666,7 +638,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
           {isMenuOpen && (
             <div className="lg:hidden border-t border-gray-200/20">
               <div className="px-2 pt-4 pb-6 space-y-3">
-                {/* Mobile Search - FIXED TEXT VISIBILITY */}
+                {/* Mobile Search */}
                 <div className="mb-4">
                   <form onSubmit={handleSearch} className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -675,12 +647,10 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       placeholder="Search..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      style={{
-                        color: isDark ? '#ffffff' : '#1f2937',
-                        backgroundColor: isDark ? '#374151' : '#ffffff'
-                      }}
                       className={`pl-10 pr-4 py-2 w-full rounded-full ${
-                        isDark ? 'border-gray-600 placeholder:text-gray-400' : 'border-gray-300 placeholder:text-gray-500'
+                        isDark 
+                          ? 'border-gray-600 placeholder:text-gray-400 bg-gray-700 text-white' 
+                          : 'border-gray-300 placeholder:text-gray-500 bg-white text-gray-900'
                       }`}
                     />
                   </form>
@@ -768,19 +738,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
         mode={authMode}
         onModeChange={setAuthMode}
       />
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </>
   );
 }
