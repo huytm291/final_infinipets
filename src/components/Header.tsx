@@ -59,6 +59,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
   const [scrolled, setScrolled] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(LANGUAGES[0]);
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   
   const { user, isAuthenticated, logout } = useAuth();
   const { getItemCount } = useCart();
@@ -118,6 +119,11 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
     setShowSearchSuggestions(false);
   };
 
+  const handleLanguageSelect = (lang: typeof LANGUAGES[0]) => {
+    setSelectedLanguage(lang);
+    setIsLanguageOpen(false);
+  };
+
   const navigationItems = [
     { name: 'Home', href: '#', icon: Home },
     { name: 'Products', href: '#products', icon: ShoppingBag },
@@ -150,42 +156,127 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              {/* Language Selector */}
-              <DropdownMenu>
+              {/* Enhanced Language Selector */}
+              <DropdownMenu open={isLanguageOpen} onOpenChange={setIsLanguageOpen}>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className={`h-6 px-2 text-xs border-green-200 ${
-                    isDark 
-                      ? 'bg-gray-800 text-white hover:bg-gray-700 hover:text-white border-gray-600' 
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
-                  }`}>
-                    <Globe className="w-3 h-3 mr-1" />
-                    {selectedLanguage.flag} {selectedLanguage.code.toUpperCase()}
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className={`relative h-8 px-3 text-xs transition-all duration-300 ease-in-out transform hover:scale-105 group overflow-hidden ${
+                      isDark 
+                        ? 'bg-gradient-to-r from-gray-800 to-gray-700 text-white hover:from-gray-700 hover:to-gray-600 border-gray-600 hover:border-green-400' 
+                        : 'bg-gradient-to-r from-white to-gray-50 text-gray-700 hover:from-gray-50 hover:to-white border-gray-300 hover:border-green-400'
+                    } ${isLanguageOpen ? 'ring-2 ring-green-400/50 shadow-lg' : ''}`}
+                  >
+                    {/* Animated background glow */}
+                    <div className={`absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ${
+                      isLanguageOpen ? 'scale-x-100' : ''
+                    }`}></div>
+                    
+                    {/* Shimmer effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    
+                    <div className="relative flex items-center z-10">
+                      <Globe className={`w-3 h-3 mr-1.5 transition-all duration-300 ${
+                        isLanguageOpen ? 'text-green-400 animate-pulse' : ''
+                      } group-hover:text-green-400 group-hover:rotate-12`} />
+                      <span className="font-medium transition-all duration-300 group-hover:text-green-600">
+                        {selectedLanguage.flag} {selectedLanguage.code.toUpperCase()}
+                      </span>
+                      <ChevronDown className={`w-3 h-3 ml-1 transition-all duration-300 ${
+                        isLanguageOpen ? 'rotate-180 text-green-400' : ''
+                      } group-hover:text-green-400`} />
+                    </div>
+                    
+                    {/* Premium border glow */}
+                    <div className={`absolute inset-0 rounded-md border-2 border-transparent bg-gradient-to-r from-green-400/50 to-emerald-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                      isLanguageOpen ? 'opacity-100' : ''
+                    }`} style={{ mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', maskComposite: 'exclude' }}></div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className={`w-48 ${
-                  isDark 
-                    ? 'bg-gray-800 border-gray-700' 
-                    : 'bg-white border-gray-200'
-                }`}>
-                  {LANGUAGES.map((lang) => (
+                <DropdownMenuContent 
+                  align="end" 
+                  className={`w-56 p-2 border-2 backdrop-blur-xl animate-in slide-in-from-top-2 duration-300 ${
+                    isDark 
+                      ? 'bg-gray-800/95 border-gray-700 shadow-2xl' 
+                      : 'bg-white/95 border-gray-200 shadow-2xl'
+                  }`}
+                  style={{
+                    boxShadow: isDark 
+                      ? '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(34, 197, 94, 0.2)' 
+                      : '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(34, 197, 94, 0.2)'
+                  }}
+                >
+                  <div className={`text-xs font-medium mb-2 px-2 py-1 rounded-md ${
+                    isDark ? 'text-gray-300 bg-gray-700/50' : 'text-gray-600 bg-gray-100/50'
+                  }`}>
+                    🌍 Choose Language
+                  </div>
+                  {LANGUAGES.map((lang, index) => (
                     <DropdownMenuItem
                       key={lang.code}
-                      onClick={() => setSelectedLanguage(lang)}
-                      className={`flex items-center justify-between ${
+                      onClick={() => handleLanguageSelect(lang)}
+                      className={`group relative flex items-center justify-between p-3 rounded-lg transition-all duration-300 cursor-pointer overflow-hidden ${
                         isDark 
-                          ? 'text-white hover:bg-gray-700 hover:text-white focus:text-white' 
-                          : 'text-gray-700 hover:bg-gray-100'
+                          ? 'text-white hover:bg-gradient-to-r hover:from-green-800/30 hover:to-emerald-800/30 hover:text-white focus:text-white' 
+                          : 'text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-700'
+                      } ${selectedLanguage.code === lang.code ? 
+                        isDark 
+                          ? 'bg-gradient-to-r from-green-800/40 to-emerald-800/40 text-green-300' 
+                          : 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700'
+                        : ''
                       }`}
+                      style={{
+                        animationDelay: `${index * 50}ms`,
+                        animation: isLanguageOpen ? 'fadeInUp 0.3s ease-out forwards' : ''
+                      }}
                     >
-                      <span className="flex items-center">
-                        <span className="mr-2">{lang.flag}</span>
-                        {lang.nativeName}
+                      {/* Hover glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 to-emerald-400/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                      
+                      <span className="relative flex items-center z-10">
+                        <span className="text-lg mr-3 transition-transform duration-300 group-hover:scale-110">
+                          {lang.flag}
+                        </span>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-sm transition-colors duration-300">
+                            {lang.nativeName}
+                          </span>
+                          <span className={`text-xs transition-colors duration-300 ${
+                            isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-500 group-hover:text-gray-600'
+                          }`}>
+                            {lang.name}
+                          </span>
+                        </div>
                       </span>
+                      
                       {selectedLanguage.code === lang.code && (
-                        <Star className="w-3 h-3 text-yellow-500" />
+                        <div className="relative flex items-center z-10">
+                          <Star className="w-4 h-4 text-yellow-500 animate-pulse fill-current" />
+                          <div className="absolute inset-0 w-4 h-4">
+                            <div className="absolute inset-0 w-4 h-4 bg-yellow-400/30 rounded-full animate-ping"></div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Selection indicator line */}
+                      {selectedLanguage.code === lang.code && (
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-400 to-emerald-400 rounded-r-full"></div>
                       )}
                     </DropdownMenuItem>
                   ))}
+                  
+                  {/* Premium footer */}
+                  <div className={`mt-2 pt-2 border-t text-center ${
+                    isDark ? 'border-gray-700' : 'border-gray-200'
+                  }`}>
+                    <div className={`text-xs flex items-center justify-center ${
+                      isDark ? 'text-gray-400' : 'text-gray-500'
+                    }`}>
+                      <Sparkles className="w-3 h-3 mr-1" />
+                      Premium Experience
+                    </div>
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
               <span className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -616,6 +707,19 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
         mode={authMode}
         onModeChange={setAuthMode}
       />
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </>
   );
 }
