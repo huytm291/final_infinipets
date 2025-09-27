@@ -67,11 +67,12 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
   const cartItemCount = getItemCount();
   const wishlistItemCount = getWishlistCount();
 
-  // Search suggestions
+  // Search suggestions - Tăng số lượng suggestions
   const searchSuggestions = [
     'Dog sweaters', 'Cat accessories', 'Winter coats', 'Summer outfits',
     'Pet shoes', 'Raincoats', 'Holiday costumes', 'Formal wear',
-    'Small dog clothes', 'Large dog outfits', 'Puppy wear', 'Senior pet comfort'
+    'Small dog clothes', 'Large dog outfits', 'Puppy wear', 'Senior pet comfort',
+    'Designer pet clothing', 'Waterproof jackets', 'Breathable fabrics', 'Luxury accessories'
   ];
 
   // Handle scroll effect
@@ -288,8 +289,10 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* Search Bar */}
-            <div className="hidden md:flex items-center flex-1 max-w-md mx-8 relative">
+            {/* Enhanced Search Bar - Tăng kích thước khi focus */}
+            <div className={`hidden md:flex items-center flex-1 mx-8 relative transition-all duration-500 ${
+              isSearchFocused ? 'max-w-2xl' : 'max-w-md'
+            }`}>
               <form onSubmit={handleSearch} className="relative w-full">
                 <div className={`relative transition-all duration-300 ${
                   isSearchFocused ? 'scale-105' : ''
@@ -317,28 +320,61 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 </div>
               </form>
               
-              {/* Enhanced Popular Search Suggestions - Tăng kích thước */}
+              {/* Enhanced Popular Search Suggestions - Tăng kích thước và nội dung */}
               {showSearchSuggestions && (
-                <div className={`absolute top-full left-0 right-0 mt-2 p-6 rounded-xl shadow-2xl border z-50 ${
+                <div className={`absolute top-full left-0 right-0 mt-2 p-8 rounded-xl shadow-2xl border z-50 max-w-4xl ${
                   isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
                 }`}>
-                  <p className={`text-base font-semibold mb-4 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
-                    Popular searches:
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {searchSuggestions.slice(0, 6).map((suggestion, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleSuggestionClick(suggestion)}
-                        className={`text-left p-4 text-base rounded-lg transition-all duration-200 hover:scale-105 ${
-                          isDark 
-                            ? 'text-white hover:bg-gray-700 hover:text-white' 
-                            : 'text-gray-700 hover:bg-green-50 hover:text-green-700'
-                        }`}
-                      >
-                        🔍 {suggestion}
-                      </button>
-                    ))}
+                  <div className="space-y-6">
+                    <div>
+                      <p className={`text-lg font-semibold mb-4 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                        🔥 Popular searches:
+                      </p>
+                      <div className="grid grid-cols-3 gap-4">
+                        {searchSuggestions.slice(0, 9).map((suggestion, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSuggestionClick(suggestion)}
+                            className={`text-left p-4 text-base rounded-lg transition-all duration-200 hover:scale-105 border ${
+                              isDark 
+                                ? 'text-white hover:bg-gray-700 hover:text-white border-gray-600 hover:border-green-500' 
+                                : 'text-gray-700 hover:bg-green-50 hover:text-green-700 border-gray-200 hover:border-green-300'
+                            }`}
+                          >
+                            🔍 {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Quick Categories */}
+                    <div className="border-t border-gray-200/20 pt-6">
+                      <p className={`text-lg font-semibold mb-4 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                        📂 Quick Categories:
+                      </p>
+                      <div className="grid grid-cols-4 gap-3">
+                        {CATEGORIES.slice(0, 8).map((category) => (
+                          <button
+                            key={category.id}
+                            onClick={() => handleSuggestionClick(category.name)}
+                            className={`text-left p-3 text-sm rounded-lg transition-all duration-200 hover:scale-105 ${
+                              isDark 
+                                ? 'text-white hover:bg-gray-700 hover:text-green-400' 
+                                : 'text-gray-600 hover:bg-green-50 hover:text-green-700'
+                            }`}
+                          >
+                            🏷️ {category.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Search Tips */}
+                    <div className="border-t border-gray-200/20 pt-6">
+                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        💡 <strong>Search Tips:</strong> Try searching by pet size, season, or occasion (e.g., "small dog winter", "cat formal wear")
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
