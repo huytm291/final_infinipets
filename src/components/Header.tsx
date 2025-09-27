@@ -43,6 +43,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { CATEGORIES, LANGUAGES } from '@/lib/constants';
+import { useNavigate } from 'react-router-dom';
 import AuthModal from './auth/AuthModal';
 
 interface EnhancedHeaderProps {
@@ -51,6 +52,7 @@ interface EnhancedHeaderProps {
 }
 
 export default function EnhancedHeader({ isDark = false, toggleTheme }: EnhancedHeaderProps) {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -124,8 +126,20 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
     setIsLanguageOpen(false);
   };
 
+  const handleCartClick = () => {
+    navigate('/cart');
+  };
+
+  const handleWishlistClick = () => {
+    navigate('/wishlist');
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   const navigationItems = [
-    { name: 'Home', href: '#', icon: Home },
+    { name: 'Home', href: '/', icon: Home },
     { name: 'Products', href: '#products', icon: ShoppingBag },
     { name: 'Blog', href: '#blog', icon: BookOpen },
     { name: 'Contact Us', href: '#contact', icon: Phone },
@@ -288,7 +302,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
           {/* Main Header */}
           <div className="flex items-center justify-between py-4">
             {/* Logo - Made larger */}
-            <div className="flex items-center group">
+            <div className="flex items-center group cursor-pointer" onClick={handleLogoClick}>
               <div className="relative">
                 <img 
                   src="/images/logo.png" 
@@ -314,6 +328,12 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     <NavigationMenuLink asChild>
                       <a
                         href={item.href}
+                        onClick={(e) => {
+                          if (item.href === '/') {
+                            e.preventDefault();
+                            navigate('/');
+                          }
+                        }}
                         className={`group inline-flex h-10 w-max items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 ${
                           isDark 
                             ? 'text-gray-300 hover:text-white hover:bg-green-800/20' 
@@ -505,6 +525,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               <Button 
                 variant="ghost" 
                 size="sm" 
+                onClick={handleWishlistClick}
                 className="relative hover:scale-110 transition-transform group"
               >
                 <Heart className={`h-4 w-4 transition-colors group-hover:text-red-500 ${
@@ -521,6 +542,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               <Button 
                 variant="ghost" 
                 size="sm" 
+                onClick={handleCartClick}
                 className="relative hover:scale-110 transition-transform group"
               >
                 <ShoppingCart className={`h-4 w-4 transition-colors group-hover:text-green-500 ${
@@ -637,6 +659,13 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   <a
                     key={item.name}
                     href={item.href}
+                    onClick={(e) => {
+                      if (item.href === '/') {
+                        e.preventDefault();
+                        navigate('/');
+                        setIsMenuOpen(false);
+                      }
+                    }}
                     className={`flex items-center px-3 py-3 text-base font-medium rounded-lg transition-all duration-200 hover:scale-105 ${
                       isDark 
                         ? 'text-gray-300 hover:text-white hover:bg-green-800/20' 
