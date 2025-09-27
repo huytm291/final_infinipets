@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, User, ArrowRight, Clock, Heart, MessageCircle, Share2, Bookmark, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 interface BlogPost {
   id: string;
@@ -69,6 +70,7 @@ const BLOG_POSTS: BlogPost[] = [
 ];
 
 export default function BlogSection({ isDark = false }: BlogSectionProps) {
+  const navigate = useNavigate();
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [bookmarkedPosts, setBookmarkedPosts] = useState<Set<string>>(new Set());
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
@@ -115,6 +117,11 @@ export default function BlogSection({ isDark = false }: BlogSectionProps) {
         url: window.location.href
       });
     }
+  };
+
+  // FIX: Handle navigation to all articles page
+  const handleViewAllArticles = () => {
+    navigate('/articles');
   };
 
   return (
@@ -348,9 +355,7 @@ export default function BlogSection({ isDark = false }: BlogSectionProps) {
           <Button 
             size="lg" 
             className="gradient-primary hover:opacity-90 hover:scale-105 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
-            onClick={() => {
-              window.location.href = '/blog';
-            }}
+            onClick={handleViewAllArticles}
           >
             <span className="relative z-10 flex items-center">
               View All Articles 

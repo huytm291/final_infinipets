@@ -5,6 +5,7 @@ import { ArrowRight, Heart, ShoppingCart, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
   id: string;
@@ -222,11 +223,22 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
       selectedColor.name,
       1
     );
+    
+    // FIX: Add immediate toast notification for real-time feedback
+    toast.success(`🛒 ${product.name} added to cart!`, {
+      description: `Size: ${selectedSize}, Color: ${selectedColor.name}`,
+      duration: 3000,
+    });
   };
 
   const handleWishlist = () => {
     if (isWishlisted) {
       removeFromWishlist(parseInt(product.id));
+      // FIX: Add immediate toast notification
+      toast.success(`💔 Removed from wishlist`, {
+        description: `${product.name} has been removed from your wishlist`,
+        duration: 3000,
+      });
     } else {
       addToWishlist({
         id: parseInt(product.id),
@@ -243,6 +255,11 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
         colors: product.colors.map(c => c.name),
         selectedSize: selectedSize,
         selectedColor: selectedColor.name
+      });
+      // FIX: Add immediate toast notification
+      toast.success(`❤️ Added to wishlist!`, {
+        description: `${product.name} has been saved to your wishlist`,
+        duration: 3000,
       });
     }
   };
@@ -449,6 +466,7 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
 };
 
 const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = false }) => {
+  const navigate = useNavigate();
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
@@ -460,6 +478,11 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
       }, index * 150);
     });
   }, []);
+
+  // FIX: Handle navigation to all products page
+  const handleViewAllProducts = () => {
+    navigate('/products');
+  };
 
   return (
     <section className={`py-16 px-4 md:px-8 lg:px-16 relative overflow-hidden ${
@@ -516,9 +539,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({ title, subtitle, isDark = f
           <Button 
             size="lg" 
             className="gradient-primary hover:opacity-90 hover:scale-105 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
-            onClick={() => {
-              window.location.href = '/products';
-            }}
+            onClick={handleViewAllProducts}
           >
             <span className="relative z-10 flex items-center">
               View All Products 
