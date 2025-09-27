@@ -50,7 +50,7 @@ export default function WishlistPage() {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen ${isDark ? 'dark bg-pattern-dark' : 'bg-pattern-light'}`}>
       <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
       
       {/* Add padding top to account for fixed header */}
@@ -62,10 +62,10 @@ export default function WishlistPage() {
               variant="ghost"
               size="sm"
               onClick={handleContinueShopping}
-              className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform"
+              className="btn-continue-shopping"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>Continue Shopping</span>
+              <span className="ghost-button-text">Continue Shopping</span>
             </Button>
             <span className="text-gray-400">/</span>
             <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -74,8 +74,8 @@ export default function WishlistPage() {
           </div>
 
           <Card className="w-full max-w-6xl mx-auto shadow-2xl border-0 relative overflow-hidden">
-            {/* Animated border */}
-            <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 opacity-30 animate-border-glow"></div>
+            {/* Animated border - synchronized with main theme */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-cyan-400 to-green-400 opacity-30 animate-border-glow"></div>
             <div className={`absolute inset-[1px] rounded-lg ${isDark ? 'bg-gray-900' : 'bg-white'}`}></div>
 
             <CardHeader className="relative z-10 text-center space-y-4 p-6 md:p-8">
@@ -149,7 +149,7 @@ export default function WishlistPage() {
                       {/* Product Info */}
                       <div className="p-4 space-y-3">
                         <div>
-                          <h3 className={`font-semibold text-lg group-hover:text-green-500 transition-colors line-clamp-2 ${
+                          <h3 className={`font-semibold text-lg group-hover:text-blue-500 transition-colors line-clamp-2 ${
                             isDark ? 'text-white' : 'text-gray-900'
                           }`}>
                             {product.name}
@@ -248,7 +248,7 @@ export default function WishlistPage() {
                     }`}
                   >
                     <Home className="h-4 w-4 mr-2" />
-                    Continue Shopping
+                    <span className="ghost-button-text">Continue Shopping</span>
                   </Button>
                 </div>
                 <div className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -263,53 +263,6 @@ export default function WishlistPage() {
       </div>
 
       <Footer isDark={isDark} />
-
-      <style jsx>{`
-        @keyframes animate-border-glow {
-          0% {
-            opacity: 0.3;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.6;
-            transform: scale(1.005);
-          }
-          100% {
-            opacity: 0.3;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes animate-text-glow {
-          0%,
-          100% {
-            text-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
-          }
-          50% {
-            text-shadow: 0 0 20px rgba(34, 197, 94, 0.6),
-              0 0 30px rgba(16, 185, 129, 0.4);
-          }
-        }
-
-        .animate-border-glow {
-          animation: animate-border-glow 3s ease-in-out infinite;
-        }
-
-        .animate-text-glow {
-          animation: animate-text-glow 3s ease-in-out infinite;
-        }
-
-        .gradient-text {
-          background: linear-gradient(
-            to right,
-            var(--primary-green),
-            var(--primary-dark-green),
-            var(--accent-emerald)
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      `}</style>
     </div>
   );
 }

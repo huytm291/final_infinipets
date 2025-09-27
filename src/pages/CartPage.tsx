@@ -83,7 +83,7 @@ export default function CartPage() {
   // Show loading state briefly to ensure cart data is loaded
   if (isLoading) {
     return (
-      <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
+      <div className={`min-h-screen ${isDark ? 'dark bg-pattern-dark' : 'bg-pattern-light'}`}>
         <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
         <div className="pt-20 lg:pt-32">
           <div className="container mx-auto py-8 px-4 md:px-8 lg:px-16 min-h-screen flex items-center justify-center">
@@ -101,7 +101,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen ${isDark ? 'dark bg-pattern-dark' : 'bg-pattern-light'}`}>
       <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
       
       {/* Add padding top to account for fixed header */}
@@ -113,10 +113,10 @@ export default function CartPage() {
               variant="ghost"
               size="sm"
               onClick={handleContinueShopping}
-              className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform"
+              className="btn-continue-shopping"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>Continue Shopping</span>
+              <span className="ghost-button-text">Continue Shopping</span>
             </Button>
             <span className="text-gray-400">/</span>
             <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
@@ -125,8 +125,8 @@ export default function CartPage() {
           </div>
 
           <Card className="w-full max-w-6xl mx-auto shadow-2xl border-0 relative overflow-hidden">
-            {/* Animated border */}
-            <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 opacity-30 animate-border-glow"></div>
+            {/* Animated border - synchronized with main theme */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-cyan-400 to-green-400 opacity-30 animate-border-glow"></div>
             <div className={`absolute inset-[1px] rounded-lg ${isDark ? 'bg-gray-900' : 'bg-white'}`}></div>
 
             <CardHeader className="relative z-10 text-center space-y-4 p-6 md:p-8">
@@ -171,7 +171,7 @@ export default function CartPage() {
                         className="w-24 h-24 object-cover rounded-md flex-shrink-0"
                       />
                       <div className="flex-1 text-center sm:text-left">
-                        <h3 className={`font-semibold text-lg group-hover:text-green-500 transition-colors ${
+                        <h3 className={`font-semibold text-lg group-hover:text-blue-500 transition-colors ${
                           isDark ? 'text-white' : 'text-gray-900'
                         }`}>
                           {item.name}
@@ -197,7 +197,7 @@ export default function CartPage() {
                           variant="outline"
                           size="icon"
                           onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                          className="h-8 w-8 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-300"
+                          className="h-8 w-8 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300"
                         >
                           <Minus className="h-4 w-4" />
                         </Button>
@@ -205,14 +205,14 @@ export default function CartPage() {
                           type="number"
                           value={item.quantity}
                           onChange={(e) => handleUpdateQuantity(item.id, parseInt(e.target.value) || 1)}
-                          className="w-16 text-center border-green-400 focus:border-green-500"
+                          className="w-16 text-center border-blue-400 focus:border-blue-500"
                           min="1"
                         />
                         <Button
                           variant="outline"
                           size="icon"
                           onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                          className="h-8 w-8 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-all duration-300"
+                          className="h-8 w-8 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-300"
                         >
                           <Plus className="h-4 w-4" />
                         </Button>
@@ -283,7 +283,7 @@ export default function CartPage() {
                       }`}
                     >
                       <Home className="h-4 w-4 mr-2" />
-                      Continue Shopping
+                      <span className="ghost-button-text">Continue Shopping</span>
                     </Button>
                   </div>
                   <Button
@@ -301,53 +301,6 @@ export default function CartPage() {
       </div>
 
       <Footer isDark={isDark} />
-
-      <style jsx>{`
-        @keyframes animate-border-glow {
-          0% {
-            opacity: 0.3;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.6;
-            transform: scale(1.005);
-          }
-          100% {
-            opacity: 0.3;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes animate-text-glow {
-          0%,
-          100% {
-            text-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
-          }
-          50% {
-            text-shadow: 0 0 20px rgba(34, 197, 94, 0.6),
-              0 0 30px rgba(16, 185, 129, 0.4);
-          }
-        }
-
-        .animate-border-glow {
-          animation: animate-border-glow 3s ease-in-out infinite;
-        }
-
-        .animate-text-glow {
-          animation: animate-text-glow 3s ease-in-out infinite;
-        }
-
-        .gradient-text {
-          background: linear-gradient(
-            to right,
-            var(--primary-green),
-            var(--primary-dark-green),
-            var(--accent-emerald)
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      `}</style>
     </div>
   );
 }

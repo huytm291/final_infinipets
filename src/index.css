@@ -31,10 +31,13 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    /* Brand colors */
+    /* Brand colors - Synchronized with main theme */
     --brand-blue: #0077C2;
     --brand-cyan: #00B8D9;
     --brand-green: #00C853;
+    --primary-green: #22c55e;
+    --primary-dark-green: #16a34a;
+    --accent-emerald: #10b981;
   }
 
   .dark {
@@ -79,16 +82,92 @@
   font-family: 'Coiny', cursive;
 }
 
-/* Custom gradient classes */
+/* Custom gradient classes - Synchronized */
 .gradient-primary {
   background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 50%, var(--brand-green) 100%);
 }
 
+/* Enhanced gradient text with consistent styling across all pages */
 .gradient-text {
-  background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 50%, var(--brand-green) 100%);
+  background: linear-gradient(
+    135deg, 
+    #0077C2 0%, 
+    #00B8D9 35%, 
+    #00C853 70%,
+    #22c55e 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  /* Fallback for better accessibility */
+  color: #0077C2;
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(0, 119, 194, 0.4);
+}
+
+/* Dark mode gradient text - consistent with main theme */
+.dark .gradient-text {
+  background: linear-gradient(
+    135deg, 
+    #60a5fa 0%, 
+    #34d399 35%, 
+    #4ade80 70%,
+    #22c55e 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #60a5fa;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+}
+
+/* Consistent text glow animation */
+@keyframes animate-text-glow {
+  0%, 100% {
+    text-shadow: 0 0 15px rgba(0, 119, 194, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 25px rgba(0, 119, 194, 0.6),
+      0 0 35px rgba(0, 184, 217, 0.4);
+  }
+}
+
+.dark .animate-text-glow {
+  animation: animate-text-glow-dark 3s ease-in-out infinite;
+}
+
+@keyframes animate-text-glow-dark {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(96, 165, 250, 0.7),
+      0 0 40px rgba(52, 211, 153, 0.5);
+  }
+}
+
+.animate-text-glow {
+  animation: animate-text-glow 3s ease-in-out infinite;
+}
+
+/* Consistent border glow animation */
+@keyframes animate-border-glow {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.005);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.animate-border-glow {
+  animation: animate-border-glow 3s ease-in-out infinite;
 }
 
 /* Text size utilities */
@@ -235,4 +314,42 @@ p, span, div, h1, h2, h3, h4, h5, h6 {
 
 .border-brand-green {
   border-color: var(--brand-green);
+}
+
+/* Button hover states to prevent text disappearing in light mode */
+.btn-continue-shopping {
+  @apply flex items-center space-x-2 text-sm hover:scale-105 transition-all duration-300;
+}
+
+/* Light mode button text fix */
+.btn-continue-shopping span {
+  @apply text-gray-700 dark:text-gray-300;
+  transition: color 0.3s ease;
+}
+
+.btn-continue-shopping:hover span {
+  @apply text-gray-900 dark:text-white !important;
+}
+
+/* Ensure button text visibility in all states */
+.ghost-button-text {
+  @apply text-gray-700 dark:text-gray-300;
+  transition: color 0.3s ease;
+}
+
+.ghost-button-text:hover {
+  @apply text-gray-900 dark:text-white !important;
+}
+
+/* Synchronized background patterns */
+.bg-pattern-light {
+  background-color: #ffffff;
+  background-image: radial-gradient(circle at 1px 1px, rgba(0,119,194,0.05) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.bg-pattern-dark {
+  background-color: #111827;
+  background-image: radial-gradient(circle at 1px 1px, rgba(96,165,250,0.1) 1px, transparent 0);
+  background-size: 20px 20px;
 }
