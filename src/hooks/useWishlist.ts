@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { WishlistItem } from '@/lib/types';
 import { toast } from 'sonner';
 
@@ -6,6 +6,7 @@ const WISHLIST_STORAGE_KEY = 'infinipets-wishlist';
 
 export function useWishlist() {
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
+  const isUpdatingFromStorage = useRef(false);
 
   // Load wishlist from localStorage on mount
   useEffect(() => {
@@ -21,15 +22,16 @@ export function useWishlist() {
     }
   }, []);
 
-  // Save to localStorage whenever wishlist changes
+  // Save to localStorage whenever wishlist changes (but not when updating from storage)
   useEffect(() => {
+    if (isUpdatingFromStorage.current) {
+      isUpdatingFromStorage.current = false;
+      return;
+    }
+
     try {
       localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
-      // Trigger storage event for cross-tab synchronization
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: WISHLIST_STORAGE_KEY,
-        newValue: JSON.stringify(wishlistItems)
-      }));
+      console.log('Storage changed:', WISHLIST_STORAGE_KEY);
     } catch (error) {
       console.error('Failed to save wishlist:', error);
     }
@@ -41,6 +43,7 @@ export function useWishlist() {
       if (e.key === WISHLIST_STORAGE_KEY && e.newValue) {
         try {
           const parsed = JSON.parse(e.newValue);
+          isUpdatingFromStorage.current = true;
           setWishlistItems(Array.isArray(parsed) ? parsed : []);
         } catch (error) {
           console.error('Failed to sync wishlist:', error);

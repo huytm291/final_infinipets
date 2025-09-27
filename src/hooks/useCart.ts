@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CartItem, Cart } from '@/lib/types';
 import { toast } from 'sonner';
 
@@ -6,6 +6,7 @@ const CART_STORAGE_KEY = 'infinipets-cart';
 
 export function useCart() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const isUpdatingFromStorage = useRef(false);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -21,15 +22,16 @@ export function useCart() {
     }
   }, []);
 
-  // Save to localStorage whenever cart changes
+  // Save to localStorage whenever cart changes (but not when updating from storage)
   useEffect(() => {
+    if (isUpdatingFromStorage.current) {
+      isUpdatingFromStorage.current = false;
+      return;
+    }
+
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-      // Trigger storage event for cross-tab synchronization
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: CART_STORAGE_KEY,
-        newValue: JSON.stringify(cartItems)
-      }));
+      console.log('Storage changed:', CART_STORAGE_KEY);
     } catch (error) {
       console.error('Failed to save cart:', error);
     }
@@ -41,6 +43,7 @@ export function useCart() {
       if (e.key === CART_STORAGE_KEY && e.newValue) {
         try {
           const parsed = JSON.parse(e.newValue);
+          isUpdatingFromStorage.current = true;
           setCartItems(Array.isArray(parsed) ? parsed : []);
         } catch (error) {
           console.error('Failed to sync cart:', error);
