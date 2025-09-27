@@ -8,6 +8,7 @@ import { useCart } from '@/hooks/useCart';
 import { useNavigate } from 'react-router-dom';
 import EnhancedHeader from '@/components/Header';
 import Footer from '@/components/Footer';
+import { WishlistItem } from '@/lib/types';
 
 export default function WishlistPage() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function WishlistPage() {
     document.documentElement.classList.toggle('dark');
   };
 
-  const handleMoveToCart = (product: any) => {
+  const handleMoveToCart = (product: WishlistItem) => {
     // Convert wishlist item to cart format
     addToCart(product.id, product.name, product.price, product.image, product.selectedSize || 'M', product.selectedColor || 'Default', 1);
     removeFromWishlist(product.id);

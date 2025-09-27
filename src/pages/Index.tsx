@@ -1,53 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EnhancedHeader from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import CategoriesSection from '@/components/CategoriesSection';
 import ProductsSection from '@/components/ProductsSection';
+import CategoriesSection from '@/components/CategoriesSection';
 import BlogSection from '@/components/BlogSection';
-import FeedbackSection from '@/components/FeedbackSection';
 import NewsletterSection from '@/components/NewsletterSection';
+import FeedbackSection from '@/components/FeedbackSection';
 import Footer from '@/components/Footer';
 import ChatBot from '@/components/ChatBot';
-import LoadingScreen from '@/components/LoadingScreen';
 
 export default function Index() {
   const [isDark, setIsDark] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time and then show the main content
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleTheme = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle('dark');
   };
 
-  // Simulate loading
-  setTimeout(() => {
-    if (isLoading) setIsLoading(false);
-  }, 2000);
-
-  if (isLoading) {
-    return <LoadingScreen onComplete={() => setIsLoading(false)} />;
-  }
-
+  // Remove loading screen - show content directly
   return (
     <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
       <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
-      
-      {/* Add padding top to account for fixed header */}
-      <div className="pt-20 lg:pt-32">
-        <HeroSection />
-        <CategoriesSection />
-        <ProductsSection 
-          title="Featured Products"
-          subtitle="Discover our most popular pet fashion items"
-          isDark={isDark}
-          useAPI={false}
-        />
-        <BlogSection isDark={isDark} />
-        <FeedbackSection />
-        <NewsletterSection />
-        <Footer isDark={isDark} />
-        <ChatBot isDark={isDark} />
-      </div>
+      <HeroSection />
+      <ProductsSection />
+      <CategoriesSection />
+      <BlogSection />
+      <NewsletterSection />
+      <FeedbackSection />
+      <Footer isDark={isDark} />
+      <ChatBot />
     </div>
   );
 }
