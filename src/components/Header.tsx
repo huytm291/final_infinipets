@@ -68,8 +68,8 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
   const { getWishlistCount, wishlistItems, updateTrigger: wishlistUpdateTrigger } = useWishlist();
 
   // FIX: Force real-time updates by depending on both items and update triggers
-  const cartItemCount = getItemCount();
-  const wishlistItemCount = getWishlistCount();
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const [wishlistItemCount, setWishlistItemCount] = useState(0);
 
   // Search suggestions
   const searchSuggestions = [
@@ -88,9 +88,37 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
 
   // FIX: Force re-render when cart, wishlist items or triggers change
   useEffect(() => {
-    // This effect ensures header updates immediately when items change
-    console.log('Header update triggered - Cart:', cartItemCount, 'Wishlist:', wishlistItemCount);
-  }, [cartItems, wishlistItems, cartUpdateTrigger, wishlistUpdateTrigger, cartItemCount, wishlistItemCount]);
+    const newCartCount = getItemCount();
+    const newWishlistCount = getWishlistCount();
+    
+    setCartItemCount(newCartCount);
+    setWishlistItemCount(newWishlistCount);
+    
+    console.log('Header update triggered - Cart:', newCartCount, 'Wishlist:', newWishlistCount);
+  }, [cartItems, wishlistItems, cartUpdateTrigger, wishlistUpdateTrigger, getItemCount, getWishlistCount]);
+
+  // FIX: Listen for custom events to ensure real-time updates
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      const newCartCount = getItemCount();
+      setCartItemCount(newCartCount);
+      console.log('Cart update event received, new count:', newCartCount);
+    };
+
+    const handleWishlistUpdate = () => {
+      const newWishlistCount = getWishlistCount();
+      setWishlistItemCount(newWishlistCount);
+      console.log('Wishlist update event received, new count:', newWishlistCount);
+    };
+
+    window.addEventListener('cartUpdate', handleCartUpdate);
+    window.addEventListener('wishlistUpdate', handleWishlistUpdate);
+
+    return () => {
+      window.removeEventListener('cartUpdate', handleCartUpdate);
+      window.removeEventListener('wishlistUpdate', handleWishlistUpdate);
+    };
+  }, [getItemCount, getWishlistCount]);
 
   const handleAuthClick = useCallback((mode: 'login' | 'signup') => {
     setAuthMode(mode);

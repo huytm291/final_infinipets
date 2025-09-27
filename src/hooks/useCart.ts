@@ -20,7 +20,9 @@ export function useCart() {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        setCartItems(Array.isArray(parsed) ? parsed : []);
+        const validItems = Array.isArray(parsed) ? parsed : [];
+        setCartItems(validItems);
+        console.log('Cart loaded:', validItems.length, 'items');
       }
     } catch (error) {
       console.error('Failed to load cart:', error);
@@ -37,7 +39,16 @@ export function useCart() {
 
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-      console.log('Storage changed:', CART_STORAGE_KEY);
+      console.log('Cart saved to storage:', cartItems.length, 'items');
+      
+      // Dispatch custom event to notify other components
+      window.dispatchEvent(new CustomEvent('cartUpdate', { 
+        detail: { 
+          items: cartItems, 
+          count: cartItems.reduce((total, item) => total + item.quantity, 0)
+        } 
+      }));
+      
       // Trigger update for components that depend on cart
       triggerUpdate();
     } catch (error) {
@@ -53,15 +64,26 @@ export function useCart() {
           const parsed = JSON.parse(e.newValue);
           isUpdatingFromStorage.current = true;
           setCartItems(Array.isArray(parsed) ? parsed : []);
+          console.log('Cart synced from storage');
         } catch (error) {
           console.error('Failed to sync cart:', error);
         }
       }
     };
 
+    // Listen for custom cart update events
+    const handleCartUpdate = () => {
+      triggerUpdate();
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+    window.addEventListener('cartUpdate', handleCartUpdate);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('cartUpdate', handleCartUpdate);
+    };
+  }, [triggerUpdate]);
 
   const addToCart = useCallback((productId: number, name: string, price: number, image: string, size: string, color: string, quantity: number = 1) => {
     const itemId = `${productId}-${size}-${color}`;
@@ -70,13 +92,15 @@ export function useCart() {
       const existingItem = prev.find(item => item.id === itemId);
       
       if (existingItem) {
-        return prev.map(item =>
+        const updatedItems = prev.map(item =>
           item.id === itemId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
+        console.log('Updated cart item quantity:', name, 'New quantity:', existingItem.quantity + quantity);
+        return updatedItems;
       } else {
-        return [...prev, {
+        const newItem = {
           id: itemId,
           productId,
           name,
@@ -85,13 +109,20 @@ export function useCart() {
           size,
           color,
           quantity
-        }];
+        };
+        const newItems = [...prev, newItem];
+        console.log('Added to cart:', name, 'Total items:', newItems.length);
+        return newItems;
       }
     });
   }, []);
 
   const removeFromCart = useCallback((itemId: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== itemId));
+    setCartItems(prev => {
+      const newItems = prev.filter(item => item.id !== itemId);
+      console.log('Removed from cart, remaining items:', newItems.length);
+      return newItems;
+    });
   }, []);
 
   const updateQuantity = useCallback((itemId: string, quantity: number) => {
@@ -100,20 +131,24 @@ export function useCart() {
       return;
     }
 
-    setCartItems(prev =>
-      prev.map(item =>
+    setCartItems(prev => {
+      const updatedItems = prev.map(item =>
         item.id === itemId ? { ...item, quantity } : item
-      )
-    );
+      );
+      console.log('Updated quantity for item:', itemId, 'New quantity:', quantity);
+      return updatedItems;
+    });
   }, [removeFromCart]);
 
   const clearCart = useCallback(() => {
     setCartItems([]);
+    console.log('Cart cleared');
   }, []);
 
   const getItemCount = useCallback((): number => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
-  }, [cartItems, updateTrigger]); // Add updateTrigger dependency
+    const count = cartItems.reduce((total, item) => total + item.quantity, 0);
+    return count;
+  }, [cartItems, updateTrigger]);
 
   const getSubtotal = useCallback((): number => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
