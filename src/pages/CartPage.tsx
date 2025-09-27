@@ -11,14 +11,39 @@ import Footer from '@/components/Footer';
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const { cartItems, updateQuantity, removeFromCart, clearCart, getCart } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, clearCart, getCart, updateTrigger } = useCart();
   const [isDark, setIsDark] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  
   const cart = getCart();
 
   const toggleTheme = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle('dark');
   };
+
+  // FIX: Force re-render when cart changes and handle loading state
+  useEffect(() => {
+    // Simulate loading to ensure cart data is loaded
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+
+    console.log('CartPage re-rendered - Items:', cartItems.length, 'Update trigger:', updateTrigger);
+    
+    return () => clearTimeout(timer);
+  }, [cartItems, updateTrigger]);
+
+  // FIX: Listen for cart update events
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      console.log('CartPage received cart update event');
+      setIsLoading(false); // Ensure loading is false when cart updates
+    };
+
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
+  }, []);
 
   const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -54,6 +79,26 @@ export default function CartPage() {
   const handleContinueShopping = () => {
     navigate('/');
   };
+
+  // Show loading state briefly to ensure cart data is loaded
+  if (isLoading) {
+    return (
+      <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
+        <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
+        <div className="pt-20 lg:pt-32">
+          <div className="container mx-auto py-8 px-4 md:px-8 lg:px-16 min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <ShoppingCart className={`h-16 w-16 mx-auto opacity-50 animate-pulse ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+              <p className={`text-lg mt-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                Loading your cart...
+              </p>
+            </div>
+          </div>
+        </div>
+        <Footer isDark={isDark} />
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
