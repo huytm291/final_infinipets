@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -64,18 +64,18 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   
   const { user, isAuthenticated, logout } = useAuth();
-  const { getItemCount } = useCart();
-  const { getWishlistCount } = useWishlist();
+  const { getItemCount, cartItems, updateTrigger: cartUpdateTrigger } = useCart();
+  const { getWishlistCount, wishlistItems, updateTrigger: wishlistUpdateTrigger } = useWishlist();
 
-  // Memoize counts to prevent unnecessary re-renders - FIX FOR INFINITE LOOP
-  const cartItemCount = useMemo(() => getItemCount(), [getItemCount]);
-  const wishlistItemCount = useMemo(() => getWishlistCount(), [getWishlistCount]);
+  // FIX: Force real-time updates by depending on both items and update triggers
+  const cartItemCount = getItemCount();
+  const wishlistItemCount = getWishlistCount();
 
-  // Search suggestions - Giảm xuống còn 6 suggestions
-  const searchSuggestions = useMemo(() => [
+  // Search suggestions
+  const searchSuggestions = [
     'Dog sweaters', 'Cat accessories', 'Winter coats', 
     'Pet shoes', 'Holiday costumes', 'Small dog clothes'
-  ], []);
+  ];
 
   // Handle scroll effect
   useEffect(() => {
@@ -86,19 +86,11 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // FIX: Remove the problematic forceUpdate that causes infinite loop
-  // Original code was causing infinite re-renders
+  // FIX: Force re-render when cart, wishlist items or triggers change
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'infinipets-cart' || e.key === 'infinipets-wishlist') {
-        // Just log the change instead of forcing re-render
-        console.log('Storage changed:', e.key);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+    // This effect ensures header updates immediately when items change
+    console.log('Header update triggered - Cart:', cartItemCount, 'Wishlist:', wishlistItemCount);
+  }, [cartItems, wishlistItems, cartUpdateTrigger, wishlistUpdateTrigger, cartItemCount, wishlistItemCount]);
 
   const handleAuthClick = useCallback((mode: 'login' | 'signup') => {
     setAuthMode(mode);
@@ -153,12 +145,12 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
     navigate('/');
   }, [navigate]);
 
-  const navigationItems = useMemo(() => [
+  const navigationItems = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Products', href: '#products', icon: ShoppingBag },
     { name: 'Blog', href: '#blog', icon: BookOpen },
     { name: 'Contact Us', href: '#contact', icon: Phone },
-  ], []);
+  ];
 
   return (
     <>
@@ -197,14 +189,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                         : 'bg-gradient-to-r from-white to-gray-50 text-gray-700 hover:from-gray-50 hover:to-white border-gray-300 hover:border-green-400'
                     } ${isLanguageOpen ? 'ring-2 ring-green-400/50 shadow-lg' : ''}`}
                   >
-                    {/* Animated background glow */}
-                    <div className={`absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ${
-                      isLanguageOpen ? 'scale-x-100' : ''
-                    }`}></div>
-                    
-                    {/* Shimmer effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                    
                     <div className="relative flex items-center z-10">
                       <Globe className={`w-3 h-3 mr-1.5 transition-all duration-300 ${
                         isLanguageOpen ? 'text-green-400 animate-pulse' : ''
@@ -246,9 +230,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                         : ''
                       }`}
                     >
-                      {/* Hover glow effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 to-emerald-400/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                      
                       <span className="relative flex items-center z-10">
                         <span className="text-lg mr-3 transition-transform duration-300 group-hover:scale-110">
                           {lang.flag}
@@ -268,30 +249,10 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       {selectedLanguage.code === lang.code && (
                         <div className="relative flex items-center z-10">
                           <Star className="w-4 h-4 text-yellow-500 animate-pulse fill-current" />
-                          <div className="absolute inset-0 w-4 h-4">
-                            <div className="absolute inset-0 w-4 h-4 bg-yellow-400/30 rounded-full animate-ping"></div>
-                          </div>
                         </div>
-                      )}
-                      
-                      {/* Selection indicator line */}
-                      {selectedLanguage.code === lang.code && (
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-400 to-emerald-400 rounded-r-full"></div>
                       )}
                     </DropdownMenuItem>
                   ))}
-                  
-                  {/* Premium footer */}
-                  <div className={`mt-2 pt-2 border-t text-center ${
-                    isDark ? 'border-gray-700' : 'border-gray-200'
-                  }`}>
-                    <div className={`text-xs flex items-center justify-center ${
-                      isDark ? 'text-gray-400' : 'text-gray-500'
-                    }`}>
-                      <Sparkles className="w-3 h-3 mr-1" />
-                      Premium Experience
-                    </div>
-                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
               <span className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -302,7 +263,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
 
           {/* Main Header */}
           <div className="flex items-center justify-between py-4">
-            {/* Logo - Made larger */}
+            {/* Logo */}
             <div className="flex items-center group cursor-pointer" onClick={handleLogoClick}>
               <div className="relative">
                 <img 
@@ -450,7 +411,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   isDark ? 'bg-gray-800/95 border-gray-700' : 'bg-white/95 border-gray-200'
                 }`}>
                   <div className="space-y-3">
-                    {/* Popular searches section */}
                     <div>
                       <p className={`text-sm font-medium mb-3 flex items-center ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
                         🔥 Popular searches
@@ -474,8 +434,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                         ))}
                       </div>
                     </div>
-                    
-                    {/* Search tips section */}
                     <div className="border-t border-gray-200/20 pt-3">
                       <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                         💡 Try searching by pet size, season, or occasion
@@ -601,9 +559,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     }`}
                   >
                     <span className="relative z-10 transition-colors duration-300">Login</span>
-                    <div className={`absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ${
-                      isDark ? 'opacity-50' : ''
-                    }`}></div>
                   </Button>
                   <Button 
                     variant="ghost"
@@ -614,9 +569,6 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     }`}
                   >
                     <span className="relative z-10 transition-colors duration-300">Sign Up</span>
-                    <div className={`absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ${
-                      isDark ? 'opacity-50' : ''
-                    }`}></div>
                   </Button>
                 </div>
               )}

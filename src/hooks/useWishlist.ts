@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { WishlistItem } from '@/lib/types';
 import { toast } from 'sonner';
 
@@ -6,7 +6,13 @@ const WISHLIST_STORAGE_KEY = 'infinipets-wishlist';
 
 export function useWishlist() {
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
+  const [updateTrigger, setUpdateTrigger] = useState(0);
   const isUpdatingFromStorage = useRef(false);
+
+  // Force trigger update for real-time sync
+  const triggerUpdate = useCallback(() => {
+    setUpdateTrigger(prev => prev + 1);
+  }, []);
 
   // Load wishlist from localStorage on mount
   useEffect(() => {
@@ -32,10 +38,12 @@ export function useWishlist() {
     try {
       localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
       console.log('Storage changed:', WISHLIST_STORAGE_KEY);
+      // Trigger update for components that depend on wishlist
+      triggerUpdate();
     } catch (error) {
       console.error('Failed to save wishlist:', error);
     }
-  }, [wishlistItems]);
+  }, [wishlistItems, triggerUpdate]);
 
   // Listen for storage changes from other tabs
   useEffect(() => {
@@ -55,7 +63,7 @@ export function useWishlist() {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const addToWishlist = (item: WishlistItem) => {
+  const addToWishlist = useCallback((item: WishlistItem) => {
     setWishlistItems(prev => {
       const exists = prev.find(existing => existing.id === item.id);
       if (exists) {
@@ -64,27 +72,27 @@ export function useWishlist() {
       const newItem = { ...item, addedAt: new Date() };
       return [...prev, newItem];
     });
-  };
+  }, []);
 
-  const removeFromWishlist = (itemId: number) => {
+  const removeFromWishlist = useCallback((itemId: number) => {
     setWishlistItems(prev => prev.filter(item => item.id !== itemId));
-  };
+  }, []);
 
-  const isInWishlist = (itemId: number): boolean => {
+  const isInWishlist = useCallback((itemId: number): boolean => {
     return wishlistItems.some(item => item.id === itemId);
-  };
+  }, [wishlistItems, updateTrigger]); // Add updateTrigger dependency
 
-  const clearWishlist = () => {
+  const clearWishlist = useCallback(() => {
     setWishlistItems([]);
-  };
+  }, []);
 
-  const getWishlistCount = (): number => {
+  const getWishlistCount = useCallback((): number => {
     return wishlistItems.length;
-  };
+  }, [wishlistItems, updateTrigger]); // Add updateTrigger dependency
 
-  const getWishlistTotal = (): number => {
+  const getWishlistTotal = useCallback((): number => {
     return wishlistItems.reduce((total, item) => total + item.price, 0);
-  };
+  }, [wishlistItems]);
 
   return {
     wishlistItems,
@@ -94,5 +102,6 @@ export function useWishlist() {
     clearWishlist,
     getWishlistCount,
     getWishlistTotal,
+    updateTrigger, // Expose trigger for components that need real-time updates
   };
 }
