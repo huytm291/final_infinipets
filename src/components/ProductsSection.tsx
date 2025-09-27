@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Heart, ShoppingCart, Star } from 'lucide-react';
 import { toast } from 'sonner';
+import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/hooks/useWishlist';
 
 interface Product {
   id: string;
@@ -23,6 +25,7 @@ interface ProductsSectionProps {
   title: string;
   subtitle: string;
   isDark?: boolean;
+  useAPI?: boolean;
 }
 
 const FEATURED_PRODUCTS: Product[] = [
@@ -201,20 +204,47 @@ const ProductCard: FC<{ product: Product; isDark?: boolean; index: number; isVis
 }) => {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  
+  // Use the actual hooks
+  const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  
+  // Check if product is in wishlist
+  const isWishlisted = isInWishlist(parseInt(product.id));
 
   const handleAddToCart = () => {
-    toast.success('Added to cart! 🛒', {
-      description: `${product.name} (${selectedSize}, ${selectedColor.name})`,
-      duration: 3000,
-    });
+    addToCart(
+      parseInt(product.id),
+      product.name,
+      product.price,
+      product.image,
+      selectedSize,
+      selectedColor.name,
+      1
+    );
   };
 
   const handleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
-    toast.success(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist! ❤️', {
-      duration: 2000,
-    });
+    if (isWishlisted) {
+      removeFromWishlist(parseInt(product.id));
+    } else {
+      addToWishlist({
+        id: parseInt(product.id),
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        category: 'Pet Fashion', // Default category
+        rating: product.rating,
+        reviewCount: product.reviews,
+        inStock: true,
+        addedAt: new Date(),
+        sizes: product.sizes,
+        colors: product.colors.map(c => c.name),
+        selectedSize: selectedSize,
+        selectedColor: selectedColor.name
+      });
+    }
   };
 
   return (
