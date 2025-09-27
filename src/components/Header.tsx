@@ -236,12 +236,12 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                   </NavigationMenuItem>
                 ))}
                 
-                {/* Categories Dropdown */}
+                {/* Categories Dropdown - FIXED HOVER TEXT COLOR */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={`h-10 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 border ${
                     isDark 
-                      ? 'text-white bg-gray-800 border-gray-600 hover:bg-gray-700' 
-                      : 'text-white bg-gray-800 border-gray-300 hover:bg-gray-50'
+                      ? 'text-white bg-gray-800 border-gray-600 hover:bg-gray-700 hover:text-white' 
+                      : 'text-gray-900 bg-gray-100 border-gray-300 hover:bg-gray-200 hover:text-gray-900'
                   }`}>
                     <ShoppingBag className="w-4 h-4 mr-2" />
                     Categories
