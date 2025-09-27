@@ -287,7 +287,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* Enhanced Search Bar - FIX INPUT FIELD */}
+            {/* Enhanced Search Bar - FIXED TEXT VISIBILITY */}
             <div className={`hidden md:flex items-center mx-8 relative transition-all duration-500 ease-in-out ${
               isSearchFocused 
                 ? 'flex-1 max-w-2xl z-50' 
@@ -313,18 +313,24 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={handleSearchFocus}
                     onBlur={handleSearchBlur}
-                    className={`w-full rounded-full border-2 transition-all duration-500 ease-in-out ${
+                    style={{
+                      color: isDark ? '#ffffff !important' : '#111827 !important',
+                      backgroundColor: isDark ? '#374151 !important' : '#ffffff !important'
+                    }}
+                    className={`w-full rounded-full border-2 transition-all duration-500 ease-in-out !important ${
                       isSearchFocused
                         ? 'pl-12 pr-6 py-4 text-lg border-green-500 shadow-2xl ring-4 ring-green-500/30'
                         : 'pl-10 pr-4 py-2 text-base'
                     } ${
                       isSearchFocused
-                        ? isDark 
-                          ? 'bg-gray-800 text-white placeholder:text-gray-400' 
-                          : 'bg-white text-gray-900 placeholder:text-gray-500'
+                        ? 'border-green-500 shadow-2xl ring-4 ring-green-500/30'
                         : isDark 
-                          ? 'border-gray-700 bg-gray-800 text-white placeholder:text-gray-400' 
-                          : 'border-gray-300 bg-white text-gray-900 placeholder:text-gray-500'
+                          ? 'border-gray-700' 
+                          : 'border-gray-300'
+                    } ${
+                      isDark 
+                        ? 'placeholder:text-gray-400' 
+                        : 'placeholder:text-gray-500'
                     }`}
                   />
                   
@@ -542,7 +548,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
           {isMenuOpen && (
             <div className="lg:hidden border-t border-gray-200/20">
               <div className="px-2 pt-4 pb-6 space-y-3">
-                {/* Mobile Search */}
+                {/* Mobile Search - FIXED TEXT VISIBILITY */}
                 <div className="mb-4">
                   <form onSubmit={handleSearch} className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -551,8 +557,12 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       placeholder="Search..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
+                      style={{
+                        color: isDark ? '#ffffff !important' : '#111827 !important',
+                        backgroundColor: isDark ? '#374151 !important' : '#ffffff !important'
+                      }}
                       className={`pl-10 pr-4 py-2 w-full rounded-full ${
-                        isDark ? 'bg-gray-800 text-white placeholder:text-gray-400' : ''
+                        isDark ? 'placeholder:text-gray-400' : 'placeholder:text-gray-500'
                       }`}
                     />
                   </form>
