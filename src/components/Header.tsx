@@ -509,7 +509,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       : 'text-gray-900 group-hover:text-red-500'
                 }`} />
                 {wishlistItemCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold animate-pulse shadow-lg">
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold animate-bounce shadow-lg flex items-center justify-center">
                     {wishlistItemCount > 99 ? '99+' : wishlistItemCount}
                   </Badge>
                 )}
@@ -534,7 +534,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       : 'text-gray-900 group-hover:text-green-500'
                 }`} />
                 {cartItemCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold animate-bounce shadow-lg">
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold animate-pulse shadow-lg flex items-center justify-center">
                     {cartItemCount > 99 ? '99+' : cartItemCount}
                   </Badge>
                 )}
