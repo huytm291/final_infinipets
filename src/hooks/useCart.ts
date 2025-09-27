@@ -14,7 +14,7 @@ export function useCart() {
     setUpdateTrigger(prev => prev + 1);
   }, []);
 
-  // Load cart from localStorage on mount
+  // Load cart from localStorage on mount and force immediate update
   useEffect(() => {
     try {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
@@ -41,22 +41,29 @@ export function useCart() {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
       console.log('Cart saved to storage:', cartItems.length, 'items');
       
-      // Dispatch custom event to notify other components
-      window.dispatchEvent(new CustomEvent('cartUpdate', { 
-        detail: { 
-          items: cartItems, 
-          count: cartItems.reduce((total, item) => total + item.quantity, 0)
-        } 
+      // Dispatch multiple events to ensure all components are notified
+      const cartData = { 
+        items: cartItems, 
+        count: cartItems.reduce((total, item) => total + item.quantity, 0)
+      };
+      
+      window.dispatchEvent(new CustomEvent('cartUpdate', { detail: cartData }));
+      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cartData }));
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: CART_STORAGE_KEY,
+        newValue: JSON.stringify(cartItems),
+        oldValue: null,
+        storageArea: localStorage
       }));
       
-      // Trigger update for components that depend on cart
+      // Force immediate trigger
       triggerUpdate();
     } catch (error) {
       console.error('Failed to save cart:', error);
     }
   }, [cartItems, triggerUpdate]);
 
-  // Listen for storage changes from other tabs
+  // Listen for storage changes from other tabs and force updates
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === CART_STORAGE_KEY && e.newValue) {
@@ -65,6 +72,7 @@ export function useCart() {
           isUpdatingFromStorage.current = true;
           setCartItems(Array.isArray(parsed) ? parsed : []);
           console.log('Cart synced from storage');
+          triggerUpdate();
         } catch (error) {
           console.error('Failed to sync cart:', error);
         }
@@ -72,16 +80,19 @@ export function useCart() {
     };
 
     // Listen for custom cart update events
-    const handleCartUpdate = () => {
+    const handleCartUpdate = (e: any) => {
+      console.log('Cart update event received:', e.detail);
       triggerUpdate();
     };
 
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('cartUpdate', handleCartUpdate);
+    window.addEventListener('cartUpdated', handleCartUpdate);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('cartUpdate', handleCartUpdate);
+      window.removeEventListener('cartUpdated', handleCartUpdate);
     };
   }, [triggerUpdate]);
 
@@ -115,7 +126,10 @@ export function useCart() {
         return newItems;
       }
     });
-  }, []);
+    
+    // Force immediate update after state change
+    setTimeout(() => triggerUpdate(), 0);
+  }, [triggerUpdate]);
 
   const removeFromCart = useCallback((itemId: string) => {
     setCartItems(prev => {
@@ -123,7 +137,10 @@ export function useCart() {
       console.log('Removed from cart, remaining items:', newItems.length);
       return newItems;
     });
-  }, []);
+    
+    // Force immediate update after state change
+    setTimeout(() => triggerUpdate(), 0);
+  }, [triggerUpdate]);
 
   const updateQuantity = useCallback((itemId: string, quantity: number) => {
     if (quantity <= 0) {
@@ -138,12 +155,18 @@ export function useCart() {
       console.log('Updated quantity for item:', itemId, 'New quantity:', quantity);
       return updatedItems;
     });
-  }, [removeFromCart]);
+    
+    // Force immediate update after state change
+    setTimeout(() => triggerUpdate(), 0);
+  }, [removeFromCart, triggerUpdate]);
 
   const clearCart = useCallback(() => {
     setCartItems([]);
     console.log('Cart cleared');
-  }, []);
+    
+    // Force immediate update after state change
+    setTimeout(() => triggerUpdate(), 0);
+  }, [triggerUpdate]);
 
   const getItemCount = useCallback((): number => {
     const count = cartItems.reduce((total, item) => total + item.quantity, 0);

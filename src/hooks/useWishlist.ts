@@ -14,7 +14,7 @@ export function useWishlist() {
     setUpdateTrigger(prev => prev + 1);
   }, []);
 
-  // Load wishlist from localStorage on mount
+  // Load wishlist from localStorage on mount and force immediate update
   useEffect(() => {
     try {
       const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
@@ -41,22 +41,29 @@ export function useWishlist() {
       localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
       console.log('Wishlist saved to storage:', wishlistItems.length, 'items');
       
-      // Dispatch custom event to notify other components
-      window.dispatchEvent(new CustomEvent('wishlistUpdate', { 
-        detail: { 
-          items: wishlistItems, 
-          count: wishlistItems.length 
-        } 
+      // Dispatch multiple events to ensure all components are notified
+      const wishlistData = { 
+        items: wishlistItems, 
+        count: wishlistItems.length 
+      };
+      
+      window.dispatchEvent(new CustomEvent('wishlistUpdate', { detail: wishlistData }));
+      window.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: wishlistData }));
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: WISHLIST_STORAGE_KEY,
+        newValue: JSON.stringify(wishlistItems),
+        oldValue: null,
+        storageArea: localStorage
       }));
       
-      // Trigger update for components that depend on wishlist
+      // Force immediate trigger
       triggerUpdate();
     } catch (error) {
       console.error('Failed to save wishlist:', error);
     }
   }, [wishlistItems, triggerUpdate]);
 
-  // Listen for storage changes from other tabs
+  // Listen for storage changes from other tabs and force updates
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === WISHLIST_STORAGE_KEY && e.newValue) {
@@ -65,6 +72,7 @@ export function useWishlist() {
           isUpdatingFromStorage.current = true;
           setWishlistItems(Array.isArray(parsed) ? parsed : []);
           console.log('Wishlist synced from storage');
+          triggerUpdate();
         } catch (error) {
           console.error('Failed to sync wishlist:', error);
         }
@@ -72,16 +80,19 @@ export function useWishlist() {
     };
 
     // Listen for custom wishlist update events
-    const handleWishlistUpdate = () => {
+    const handleWishlistUpdate = (e: any) => {
+      console.log('Wishlist update event received:', e.detail);
       triggerUpdate();
     };
 
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('wishlistUpdate', handleWishlistUpdate);
+    window.addEventListener('wishlistUpdated', handleWishlistUpdate);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('wishlistUpdate', handleWishlistUpdate);
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdate);
     };
   }, [triggerUpdate]);
 
@@ -97,7 +108,10 @@ export function useWishlist() {
       console.log('Added to wishlist:', item.name, 'Total items:', newItems.length);
       return newItems;
     });
-  }, []);
+    
+    // Force immediate update after state change
+    setTimeout(() => triggerUpdate(), 0);
+  }, [triggerUpdate]);
 
   const removeFromWishlist = useCallback((itemId: number) => {
     setWishlistItems(prev => {
@@ -105,7 +119,10 @@ export function useWishlist() {
       console.log('Removed from wishlist, remaining items:', newItems.length);
       return newItems;
     });
-  }, []);
+    
+    // Force immediate update after state change
+    setTimeout(() => triggerUpdate(), 0);
+  }, [triggerUpdate]);
 
   const isInWishlist = useCallback((itemId: number): boolean => {
     const inWishlist = wishlistItems.some(item => item.id === itemId);
@@ -115,7 +132,10 @@ export function useWishlist() {
   const clearWishlist = useCallback(() => {
     setWishlistItems([]);
     console.log('Wishlist cleared');
-  }, []);
+    
+    // Force immediate update after state change
+    setTimeout(() => triggerUpdate(), 0);
+  }, [triggerUpdate]);
 
   const getWishlistCount = useCallback((): number => {
     const count = wishlistItems.length;

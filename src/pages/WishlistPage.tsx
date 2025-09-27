@@ -12,14 +12,38 @@ import { WishlistItem } from '@/lib/types';
 
 export default function WishlistPage() {
   const navigate = useNavigate();
-  const { wishlistItems, removeFromWishlist, clearWishlist } = useWishlist();
+  const { wishlistItems, removeFromWishlist, clearWishlist, updateTrigger } = useWishlist();
   const { addToCart } = useCart();
   const [isDark, setIsDark] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const toggleTheme = () => {
     setIsDark(!isDark);
     document.documentElement.classList.toggle('dark');
   };
+
+  // FIX: Force re-render when wishlist changes and handle loading state
+  useEffect(() => {
+    // Simulate loading to ensure wishlist data is loaded
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+
+    console.log('WishlistPage re-rendered - Items:', wishlistItems.length, 'Update trigger:', updateTrigger);
+    
+    return () => clearTimeout(timer);
+  }, [wishlistItems, updateTrigger]);
+
+  // FIX: Listen for wishlist update events
+  useEffect(() => {
+    const handleWishlistUpdate = () => {
+      console.log('WishlistPage received wishlist update event');
+      setIsLoading(false); // Ensure loading is false when wishlist updates
+    };
+
+    window.addEventListener('wishlistUpdated', handleWishlistUpdate);
+    return () => window.removeEventListener('wishlistUpdated', handleWishlistUpdate);
+  }, []);
 
   const handleMoveToCart = (product: WishlistItem) => {
     // Convert wishlist item to cart format
@@ -48,6 +72,26 @@ export default function WishlistPage() {
   const handleContinueShopping = () => {
     navigate('/');
   };
+
+  // Show loading state briefly to ensure wishlist data is loaded
+  if (isLoading) {
+    return (
+      <div className={`min-h-screen ${isDark ? 'dark bg-pattern-dark' : 'bg-pattern-light'}`}>
+        <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
+        <div className="pt-20 lg:pt-32">
+          <div className="container mx-auto py-8 px-4 md:px-8 lg:px-16 min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <Heart className={`h-16 w-16 mx-auto opacity-50 animate-pulse ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+              <p className={`text-lg mt-4 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                Loading your wishlist...
+              </p>
+            </div>
+          </div>
+        </div>
+        <Footer isDark={isDark} />
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isDark ? 'dark bg-pattern-dark' : 'bg-pattern-light'}`}>
