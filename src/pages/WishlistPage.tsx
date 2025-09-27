@@ -22,24 +22,24 @@ export default function WishlistPage() {
 
   const handleMoveToCart = (product: any) => {
     // Convert wishlist item to cart format
-    addToCart(product.id, product.name, product.price, product.image, 'M', 'Default', 1);
+    addToCart(product.id, product.name, product.price, product.image, product.selectedSize || 'M', product.selectedColor || 'Default', 1);
     removeFromWishlist(product.id);
-    toast.success(`${product.name} đã được thêm vào giỏ hàng!`, {
-      description: 'Sản phẩm đã được chuyển từ danh sách yêu thích sang giỏ hàng của bạn.',
+    toast.success(`${product.name} has been added to cart!`, {
+      description: 'Product has been moved from wishlist to your cart.',
       icon: <ShoppingCart className="h-4 w-4 text-green-500" />,
     });
   };
 
   const handleRemoveItem = (productId: number, productName: string) => {
     removeFromWishlist(productId);
-    toast.info(`${productName} đã bị xóa khỏi danh sách yêu thích.`, {
+    toast.info(`${productName} has been removed from wishlist.`, {
       icon: <X className="h-4 w-4 text-red-500" />,
     });
   };
 
   const handleClearWishlist = () => {
     clearWishlist();
-    toast.info('Danh sách yêu thích của bạn đã được xóa.', {
+    toast.info('Your wishlist has been cleared.', {
       icon: <X className="h-4 w-4 text-red-500" />,
     });
   };
@@ -64,11 +64,11 @@ export default function WishlistPage() {
               className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>Tiếp tục mua sắm</span>
+              <span>Continue Shopping</span>
             </Button>
             <span className="text-gray-400">/</span>
             <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Danh sách yêu thích
+              Wishlist
             </span>
           </div>
 
@@ -79,10 +79,10 @@ export default function WishlistPage() {
 
             <CardHeader className="relative z-10 text-center space-y-4 p-6 md:p-8">
               <CardTitle className="font-coiny text-3xl md:text-4xl gradient-text animate-text-glow">
-                Danh sách yêu thích của bạn ❤️
+                Your Wishlist ❤️
               </CardTitle>
               <CardDescription className={`text-base md:text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                Lưu giữ những món đồ yêu thích của thú cưng bạn ở đây.
+                Save your favorite pet items here for later.
               </CardDescription>
             </CardHeader>
 
@@ -91,17 +91,17 @@ export default function WishlistPage() {
                 <div className="text-center py-12 space-y-4">
                   <Heart className={`h-16 w-16 mx-auto opacity-50 animate-pulse ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                   <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                    Danh sách yêu thích của bạn đang trống.
+                    Your wishlist is empty.
                   </p>
                   <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                    Duyệt qua các sản phẩm của chúng tôi và thêm những món đồ bạn yêu thích!
+                    Browse our products and add items you love!
                   </p>
                   <Button 
                     onClick={handleContinueShopping}
                     className="gradient-primary mt-4 hover:opacity-90 hover:scale-105 transition-all duration-300"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
-                    Bắt đầu mua sắm
+                    Start Shopping
                   </Button>
                 </div>
               ) : (
@@ -134,12 +134,12 @@ export default function WishlistPage() {
                         <div className="absolute top-2 left-2 flex flex-col space-y-1">
                           {product.isNew && (
                             <span className="px-2 py-1 text-xs font-medium bg-green-500 text-white rounded-full">
-                              Mới
+                              New
                             </span>
                           )}
                           {product.isBestseller && (
                             <span className="px-2 py-1 text-xs font-medium bg-orange-500 text-white rounded-full">
-                              Bán chạy
+                              Bestseller
                             </span>
                           )}
                         </div>
@@ -154,7 +154,7 @@ export default function WishlistPage() {
                             {product.name}
                           </h3>
                           <p className={`text-sm line-clamp-2 mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                            {product.description}
+                            {product.category}
                           </p>
                         </div>
 
@@ -173,7 +173,7 @@ export default function WishlistPage() {
                             ))}
                           </div>
                           <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                            ({product.reviews})
+                            ({product.reviewCount})
                           </span>
                         </div>
 
@@ -193,15 +193,14 @@ export default function WishlistPage() {
                         {product.colors && product.colors.length > 0 && (
                           <div className="flex items-center space-x-2">
                             <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                              Màu sắc:
+                              Colors:
                             </span>
                             <div className="flex space-x-1">
                               {product.colors.slice(0, 4).map((color, index) => (
                                 <div
                                   key={index}
-                                  className="w-4 h-4 rounded-full border-2 border-white shadow-sm"
-                                  style={{ backgroundColor: color.value }}
-                                  title={color.name}
+                                  className="w-4 h-4 rounded-full border-2 border-white shadow-sm bg-gray-300"
+                                  title={color}
                                 />
                               ))}
                               {product.colors.length > 4 && (
@@ -219,7 +218,7 @@ export default function WishlistPage() {
                           className="w-full gradient-primary hover:opacity-90 hover:scale-105 transition-all duration-300"
                         >
                           <ShoppingCart className="h-4 w-4 mr-2" />
-                          Thêm vào giỏ hàng
+                          Add to Cart
                         </Button>
                       </div>
                     </div>
@@ -238,7 +237,7 @@ export default function WishlistPage() {
                     onClick={handleClearWishlist}
                     className="border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600 transition-all duration-300"
                   >
-                    Xóa tất cả
+                    Clear All
                   </Button>
                   <Button
                     variant="outline"
@@ -248,11 +247,11 @@ export default function WishlistPage() {
                     }`}
                   >
                     <Home className="h-4 w-4 mr-2" />
-                    Tiếp tục mua sắm
+                    Continue Shopping
                   </Button>
                 </div>
                 <div className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  Tổng cộng: <span className="gradient-text animate-text-glow">
+                  Total: <span className="gradient-text animate-text-glow">
                     ${wishlistItems.reduce((total, item) => total + item.price, 0).toFixed(2)}
                   </span>
                 </div>

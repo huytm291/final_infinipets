@@ -23,7 +23,7 @@ export default function CartPage() {
   const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) {
       const item = cartItems.find(item => item.id === itemId);
-      handleRemoveItem(itemId, item?.name || 'Sản phẩm');
+      handleRemoveItem(itemId, item?.name || 'Product');
       return;
     }
     updateQuantity(itemId, newQuantity);
@@ -31,24 +31,24 @@ export default function CartPage() {
 
   const handleRemoveItem = (itemId: string, productName: string) => {
     removeFromCart(itemId);
-    toast.info(`${productName} đã bị xóa khỏi giỏ hàng.`, {
+    toast.info(`${productName} has been removed from cart.`, {
       icon: <X className="h-4 w-4 text-red-500" />,
     });
   };
 
   const handleClearCart = () => {
     clearCart();
-    toast.info('Giỏ hàng của bạn đã được xóa.', {
+    toast.info('Your cart has been cleared.', {
       icon: <X className="h-4 w-4 text-red-500" />,
     });
   };
 
   const handleCheckout = () => {
-    toast.success('Tiến hành thanh toán!', {
-      description: 'Bạn sẽ được chuyển đến trang thanh toán an toàn của chúng tôi.',
+    toast.success('Proceed to checkout!', {
+      description: 'You will be redirected to our secure checkout page.',
       icon: <DollarSign className="h-4 w-4 text-green-500" />,
     });
-    // Logic chuyển hướng đến trang thanh toán
+    // Checkout logic here
   };
 
   const handleContinueShopping = () => {
@@ -71,11 +71,11 @@ export default function CartPage() {
               className="flex items-center space-x-2 text-sm hover:scale-105 transition-transform"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>Tiếp tục mua sắm</span>
+              <span>Continue Shopping</span>
             </Button>
             <span className="text-gray-400">/</span>
             <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              Giỏ hàng
+              Shopping Cart
             </span>
           </div>
 
@@ -86,10 +86,10 @@ export default function CartPage() {
 
             <CardHeader className="relative z-10 text-center space-y-4 p-6 md:p-8">
               <CardTitle className="font-coiny text-3xl md:text-4xl gradient-text animate-text-glow">
-                Giỏ hàng của bạn 🛒
+                Your Shopping Cart 🛒
               </CardTitle>
               <CardDescription className={`text-base md:text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                Kiểm tra các mặt hàng bạn đã chọn cho thú cưng của mình.
+                Review the items you've selected for your pet.
               </CardDescription>
             </CardHeader>
 
@@ -98,17 +98,17 @@ export default function CartPage() {
                 <div className="text-center py-12 space-y-4">
                   <ShoppingCart className={`h-16 w-16 mx-auto opacity-50 animate-pulse ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
                   <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                    Giỏ hàng của bạn đang trống.
+                    Your cart is empty.
                   </p>
                   <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                    Duyệt qua các sản phẩm của chúng tôi và thêm những món đồ bạn yêu thích!
+                    Browse our products and add items you love!
                   </p>
                   <Button 
                     onClick={handleContinueShopping}
                     className="gradient-primary mt-4 hover:opacity-90 hover:scale-105 transition-all duration-300"
                   >
                     <ArrowRight className="h-4 w-4 mr-2" />
-                    Bắt đầu mua sắm
+                    Start Shopping
                   </Button>
                 </div>
               ) : (
@@ -132,7 +132,7 @@ export default function CartPage() {
                           {item.name}
                         </h3>
                         <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                          ${item.price.toFixed(2)} mỗi món
+                          ${item.price.toFixed(2)} each
                         </p>
                         <div className="flex items-center justify-center sm:justify-start space-x-2 mt-2">
                           <span className={`text-xs px-2 py-1 rounded-full ${
@@ -196,25 +196,25 @@ export default function CartPage() {
                 {/* Order Summary */}
                 <div className={`w-full p-4 rounded-lg ${isDark ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
                   <h3 className={`font-semibold text-lg mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    Tóm tắt đơn hàng
+                    Order Summary
                   </h3>
                   <div className="space-y-2">
                     <div className={`flex justify-between ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      <span>Tổng phụ:</span>
+                      <span>Subtotal:</span>
                       <span>${cart.subtotal.toFixed(2)}</span>
                     </div>
                     <div className={`flex justify-between ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      <span>Phí vận chuyển:</span>
-                      <span>{cart.shipping === 0 ? 'Miễn phí' : `$${cart.shipping.toFixed(2)}`}</span>
+                      <span>Shipping:</span>
+                      <span>{cart.shipping === 0 ? 'Free' : `$${cart.shipping.toFixed(2)}`}</span>
                     </div>
                     <div className={`flex justify-between ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                      <span>Thuế:</span>
+                      <span>Tax:</span>
                       <span>${cart.tax.toFixed(2)}</span>
                     </div>
                     <div className={`flex justify-between text-xl font-bold pt-2 border-t ${
                       isDark ? 'border-gray-700 text-white' : 'border-gray-200 text-gray-900'
                     }`}>
-                      <span>Tổng cộng:</span>
+                      <span>Total:</span>
                       <span className="gradient-text animate-text-glow">${cart.total.toFixed(2)}</span>
                     </div>
                   </div>
@@ -228,7 +228,7 @@ export default function CartPage() {
                       onClick={handleClearCart}
                       className="border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600 transition-all duration-300"
                     >
-                      Xóa giỏ hàng
+                      Clear Cart
                     </Button>
                     <Button
                       variant="outline"
@@ -238,7 +238,7 @@ export default function CartPage() {
                       }`}
                     >
                       <Home className="h-4 w-4 mr-2" />
-                      Tiếp tục mua sắm
+                      Continue Shopping
                     </Button>
                   </div>
                   <Button
@@ -246,7 +246,7 @@ export default function CartPage() {
                     className="gradient-primary hover:opacity-90 hover:scale-105 transition-all duration-300 px-8"
                   >
                     <DollarSign className="h-4 w-4 mr-2" />
-                    Tiến hành thanh toán
+                    Proceed to Checkout
                   </Button>
                 </div>
               </CardFooter>

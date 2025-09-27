@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { Product } from '@/lib/types';
-import { useCartAPI } from '@/hooks/useCartAPI';
+import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { toast } from 'sonner';
 
@@ -17,7 +17,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || 'Default');
   const [isLoading, setIsLoading] = useState(false);
   
-  const { addToCart } = useCartAPI();
+  const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const isWishlisted = isInWishlist(product.id);
@@ -25,19 +25,22 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = async () => {
     try {
       setIsLoading(true);
-      await addToCart(
-        {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image
-        },
+      addToCart(
+        product.id,
+        product.name,
+        product.price,
+        product.image,
         selectedSize,
         selectedColor,
         1
       );
+      toast.success(`${product.name} added to cart!`, {
+        description: 'Product has been added to your cart.',
+        icon: <ShoppingCart className="h-4 w-4 text-green-500" />,
+      });
     } catch (error) {
       console.error('Failed to add to cart:', error);
+      toast.error('Failed to add to cart');
     } finally {
       setIsLoading(false);
     }
@@ -46,12 +49,30 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleWishlistToggle = () => {
     if (isWishlisted) {
       removeFromWishlist(product.id);
+      toast.info(`${product.name} removed from wishlist`, {
+        icon: <Heart className="h-4 w-4 text-red-500" />,
+      });
     } else {
       addToWishlist({
-        ...product,
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.image,
+        category: product.category,
+        rating: product.rating,
+        reviewCount: product.reviewCount,
+        inStock: product.inStock,
         addedAt: new Date(),
+        sizes: product.sizes,
+        colors: product.colors,
+        variants: product.variants,
         selectedSize,
         selectedColor
+      });
+      toast.success(`${product.name} added to wishlist!`, {
+        description: 'Product has been added to your wishlist.',
+        icon: <Heart className="h-4 w-4 text-red-500" />,
       });
     }
   };
