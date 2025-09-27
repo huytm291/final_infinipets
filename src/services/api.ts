@@ -1,265 +1,129 @@
-// services/api.ts - API service layer for INFINIPETS
-import { ApiResponse, Product, Cart, User, Order, BlogPost, Category, Newsletter, SearchFilters } from '@/lib/types';
-
-const API_BASE_URL = '/api';
-
-class ApiService {
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<ApiResponse<T>> {
-    const url = `${API_BASE_URL}${endpoint}`;
-    
-    const config: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      ...options,
-    };
-
-    // Add auth token if available
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-      };
-    }
-
-    try {
-      const response = await fetch(url, config);
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
-      }
-      
-      return data;
-    } catch (error) {
-      console.error('API request failed:', error);
-      throw error;
-    }
-  }
-
-  // Auth APIs
-  async login(email: string, password: string, rememberMe = false) {
-    const response = await this.request<{ user: User; token: string }>('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password, rememberMe }),
-    });
-    
-    if (response.success && response.data?.token) {
-      localStorage.setItem('auth_token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-    }
-    
-    return response;
-  }
-
-  async register(userData: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-  }) {
-    const response = await this.request<{ user: User; token: string }>('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-    });
-    
-    if (response.success && response.data?.token) {
-      localStorage.setItem('auth_token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-    }
-    
-    return response;
-  }
-
-  async logout() {
-    try {
-      await this.request('/auth/logout', { method: 'POST' });
-    } finally {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('user');
-    }
-  }
-
-  async getCurrentUser() {
-    return this.request<User>('/auth/me');
-  }
-
-  // Products APIs
-  async getProducts(filters?: SearchFilters, page = 1, limit = 12) {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-    });
-
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          params.append(key, value.toString());
-        }
-      });
-    }
-    
-    return this.request<{
-      products: Product[];
-      pagination: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-      };
-    }>(`/products?${params}`);
-  }
-
-  async getProductById(id: number) {
-    return this.request<Product>(`/products/${id}`);
-  }
-
-  async searchProducts(query: string, filters?: SearchFilters) {
-    const params = new URLSearchParams({
-      q: query,
-    });
-
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          params.append(key, value.toString());
-        }
-      });
-    }
-    
-    return this.request<{
-      products: Product[];
-      pagination: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-      };
-    }>(`/products/search?${params}`);
-  }
-
-  async getCategories() {
-    return this.request<Category[]>('/products/categories');
-  }
-
-  // Cart APIs
-  async getCart() {
-    return this.request<Cart>('/cart');
-  }
-
-  async addToCart(productId: number, size: string, color: string, quantity = 1) {
-    return this.request<Cart>('/cart', {
-      method: 'POST',
-      body: JSON.stringify({ productId, size, color, quantity }),
-    });
-  }
-
-  async updateCartItem(itemId: string, quantity: number) {
-    return this.request<Cart>('/cart', {
-      method: 'PUT',
-      body: JSON.stringify({ itemId, quantity }),
-    });
-  }
-
-  async clearCart() {
-    return this.request<Cart>('/cart', {
-      method: 'DELETE',
-    });
-  }
-
-  // Orders APIs
-  async getOrders(page = 1, limit = 10) {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-    });
-    
-    return this.request<{
-      orders: Order[];
-      pagination: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-      };
-    }>(`/orders?${params}`);
-  }
-
-  async getOrderById(id: string) {
-    return this.request<Order>(`/orders/${id}`);
-  }
-
-  async createOrder(orderData: Partial<Order>) {
-    return this.request<Order>('/orders', {
-      method: 'POST',
-      body: JSON.stringify(orderData),
-    });
-  }
-
-  // Blog APIs
-  async getBlogPosts(page = 1, limit = 6) {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-    });
-    
-    return this.request<{
-      posts: BlogPost[];
-      pagination: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-      };
-    }>(`/blog?${params}`);
-  }
-
-  async getBlogPostBySlug(slug: string) {
-    return this.request<BlogPost>(`/blog/${slug}`);
-  }
-
-  // Newsletter API
-  async subscribeNewsletter(email: string, preferences?: Partial<Newsletter['preferences']>) {
-    return this.request<Newsletter>('/newsletter/subscribe', {
-      method: 'POST',
-      body: JSON.stringify({ email, preferences }),
-    });
-  }
-
-  // Reviews APIs
-  async getProductReviews(productId: number, page = 1, limit = 5) {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-    });
-    
-    return this.request(`/reviews/${productId}?${params}`);
-  }
-
-  // Stats APIs
-  async getStats() {
-    return this.request('/stats');
-  }
-
-  // Upload APIs
-  async uploadFile(file: File) {
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    return fetch(`${API_BASE_URL}/upload`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-      },
-    }).then(res => res.json());
-  }
+// API service for authentication and data management
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar?: string;
 }
 
-export const apiService = new ApiService();
+export interface LoginCredentials {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
+export interface RegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface APIResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+// Mock API responses
+const mockUsers: User[] = [
+  {
+    id: '1',
+    email: 'demo@example.com',
+    firstName: 'Demo',
+    lastName: 'User',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
+  }
+];
+
+// Simulate API delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export const apiService = {
+  async login(email: string, password: string, rememberMe = false): Promise<APIResponse<{ user: User; token: string }>> {
+    await delay(1000);
+    
+    try {
+      // Mock authentication - accept any email/password for demo
+      const user = mockUsers.find(u => u.email === email) || {
+        id: Date.now().toString(),
+        email: email,
+        firstName: 'User',
+        lastName: 'Demo'
+      };
+
+      const token = `mock-token-${user.id}`;
+      
+      // Store in localStorage if remember me is checked
+      if (rememberMe) {
+        localStorage.setItem('auth_token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+      } else {
+        sessionStorage.setItem('auth_token', token);
+        sessionStorage.setItem('user', JSON.stringify(user));
+      }
+
+      return { success: true, data: { user, token } };
+    } catch (error) {
+      return { success: false, error: 'Login failed' };
+    }
+  },
+
+  async register(userData: RegisterData): Promise<APIResponse<{ user: User; token: string }>> {
+    await delay(1000);
+    
+    try {
+      const newUser: User = {
+        id: Date.now().toString(),
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName
+      };
+
+      const token = `mock-token-${newUser.id}`;
+      
+      // Store in localStorage
+      localStorage.setItem('auth_token', token);
+      localStorage.setItem('user', JSON.stringify(newUser));
+
+      return { success: true, data: { user: newUser, token } };
+    } catch (error) {
+      return { success: false, error: 'Registration failed' };
+    }
+  },
+
+  async logout(): Promise<APIResponse<void>> {
+    await delay(500);
+    try {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('auth_token');
+      sessionStorage.removeItem('user');
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: 'Logout failed' };
+    }
+  },
+
+  async getCurrentUser(): Promise<APIResponse<User>> {
+    await delay(500);
+    
+    try {
+      const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+      const userData = localStorage.getItem('user') || sessionStorage.getItem('user');
+      
+      if (!token || !userData) {
+        return { success: false, error: 'No authentication found' };
+      }
+
+      const user = JSON.parse(userData);
+      return { success: true, data: user };
+    } catch (error) {
+      return { success: false, error: 'Failed to get current user' };
+    }
+  }
+};
+
+// Export default for backward compatibility
 export default apiService;
