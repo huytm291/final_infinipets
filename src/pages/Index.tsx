@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import EnhancedHeader from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import ProductsSection from '@/components/ProductsSection';
 import CategoriesSection from '@/components/CategoriesSection';
+import ProductsSection from '@/components/ProductsSection';
+import FeedbackSection from '@/components/FeedbackSection';
 import BlogSection from '@/components/BlogSection';
 import NewsletterSection from '@/components/NewsletterSection';
-import FeedbackSection from '@/components/FeedbackSection';
 import Footer from '@/components/Footer';
 import ChatBot from '@/components/ChatBot';
 
@@ -27,16 +27,20 @@ export default function Index() {
     document.documentElement.classList.toggle('dark');
   };
 
-  // Remove loading screen - show content directly
+  // Updated layout order as requested: Header → HeroSection → CategoriesSection → ProductsSection → FeedbackSection → BlogSection → NewsletterSection → Footer
   return (
     <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-white'}`}>
       <EnhancedHeader isDark={isDark} toggleTheme={toggleTheme} />
-      <HeroSection />
-      <ProductsSection />
-      <CategoriesSection />
-      <BlogSection />
-      <NewsletterSection />
-      <FeedbackSection />
+      <HeroSection isDark={isDark} />
+      <CategoriesSection isDark={isDark} />
+      <ProductsSection 
+        title="Featured Products" 
+        subtitle="Discover our handpicked collection of premium pet fashion and accessories"
+        isDark={isDark} 
+      />
+      <FeedbackSection isDark={isDark} />
+      <BlogSection isDark={isDark} />
+      <NewsletterSection isDark={isDark} />
       <Footer isDark={isDark} />
       <ChatBot />
     </div>
