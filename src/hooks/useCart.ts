@@ -13,10 +13,11 @@ export function useCart() {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        setCartItems(parsed);
+        setCartItems(Array.isArray(parsed) ? parsed : []);
       }
     } catch (error) {
       console.error('Failed to load cart:', error);
+      setCartItems([]);
     }
   }, []);
 
@@ -24,10 +25,32 @@ export function useCart() {
   useEffect(() => {
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+      // Trigger storage event for cross-tab synchronization
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: CART_STORAGE_KEY,
+        newValue: JSON.stringify(cartItems)
+      }));
     } catch (error) {
       console.error('Failed to save cart:', error);
     }
   }, [cartItems]);
+
+  // Listen for storage changes from other tabs
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === CART_STORAGE_KEY && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          setCartItems(Array.isArray(parsed) ? parsed : []);
+        } catch (error) {
+          console.error('Failed to sync cart:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   const addToCart = (productId: number, name: string, price: number, image: string, size: string, color: string, quantity: number = 1) => {
     const itemId = `${productId}-${size}-${color}`;
@@ -36,14 +59,12 @@ export function useCart() {
       const existingItem = prev.find(item => item.id === itemId);
       
       if (existingItem) {
-        toast.success('Updated cart quantity');
         return prev.map(item =>
           item.id === itemId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        toast.success('Added to cart');
         return [...prev, {
           id: itemId,
           productId,
@@ -59,11 +80,7 @@ export function useCart() {
   };
 
   const removeFromCart = (itemId: string) => {
-    setCartItems(prev => {
-      const filtered = prev.filter(item => item.id !== itemId);
-      toast.success('Removed from cart');
-      return filtered;
-    });
+    setCartItems(prev => prev.filter(item => item.id !== itemId));
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
@@ -81,7 +98,6 @@ export function useCart() {
 
   const clearCart = () => {
     setCartItems([]);
-    toast.success('Cart cleared');
   };
 
   const getItemCount = (): number => {

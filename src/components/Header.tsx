@@ -67,8 +67,24 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
   const { getItemCount } = useCart();
   const { getWishlistCount } = useWishlist();
 
+  // Get current counts
   const cartItemCount = getItemCount();
   const wishlistItemCount = getWishlistCount();
+
+  // Force re-render when localStorage changes (for cross-tab sync)
+  const [, forceUpdate] = useState({});
+  
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'infinipets-cart' || e.key === 'infinipets-wishlist') {
+        // Force component to re-render when storage changes
+        forceUpdate({});
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   // Search suggestions - Giảm xuống còn 6 suggestions
   const searchSuggestions = [
@@ -521,37 +537,53 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 </Button>
               )}
 
-              {/* Wishlist */}
+              {/* Wishlist - Enhanced with better visual feedback */}
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={handleWishlistClick}
-                className="relative hover:scale-110 transition-transform group"
+                className="relative hover:scale-110 transition-all duration-300 group"
               >
-                <Heart className={`h-4 w-4 transition-colors group-hover:text-red-500 ${
-                  wishlistItemCount > 0 ? 'text-red-500 fill-current' : isDark ? 'text-white' : 'text-gray-900'
+                <Heart className={`h-4 w-4 transition-all duration-300 ${
+                  wishlistItemCount > 0 
+                    ? 'text-red-500 fill-current animate-pulse' 
+                    : isDark 
+                      ? 'text-white group-hover:text-red-400' 
+                      : 'text-gray-900 group-hover:text-red-500'
                 }`} />
                 {wishlistItemCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-red-500 to-pink-500 animate-pulse">
-                    {wishlistItemCount}
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold animate-pulse shadow-lg">
+                    {wishlistItemCount > 99 ? '99+' : wishlistItemCount}
                   </Badge>
+                )}
+                {/* Glow effect when items in wishlist */}
+                {wishlistItemCount > 0 && (
+                  <div className="absolute inset-0 rounded-full bg-red-400/20 animate-ping"></div>
                 )}
               </Button>
 
-              {/* Cart */}
+              {/* Cart - Enhanced with better visual feedback */}
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={handleCartClick}
-                className="relative hover:scale-110 transition-transform group"
+                className="relative hover:scale-110 transition-all duration-300 group"
               >
-                <ShoppingCart className={`h-4 w-4 transition-colors group-hover:text-green-500 ${
-                  cartItemCount > 0 ? 'text-green-500' : isDark ? 'text-white' : 'text-gray-900'
+                <ShoppingCart className={`h-4 w-4 transition-all duration-300 ${
+                  cartItemCount > 0 
+                    ? 'text-green-500 animate-bounce' 
+                    : isDark 
+                      ? 'text-white group-hover:text-green-400' 
+                      : 'text-gray-900 group-hover:text-green-500'
                 }`} />
                 {cartItemCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs gradient-primary animate-bounce">
-                    {cartItemCount}
+                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold animate-bounce shadow-lg">
+                    {cartItemCount > 99 ? '99+' : cartItemCount}
                   </Badge>
+                )}
+                {/* Glow effect when items in cart */}
+                {cartItemCount > 0 && (
+                  <div className="absolute inset-0 rounded-full bg-green-400/20 animate-ping"></div>
                 )}
               </Button>
 

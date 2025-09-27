@@ -13,10 +13,11 @@ export function useWishlist() {
       const stored = localStorage.getItem(WISHLIST_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        setWishlistItems(parsed);
+        setWishlistItems(Array.isArray(parsed) ? parsed : []);
       }
     } catch (error) {
       console.error('Failed to load wishlist:', error);
+      setWishlistItems([]);
     }
   }, []);
 
@@ -24,29 +25,46 @@ export function useWishlist() {
   useEffect(() => {
     try {
       localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
+      // Trigger storage event for cross-tab synchronization
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: WISHLIST_STORAGE_KEY,
+        newValue: JSON.stringify(wishlistItems)
+      }));
     } catch (error) {
       console.error('Failed to save wishlist:', error);
     }
   }, [wishlistItems]);
 
+  // Listen for storage changes from other tabs
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === WISHLIST_STORAGE_KEY && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          setWishlistItems(Array.isArray(parsed) ? parsed : []);
+        } catch (error) {
+          console.error('Failed to sync wishlist:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const addToWishlist = (item: WishlistItem) => {
     setWishlistItems(prev => {
       const exists = prev.find(existing => existing.id === item.id);
       if (exists) {
-        toast.info('Item already in wishlist');
         return prev;
       }
-      toast.success('Added to wishlist');
-      return [...prev, { ...item, addedAt: new Date() }];
+      const newItem = { ...item, addedAt: new Date() };
+      return [...prev, newItem];
     });
   };
 
   const removeFromWishlist = (itemId: number) => {
-    setWishlistItems(prev => {
-      const filtered = prev.filter(item => item.id !== itemId);
-      toast.success('Removed from wishlist');
-      return filtered;
-    });
+    setWishlistItems(prev => prev.filter(item => item.id !== itemId));
   };
 
   const isInWishlist = (itemId: number): boolean => {
@@ -55,7 +73,6 @@ export function useWishlist() {
 
   const clearWishlist = () => {
     setWishlistItems([]);
-    toast.success('Wishlist cleared');
   };
 
   const getWishlistCount = (): number => {
