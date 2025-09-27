@@ -67,12 +67,10 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
   const cartItemCount = getItemCount();
   const wishlistItemCount = getWishlistCount();
 
-  // Search suggestions - Tăng số lượng suggestions
+  // Search suggestions - GIẢM SỐ LƯỢNG SUGGESTIONS
   const searchSuggestions = [
     'Dog sweaters', 'Cat accessories', 'Winter coats', 'Summer outfits',
-    'Pet shoes', 'Raincoats', 'Holiday costumes', 'Formal wear',
-    'Small dog clothes', 'Large dog outfits', 'Puppy wear', 'Senior pet comfort',
-    'Designer pet clothing', 'Waterproof jackets', 'Breathable fabrics', 'Luxury accessories'
+    'Pet shoes', 'Raincoats'
   ];
 
   // Handle scroll effect
@@ -289,15 +287,15 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* Enhanced Search Bar - Tăng kích thước khi focus */}
+            {/* Enhanced Search Bar - FIX INPUT FIELD */}
             <div className={`hidden md:flex items-center mx-8 relative transition-all duration-500 ease-in-out ${
               isSearchFocused 
-                ? 'flex-1 max-w-3xl z-50' // Tăng từ max-w-2xl lên max-w-3xl
-                : 'flex-1 max-w-lg' // Tăng từ max-w-md lên max-w-lg
+                ? 'flex-1 max-w-2xl z-50' 
+                : 'flex-1 max-w-md'
             }`}>
               <form onSubmit={handleSearch} className="relative w-full">
                 <div className={`relative transition-all duration-500 ease-in-out ${
-                  isSearchFocused ? 'scale-110 transform' : ''
+                  isSearchFocused ? 'scale-105 transform' : ''
                 }`}>
                   <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-all duration-300 ${
                     isSearchFocused 
@@ -317,14 +315,16 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                     onBlur={handleSearchBlur}
                     className={`w-full rounded-full border-2 transition-all duration-500 ease-in-out ${
                       isSearchFocused
-                        ? 'pl-12 pr-6 py-4 text-lg border-green-500 shadow-2xl ring-4 ring-green-500/30 bg-white dark:bg-gray-800'
+                        ? 'pl-12 pr-6 py-4 text-lg border-green-500 shadow-2xl ring-4 ring-green-500/30'
                         : 'pl-10 pr-4 py-2 text-base'
                     } ${
                       isSearchFocused
-                        ? 'border-green-500 shadow-2xl ring-4 ring-green-500/30'
+                        ? isDark 
+                          ? 'bg-gray-800 text-white placeholder:text-gray-400' 
+                          : 'bg-white text-gray-900 placeholder:text-gray-500'
                         : isDark 
-                          ? 'border-gray-700 bg-gray-800 text-white placeholder:text-gray-400 focus:text-white hover:text-white active:text-white' 
-                          : 'border-gray-300 bg-white'
+                          ? 'border-gray-700 bg-gray-800 text-white placeholder:text-gray-400' 
+                          : 'border-gray-300 bg-white text-gray-900 placeholder:text-gray-500'
                     }`}
                   />
                   
@@ -341,71 +341,67 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                 </div>
               </form>
               
-              {/* FIXED: Enhanced Popular Search Suggestions - Tăng kích thước TRIỆT ĐỂ */}
+              {/* FIXED: Suggestions - GIẢM KÍCH THƯỚC VÀ CĂN GIỮA */}
               {showSearchSuggestions && (
-                <div className={`absolute top-full left-0 mt-3 p-10 rounded-2xl shadow-2xl border z-50 backdrop-blur-lg min-w-[800px] w-full max-w-none ${
+                <div className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-3 p-6 rounded-xl shadow-xl border z-50 backdrop-blur-lg w-[500px] ${
                   isDark ? 'bg-gray-800/95 border-gray-700' : 'bg-white/95 border-gray-200'
                 }`}>
-                  <div className="space-y-8">
+                  <div className="space-y-4">
                     {/* Popular searches section */}
                     <div>
-                      <div className="flex items-center justify-between mb-6">
-                        <p className={`text-xl font-bold flex items-center ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                      <div className="flex items-center justify-between mb-4">
+                        <p className={`text-sm font-semibold flex items-center ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
                           🔥 Popular searches:
                         </p>
-                        <span className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                           Click to search
                         </span>
                       </div>
-                      <div className="grid grid-cols-3 gap-6">
-                        {searchSuggestions.slice(0, 9).map((suggestion, index) => (
+                      <div className="grid grid-cols-2 gap-3">
+                        {searchSuggestions.map((suggestion, index) => (
                           <button
                             key={index}
                             onClick={() => handleSuggestionClick(suggestion)}
-                            className={`text-left p-6 text-lg rounded-xl transition-all duration-300 hover:scale-105 border min-h-[80px] flex items-center ${
+                            className={`text-left p-3 text-sm rounded-lg transition-all duration-300 hover:scale-105 border flex items-center ${
                               isDark 
                                 ? 'text-white hover:bg-gray-700 hover:text-white border-gray-600 hover:border-green-500' 
                                 : 'text-gray-700 hover:bg-green-50 hover:text-green-700 border-gray-200 hover:border-green-300'
                             }`}
                           >
-                            <div className="flex items-center w-full">
-                              <Search className="w-5 h-5 mr-4 opacity-60 flex-shrink-0" />
-                              <span className="font-medium text-base leading-relaxed">{suggestion}</span>
-                            </div>
+                            <Search className="w-4 h-4 mr-3 opacity-60 flex-shrink-0" />
+                            <span className="font-medium">{suggestion}</span>
                           </button>
                         ))}
                       </div>
                     </div>
                     
                     {/* Quick categories section */}
-                    <div className="border-t border-gray-200/20 pt-8">
-                      <p className={`text-xl font-bold mb-6 flex items-center ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
+                    <div className="border-t border-gray-200/20 pt-4">
+                      <p className={`text-sm font-semibold mb-3 flex items-center ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>
                         📂 Quick Categories:
                       </p>
-                      <div className="grid grid-cols-4 gap-4">
-                        {CATEGORIES.slice(0, 8).map((category) => (
+                      <div className="grid grid-cols-2 gap-2">
+                        {CATEGORIES.slice(0, 4).map((category) => (
                           <button
                             key={category.id}
                             onClick={() => handleSuggestionClick(category.name)}
-                            className={`text-left p-5 text-base rounded-xl border transition-all duration-200 hover:scale-105 min-h-[70px] flex items-center ${
+                            className={`text-left p-2 text-xs rounded-lg border transition-all duration-200 hover:scale-105 flex items-center ${
                               isDark 
                                 ? 'text-gray-300 border-gray-600 hover:bg-gray-700 hover:text-white hover:border-green-500' 
                                 : 'text-gray-600 border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-green-300'
                             }`}
                           >
-                            <div className="flex items-center w-full">
-                              <span className="text-lg mr-3">🏷️</span>
-                              <span className="font-medium">{category.name}</span>
-                            </div>
+                            <span className="text-sm mr-2">🏷️</span>
+                            <span className="font-medium">{category.name}</span>
                           </button>
                         ))}
                       </div>
                     </div>
                     
                     {/* Search tips section */}
-                    <div className="border-t border-gray-200/20 pt-6">
-                      <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-500'} leading-relaxed`}>
-                        💡 <strong>Search Tips:</strong> Try searching by pet size, season, or occasion (e.g., "small dog winter", "cat formal wear")
+                    <div className="border-t border-gray-200/20 pt-3">
+                      <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} leading-relaxed`}>
+                        💡 <strong>Search Tips:</strong> Try searching by pet size, season, or occasion
                       </p>
                     </div>
                   </div>
@@ -556,7 +552,7 @@ export default function EnhancedHeader({ isDark = false, toggleTheme }: Enhanced
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className={`pl-10 pr-4 py-2 w-full rounded-full ${
-                        isDark ? 'bg-gray-800 text-white placeholder:text-gray-400 focus:text-white hover:text-white active:text-white' : ''
+                        isDark ? 'bg-gray-800 text-white placeholder:text-gray-400' : ''
                       }`}
                     />
                   </form>
